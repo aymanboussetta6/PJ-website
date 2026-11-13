@@ -1,6 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
+import HeroArt from '../../components/HeroArt.astro';
+import { photo } from '../../lib/photos';
 import { ACTIVITY_KEYS, LOCALE_KEYS, getDictionary, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
@@ -9,6 +11,7 @@ export function getStaticPaths() {
 
 const locale = Astro.params.lang as Locale;
 const t = getDictionary(locale);
+const hasHeroPhoto = Boolean(photo('hero'));
 
 // Simple line icons (24×24, stroke) for each activity.
 const ICONS: Record<(typeof ACTIVITY_KEYS)[number], string> = {
@@ -25,79 +28,144 @@ const SECTOR_ICONS = [
   'M5 16V6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v10M5 16h14M7 20l2-4M17 20l-2-4M8 10h8', // train
   'M3 21h18M5 21V9l7-5 7 5v12M10 21v-5h4v5', // town hall
 ];
+// Bento layout (lg: 4 columns): one large feature card, then regular cards.
+const BENTO: Record<(typeof ACTIVITY_KEYS)[number], string> = {
+  studies: 'sm:col-span-2 lg:row-span-2',
+  infra: '',
+  radio: '',
+  maintenance: '',
+  fiber: '',
+  civil: 'sm:col-span-2',
+};
+const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items[k].title)];
 ---
 
 <Base locale={locale}>
-  <!-- Hero -->
-  <section class="relative isolate overflow-hidden text-white">
-    <Photo name="hero" alt="" class="absolute inset-0 -z-20 size-full" widths={[768, 1280, 1920]} sizes="100vw" loading="eager" />
-    <div aria-hidden="true" class="absolute inset-0 -z-10 bg-brand/80 lg:bg-transparent lg:bg-gradient-to-r lg:from-brand/90 lg:via-brand/70 lg:to-sky/30"></div>
-    <div class="container-page py-24 sm:py-32 lg:py-40">
-      <p class="text-xs font-semibold tracking-[0.18em] text-sky-light uppercase">{t.hero.eyebrow}</p>
-      <h1 class="mt-5 max-w-3xl text-[2rem] leading-tight font-bold sm:leading-none tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
-      <p class="mt-6 max-w-2xl text-lg text-pretty text-white/90">{t.hero.subtitle}</p>
-      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-        <a href={`/${locale}/contact/`} class="btn-light">{t.hero.ctaPrimary}</a>
-        <a href="#activities" class="btn-ghost">{t.hero.ctaSecondary} →</a>
+  <!-- Hero: sky gradient, text left, illustration (or photo) right -->
+  <section class="sky-gradient relative overflow-hidden">
+    <div class="container-page grid items-center gap-10 pt-14 pb-24 sm:pt-20 lg:grid-cols-[1.1fr_1fr] lg:pb-32">
+      <div data-reveal>
+        <p class="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold tracking-wide text-brand shadow-sm backdrop-blur">
+          <span class="size-2 animate-pulse rounded-full bg-sky"></span>
+          {t.hero.eyebrow}
+        </p>
+        <h1 class="mt-6 text-[2.1rem] leading-[1.1] font-extrabold tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
+        <p class="mt-6 max-w-xl text-lg text-pretty text-ink-soft">{t.hero.subtitle}</p>
+        <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+          <a href={`/${locale}/contact/`} class="btn-light">{t.hero.ctaPrimary} →</a>
+          <a href="#activities" class="btn-ghost">{t.hero.ctaSecondary}</a>
+        </div>
       </div>
-      <ul class="mt-12 flex flex-wrap gap-2">
-        {t.hero.badges.map((b) => <li class="rounded-full border border-white/30 bg-white/15 px-4 py-1.5 text-xs font-medium backdrop-blur">{b}</li>)}
-      </ul>
+      <div data-reveal style="--reveal-i: 2">
+        {
+          hasHeroPhoto ? (
+            <div class="relative mx-auto max-w-md rotate-2 overflow-hidden rounded-[2.5rem] border-8 border-white/70 shadow-2xl shadow-ink/20">
+              <Photo name="hero" alt="" class="aspect-[4/5] w-full" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 40vw, 90vw" loading="eager" />
+            </div>
+          ) : (
+            <HeroArt chips={t.hero.badges} />
+          )
+        }
+      </div>
     </div>
+    <!-- wave into the next section -->
+    <svg class="absolute inset-x-0 bottom-0 h-12 w-full text-white sm:h-20" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="currentColor" d="M0 48c180 28 360 32 540 16S900 0 1080 8s300 40 360 48v24H0z" />
+    </svg>
   </section>
 
-  <!-- Activities -->
-  <section id="activities" class="py-20 sm:py-24">
+  <!-- Ticker -->
+  <div class="overflow-hidden border-y border-line bg-white py-4" aria-hidden="true">
+    <div class="animate-marquee flex w-max gap-10 hover:[animation-play-state:paused]">
+      {
+        [...ticker, ...ticker].map((item) => (
+          <span class="flex items-center gap-10 text-sm font-semibold whitespace-nowrap text-ink/70">
+            {item}
+            <span class="size-1.5 rounded-full bg-sky" />
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Activities: bento grid -->
+  <section id="activities" class="py-20 sm:py-28">
     <div class="container-page">
-      <div class="max-w-2xl">
-        <p class="eyebrow">{t.nav.activities}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.activities.title}</h2>
-        <p class="mt-4 text-lg text-muted">{t.activities.intro}</p>
+      <div class="flex flex-col justify-between gap-6 lg:flex-row lg:items-end" data-reveal>
+        <div class="max-w-2xl">
+          <p class="eyebrow">{t.nav.activities}</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-5xl">{t.activities.title}</h2>
+        </div>
+        <p class="max-w-md text-lg text-muted">{t.activities.intro}</p>
       </div>
-      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
+      <div class="mt-12 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {
-          ACTIVITY_KEYS.map((key) => {
+          ACTIVITY_KEYS.map((key, i) => {
             const item = t.activities.items[key];
+            const big = key === 'studies';
             return (
-              <article class="group overflow-hidden rounded-3xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/10">
-                <div class="relative aspect-[16/10] overflow-hidden">
-                  <Photo name={key} alt={item.title} class="size-full transition duration-500 group-hover:scale-105" />
-                  <span class="absolute bottom-4 left-4 grid size-11 place-items-center rounded-2xl bg-white/95 text-brand shadow-lg">
+              <article
+                data-reveal
+                style={`--reveal-i: ${i % 4}`}
+                class:list={[
+                  'group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-line bg-white transition duration-300 hover:-translate-y-1 hover:border-sky hover:shadow-xl hover:shadow-sky/20',
+                  BENTO[key],
+                ]}
+              >
+                {big && (
+                  <div class="relative min-h-48 flex-1 overflow-hidden">
+                    <Photo name={key} alt={item.title} class="absolute inset-0 size-full transition duration-700 group-hover:scale-105" sizes="(min-width: 1024px) 50vw, 100vw" />
+                  </div>
+                )}
+                <div class:list={['flex flex-col p-6', big ? 'sm:p-8' : 'flex-1']}>
+                  <span class="grid size-12 place-items-center rounded-2xl bg-mist text-brand transition group-hover:bg-sky group-hover:text-ink">
                     <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d={ICONS[key]} />
                     </svg>
                   </span>
-                </div>
-                <div class="p-6">
-                  <h3 class="text-lg font-semibold">{item.title}</h3>
+                  <h3 class:list={['mt-5 font-semibold', big ? 'text-2xl' : 'text-lg']}>{item.title}</h3>
                   <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
                 </div>
               </article>
             );
           })
         }
+        <!-- CTA tile completes the grid -->
+        <a
+          href={`/${locale}/contact/`}
+          data-reveal
+          style="--reveal-i: 2"
+          class="group sky-gradient relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] p-6 sm:col-span-2 sm:p-8"
+        >
+          <h3 class="max-w-xs text-2xl font-bold tracking-tight">{t.contactForm.title}</h3>
+          <span class="mt-6 inline-flex items-center gap-2 font-semibold text-ink">
+            {t.nav.quote}
+            <span class="grid size-9 place-items-center rounded-full bg-white transition group-hover:translate-x-1">→</span>
+          </span>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Approach -->
-  <section id="approach" class="bg-mist py-20 sm:py-24">
+  <!-- Approach: big outlined numbers -->
+  <section id="approach" class="bg-mist py-20 sm:py-28">
     <div class="container-page">
-      <div class="max-w-2xl">
+      <div class="max-w-2xl" data-reveal>
         <p class="eyebrow">{t.nav.approach}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.approach.title}</h2>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-5xl">{t.approach.title}</h2>
         <p class="mt-4 text-lg text-muted">{t.approach.intro}</p>
       </div>
-      <ol class="relative mt-12 grid gap-6 md:grid-cols-4">
-        <div aria-hidden="true" class="absolute top-6 right-[12.5%] left-[12.5%] hidden h-0.5 bg-gradient-to-r from-brand to-sky md:block"></div>
+      <ol class="mt-14 grid gap-4 md:grid-cols-4">
         {
           t.approach.steps.map((step, i) => (
-            <li class="relative rounded-3xl bg-white p-6 text-center shadow-sm md:bg-transparent md:p-0 md:shadow-none">
-              <span class="relative mx-auto grid size-12 place-items-center rounded-full bg-gradient-to-br from-brand to-sky text-lg font-bold text-white ring-8 ring-mist">
-                {i + 1}
+            <li data-reveal style={`--reveal-i: ${i}`} class="relative overflow-hidden rounded-[1.75rem] bg-white p-6 pt-20 shadow-sm">
+              <span class="text-outline absolute -top-3 right-3 text-[6.5rem] leading-none font-black select-none" aria-hidden="true">
+                {String(i + 1).padStart(2, '0')}
               </span>
-              <h3 class="mt-5 font-semibold">{step.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+              <span class="absolute top-6 left-6 h-1.5 w-10 rounded-full bg-sky" aria-hidden="true" />
+              <h3 class="relative text-lg font-semibold">{step.title}</h3>
+              <p class="relative mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
             </li>
           ))
         }
@@ -106,17 +174,19 @@ const SECTOR_ICONS = [
   </section>
 
   <!-- Sectors + commitments -->
-  <section id="sectors" class="py-20 sm:py-24">
+  <section id="sectors" class="py-20 sm:py-28">
     <div class="container-page grid gap-12 lg:grid-cols-[1.4fr_1fr]">
       <div>
-        <p class="eyebrow">{t.nav.sectors}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.sectors.title}</h2>
-        <p class="mt-4 text-lg text-muted">{t.sectors.intro}</p>
+        <div data-reveal>
+          <p class="eyebrow">{t.nav.sectors}</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-5xl">{t.sectors.title}</h2>
+          <p class="mt-4 text-lg text-muted">{t.sectors.intro}</p>
+        </div>
         <div class="mt-10 grid gap-4 sm:grid-cols-2">
           {
             t.sectors.items.map((item, i) => (
-              <article class="rounded-3xl border border-line p-6">
-                <svg class="size-7 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <article data-reveal style={`--reveal-i: ${i}`} class="group rounded-[1.75rem] border border-line p-6 transition hover:border-sky hover:bg-mist">
+                <svg class="size-8 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d={SECTOR_ICONS[i]} />
                 </svg>
                 <h3 class="mt-4 font-semibold">{item.title}</h3>
@@ -126,18 +196,20 @@ const SECTOR_ICONS = [
           }
         </div>
       </div>
-      <aside class="self-start rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep p-8 text-white shadow-xl shadow-brand/20">
+      <aside data-reveal style="--reveal-i: 2" class="sky-gradient self-start rounded-[2rem] p-8 shadow-xl shadow-sky/20 sm:p-10 lg:sticky lg:top-24">
         <h2 class="text-2xl font-bold">{t.commitments.title}</h2>
         <ul class="mt-6 space-y-5">
           {
             t.commitments.items.map((item) => (
               <li class="flex gap-4">
-                <svg class="mt-0.5 size-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20 6 9 17l-5-5" />
-                </svg>
+                <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white text-brand shadow-sm">
+                  <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </span>
                 <div>
                   <h3 class="font-semibold">{item.title}</h3>
-                  <p class="mt-1 text-sm text-white/90">{item.text}</p>
+                  <p class="mt-1 text-sm text-ink-soft">{item.text}</p>
                 </div>
               </li>
             ))
@@ -147,21 +219,18 @@ const SECTOR_ICONS = [
     </div>
   </section>
 
-  <!-- Next steps: contact (clients, partners) and careers -->
-  <section class="bg-mist py-20 sm:py-24">
-    <div class="container-page grid gap-6 lg:grid-cols-[1.4fr_1fr]">
-      <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep p-8 text-white sm:p-12">
-        <div aria-hidden="true" class="absolute -top-24 -right-24 size-72 rounded-full bg-white/20 blur-3xl"></div>
-        <h2 class="relative text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.contactForm.title}</h2>
-        <p class="relative mt-4 max-w-xl text-white/90">{t.contactForm.intro}</p>
-        <a href={`/${locale}/contact/`} class="btn-light relative mt-8">{t.nav.quote} →</a>
-      </div>
-      <div class="flex flex-col overflow-hidden rounded-[2rem] bg-white shadow-sm">
-        <Photo name="careers" alt="" class="aspect-[16/9] w-full" sizes="(min-width: 1024px) 40vw, 100vw" />
-        <div class="flex flex-1 flex-col p-8">
-          <h2 class="text-2xl font-bold tracking-tight">{t.careers.title}</h2>
-          <p class="mt-3 text-sm text-muted">{t.careers.intro}</p>
-          <a href={`/${locale}/careers/`} class="btn-primary mt-6 self-start">{t.form.title} →</a>
+  <!-- Careers teaser -->
+  <section class="pb-20 sm:pb-28">
+    <div class="container-page">
+      <div data-reveal class="grid overflow-hidden rounded-[2rem] bg-ink text-white lg:grid-cols-2">
+        <div class="relative min-h-56">
+          <Photo name="careers" alt="" class="absolute inset-0 size-full" sizes="(min-width: 1024px) 50vw, 100vw" />
+        </div>
+        <div class="p-8 sm:p-12">
+          <p class="text-xs font-semibold tracking-[0.18em] text-sky uppercase">{t.nav.careers}</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance">{t.careers.title}</h2>
+          <p class="mt-4 text-white/80">{t.careers.intro}</p>
+          <a href={`/${locale}/careers/`} class="btn-primary mt-8">{t.form.title} →</a>
         </div>
       </div>
     </div>

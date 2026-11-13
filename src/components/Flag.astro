@@ -1,0 +1,53 @@
+---
+/** Small rectangular flag (SVG, not emoji: emoji flags don't render on Windows). */
+interface Props {
+  code: 'fr' | 'gb' | 'de' | 'rs';
+  class?: string;
+}
+const { code, class: className } = Astro.props;
+const uid = `f${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<span class:list={['inline-block h-3.5 w-5 shrink-0 overflow-hidden rounded-[3px] ring-1 ring-ink/15', className]} aria-hidden="true">
+  {
+    code === 'fr' && (
+      <svg viewBox="0 0 3 2" preserveAspectRatio="none" class="size-full">
+        <rect width="1" height="2" fill="#002654" />
+        <rect x="1" width="1" height="2" fill="#fff" />
+        <rect x="2" width="1" height="2" fill="#ce1126" />
+      </svg>
+    )
+  }
+  {
+    code === 'de' && (
+      <svg viewBox="0 0 5 3" preserveAspectRatio="none" class="size-full">
+        <rect width="5" height="1" fill="#000" />
+        <rect y="1" width="5" height="1" fill="#dd0000" />
+        <rect y="2" width="5" height="1" fill="#ffce00" />
+      </svg>
+    )
+  }
+  {
+    code === 'rs' && (
+      <svg viewBox="0 0 3 3" preserveAspectRatio="none" class="size-full">
+        <rect width="3" height="1" fill="#c6363c" />
+        <rect y="1" width="3" height="1" fill="#0c4076" />
+        <rect y="2" width="3" height="1" fill="#fff" />
+      </svg>
+    )
+  }
+  {
+    code === 'gb' && (
+      <svg viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" class="size-full">
+        <clipPath id={`${uid}t`}>
+          <path d="M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z" />
+        </clipPath>
+        <path d="M0,0 v30 h60 v-30 z" fill="#012169" />
+        <path d="M0,0 L60,30 M60,0 L0,30" stroke="#fff" stroke-width="6" />
+        <path d="M0,0 L60,30 M60,0 L0,30" clip-path={`url(#${uid}t)`} stroke="#c8102e" stroke-width="4" />
+        <path d="M30,0 v30 M0,15 h60" stroke="#fff" stroke-width="10" />
+        <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6" />
+      </svg>
+    )
+  }
+</span>

@@ -23,6 +23,7 @@ const canonical = new URL(path, Astro.site);
 <html lang={LOCALES[locale].lang}>
   <head>
     <meta charset="utf-8" />
+    <script is:inline>document.documentElement.classList.add('js');</script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={pageDescription} />
@@ -38,7 +39,7 @@ const canonical = new URL(path, Astro.site);
     <meta property="og:description" content={pageDescription} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={LOCALES[locale].lang.replace('-', '_')} />
-    <meta name="theme-color" content="#0a72c2" />
+    <meta name="theme-color" content="#38bdf8" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     {PUBLIC_TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
   </head>
@@ -51,5 +52,25 @@ const canonical = new URL(path, Astro.site);
       <slot />
     </main>
     <Footer locale={locale} />
+    <script>
+      // Reveal elements marked data-reveal when they scroll into view.
+      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' },
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
   </body>
 </html>
