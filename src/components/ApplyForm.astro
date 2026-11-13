@@ -1,0 +1,163 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+import { SITE } from '../i18n/site';
+import { countryOptions, DOMAIN_KEYS, getDictionary, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+const f = t.form;
+const countries = countryOptions(locale);
+const messages = {
+  sending: f.sending,
+  submit: f.submit,
+  success: f.success,
+  errorGeneric: f.errorGeneric,
+  errorInvalid: f.errorInvalid,
+  errorFile: f.errorFile,
+  errorCaptcha: f.errorCaptcha,
+};
+---
+
+<form id="apply-form" class="grid gap-5 sm:grid-cols-2" enctype="multipart/form-data" novalidate data-messages={JSON.stringify(messages)}>
+  <input type="hidden" name="locale" value={locale} />
+  <div class="hidden" aria-hidden="true">
+    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <div>
+    <label class="field-label" for="firstName">{f.firstName} *</label>
+    <input class="field" id="firstName" name="firstName" required maxlength="80" autocomplete="given-name" />
+  </div>
+  <div>
+    <label class="field-label" for="lastName">{f.lastName} *</label>
+    <input class="field" id="lastName" name="lastName" required maxlength="80" autocomplete="family-name" />
+  </div>
+  <div>
+    <label class="field-label" for="email">{f.email} *</label>
+    <input class="field" id="email" name="email" type="email" required maxlength="200" autocomplete="email" />
+  </div>
+  <div>
+    <label class="field-label" for="phone">{f.phone} *</label>
+    <input class="field" id="phone" name="phone" type="tel" required maxlength="30" autocomplete="tel" placeholder="+381 …" />
+  </div>
+  <div>
+    <label class="field-label" for="country">{f.country} *</label>
+    <select class="field" id="country" name="country" required>
+      <option value="">{f.countryPlaceholder}</option>
+      {countries.map((c) => <option value={c.code}>{c.name}</option>)}
+      <option value="OTHER">{f.otherCountry}</option>
+    </select>
+  </div>
+  <div>
+    <label class="field-label" for="domain">{f.domain} *</label>
+    <select class="field" id="domain" name="domain" required>
+      <option value="">{f.domainPlaceholder}</option>
+      {DOMAIN_KEYS.map((d) => <option value={d}>{f.domains[d]}</option>)}
+    </select>
+  </div>
+  <div class="sm:col-span-2">
+    <label class="field-label" for="languages">{f.languages} *</label>
+    <input class="field" id="languages" name="languages" required maxlength="200" placeholder={f.languagesHint} />
+  </div>
+  <div class="sm:col-span-2">
+    <label class="field-label" for="message">{f.message}</label>
+    <textarea class="field min-h-28" id="message" name="message" maxlength="2000" rows="4"></textarea>
+  </div>
+  <div class="sm:col-span-2">
+    <label class="field-label" for="cv">{f.cv} *</label>
+    <input
+      class="field cursor-pointer file:mr-4 file:rounded-full file:border-0 file:bg-brand/10 file:px-4 file:py-1.5 file:text-sm file:font-semibold file:text-brand"
+      id="cv"
+      name="cv"
+      type="file"
+      required
+      accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+      aria-describedby="cv-hint"
+    />
+    <p id="cv-hint" class="mt-1.5 text-xs text-muted">{f.cvHint}</p>
+  </div>
+  <div class="sm:col-span-2">
+    <label class="flex items-start gap-3 text-sm text-muted">
+      <input type="checkbox" name="consent" required class="mt-0.5 size-4 shrink-0 accent-brand" />
+      <span>
+        {f.consent}{" "}
+        <a href={`/${locale}/privacy/`} class="font-medium text-brand underline-offset-2 hover:underline">{f.privacyLink}</a>
+      </span>
+    </label>
+  </div>
+
+  {PUBLIC_TURNSTILE_SITE_KEY && <div class="cf-turnstile sm:col-span-2" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} />}
+
+  <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
+    <button type="submit" class="btn-primary disabled:cursor-wait disabled:opacity-60">{f.submit}</button>
+    <p class="text-xs text-muted">{f.intro} · <a href={`mailto:${SITE.recruitingEmail}`} class="underline">{SITE.recruitingEmail}</a></p>
+  </div>
+  <p id="apply-status" role="status" aria-live="polite" class="hidden rounded-xl px-4 py-3 text-sm sm:col-span-2"></p>
+</form>
+
+{PUBLIC_TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
+
+<script>
+  import { actions, isInputError } from 'astro:actions';
+
+  const MAX = 5 * 1024 * 1024;
+  const form = document.querySelector<HTMLFormElement>('#apply-form');
+  if (form) {
+    const msg = JSON.parse(form.dataset.messages ?? '{}') as Record<string, string>;
+    const status = form.querySelector<HTMLParagraphElement>('#apply-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
+
+    const show = (text: string, ok: boolean) => {
+      status.textContent = text;
+      status.className = `rounded-xl px-4 py-3 text-sm sm:col-span-2 ${ok ? 'bg-signal/15 text-emerald-900' : 'bg-red-50 text-red-800'}`;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+
+      if (!form.checkValidity()) {
+        form.querySelectorAll<HTMLInputElement>(':invalid').forEach((el) => el.setAttribute('aria-invalid', 'true'));
+        form.querySelector<HTMLElement>(':invalid')?.focus();
+        return show(msg.errorInvalid, false);
+      }
+      const cv = (form.elements.namedItem('cv') as HTMLInputElement).files?.[0];
+      if (!cv || cv.size > MAX || !/\.(pdf|docx?)$/i.test(cv.name)) {
+        form.querySelector<HTMLInputElement>('#cv')?.setAttribute('aria-invalid', 'true');
+        return show(msg.errorFile, false);
+      }
+
+      button.disabled = true;
+      button.textContent = msg.sending;
+      try {
+        const { error } = await actions.apply(new FormData(form));
+        if (!error) {
+          form.reset();
+          return show(msg.success, true);
+        }
+        if (isInputError(error)) {
+          for (const name of Object.keys(error.fields)) {
+            form.querySelector(`[name="${name}"]`)?.setAttribute('aria-invalid', 'true');
+          }
+          return show('cv' in error.fields ? msg.errorFile : msg.errorInvalid, false);
+        }
+        show(error.message === 'captcha' ? msg.errorCaptcha : msg.errorGeneric, false);
+      } catch {
+        show(msg.errorGeneric, false);
+      } finally {
+        button.disabled = false;
+        button.textContent = msg.submit;
+        (window as { turnstile?: { reset: () => void } }).turnstile?.reset();
+      }
+    });
+  }
+</script>
+
+<style>
+  [aria-invalid='true'] {
+    border-color: rgb(220 38 38);
+  }
+</style>

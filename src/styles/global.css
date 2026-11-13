@@ -1,0 +1,49 @@
+@import '@fontsource-variable/inter';
+@import 'tailwindcss';
+
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0b1530;
+  --color-ink-soft: #1a2647;
+  --color-brand: #2f6bff;
+  --color-brand-dark: #1d4fd6;
+  --color-signal: #22d3a6;
+  --color-mist: #f3f6fc;
+  --color-line: #dde4f2;
+  --color-muted: #5b6785;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    @apply bg-white font-sans text-ink antialiased;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand;
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white shadow-lg shadow-brand/25 hover:bg-brand-dark;
+}
+@utility btn-ghost {
+  @apply btn border border-white/25 text-white hover:bg-white/10;
+}
+@utility eyebrow {
+  @apply text-xs font-semibold tracking-[0.18em] uppercase text-brand;
+}
+@utility field-label {
+  @apply mb-1.5 block text-sm font-medium text-ink;
+}
+@utility field {
+  @apply block w-full rounded-xl border border-line bg-white px-4 py-3 text-sm text-ink placeholder:text-muted/70 transition focus:border-brand focus:ring-4 focus:ring-brand/15 focus:outline-none;
+}

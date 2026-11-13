@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { LOCALES, LOCALE_KEYS, DEFAULT_LOCALE, getDictionary, fill, switchLocalePath, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  title?: string;
+  description?: string;
+}
+
+const { locale, title, description } = Astro.props;
+const t = getDictionary(locale);
+const pageTitle = fill(title ?? t.meta.title);
+const pageDescription = fill(description ?? t.meta.description);
+const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site);
+---
+
+<!doctype html>
+<html lang={LOCALES[locale].lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={canonical} />
+    {
+      LOCALE_KEYS.map((l) => (
+        <link rel="alternate" hreflang={LOCALES[l].lang} href={new URL(switchLocalePath(path, l), Astro.site)} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={new URL(switchLocalePath(path, DEFAULT_LOCALE), Astro.site)} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={LOCALES[locale].lang.replace('-', '_')} />
+    <meta name="theme-color" content="#0b1530" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
+      {t.nav.skip}
+    </a>
+    <Header locale={locale} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
