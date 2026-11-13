@@ -2,71 +2,95 @@ import type { Dictionary } from './fr';
 
 const en: Dictionary = {
   meta: {
-    title: '{brand} — Telecom talent for mobile operators',
+    title: '{brand} — Telecom project management and field works',
     description:
-      '{brand} recruits and deploys engineers, technicians and sales teams from Eastern Europe for European mobile operators.',
+      '{brand} supports operators and infrastructure owners: engineering studies, infrastructure and radio site rollout, fibre optics, civil works and maintenance.',
   },
   nav: {
-    services: 'Operators',
-    why: 'Why us',
-    candidates: 'Candidates',
-    apply: 'Apply',
+    activities: 'Services',
+    approach: 'Approach',
+    sectors: 'Clients',
+    careers: 'Careers',
     contact: 'Contact',
+    quote: 'Contact us',
     language: 'Language',
     skip: 'Skip to content',
   },
   hero: {
-    eyebrow: 'Telecom recruitment · Eastern Europe',
-    title: 'The right people to keep your networks running.',
+    eyebrow: 'Telecom project management · France & Germany',
+    title: 'We design, build and maintain your telecom networks.',
     subtitle:
-      'We connect mobile operators with qualified talent from Eastern Europe: radio and core network engineers, field technicians, sales and customer care teams.',
-    ctaClients: "I'm an operator",
-    ctaCandidates: "I'm looking for a job",
-    badges: ['5G · LTE · Fibre', 'Multilingual teams', 'GDPR compliant'],
+      'From survey to commissioning, then maintenance: a single partner for your radio, fibre and infrastructure projects.',
+    ctaPrimary: 'Contact us',
+    ctaSecondary: 'Our services',
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Towers & rooftops', 'Civil works'],
   },
-  services: {
-    title: 'What we bring to operators',
-    intro: 'Ready-to-deploy teams, recruited and supported by telecom specialists.',
-    items: [
-      {
-        title: 'Network rollout & engineering',
-        text: 'RF engineers, radio optimisation, core network and transmission for your 4G/5G rollouts.',
+  activities: {
+    title: 'Our services',
+    intro: 'Six complementary trades covering the full life cycle of your telecom infrastructure.',
+    items: {
+      studies: {
+        title: 'Engineering office',
+        text: 'Site surveys, feasibility studies, construction drawings, permit files, and radio and fibre engineering.',
       },
-      {
-        title: 'Field technicians',
-        text: 'Site installation and maintenance, fibre connections and interventions across your footprint.',
+      infra: {
+        title: 'Telecom infrastructure rollout',
+        text: 'Site construction: towers, rooftops, shelters, power and connections, with full works management.',
       },
-      {
-        title: 'Sales & customer care',
-        text: 'Multilingual retail advisors and contact-centre agents, trained on your offers and tools.',
+      radio: {
+        title: 'Radio rollout',
+        text: 'Installation, integration and commissioning of 2G to 5G equipment, swaps and site upgrades.',
       },
+      maintenance: {
+        title: 'Corrective and preventive maintenance',
+        text: 'Scheduled visits, incident response, on-call service and service-level monitoring.',
+      },
+      fiber: {
+        title: 'Fibre optics',
+        text: 'Cable pulling, connection, splicing and testing on FTTH, FTTO and backbone networks, aerial and underground.',
+      },
+      civil: {
+        title: 'Civil works',
+        text: 'Trenching, ducts, draw pits, foundations and road reinstatement.',
+      },
+    },
+  },
+  approach: {
+    title: 'Our project management approach',
+    intro: 'One point of control, from the first survey to maintenance.',
+    steps: [
+      { title: 'Design', text: 'Needs analysis, surveys and technical design.' },
+      { title: 'Build', text: 'Coordination of trades, safety and on-time delivery.' },
+      { title: 'Commission', text: 'Acceptance testing, inspections, as-built files and handover.' },
+      { title: 'Maintain', text: 'Preventive and corrective maintenance to guarantee availability.' },
     ],
   },
-  why: {
-    title: 'Why work with us',
+  sectors: {
+    title: 'Who we work for',
+    intro: 'We work alongside the companies that build and operate networks.',
     items: [
-      {
-        title: 'An Eastern European talent pool',
-        text: 'Serbia, the Balkans, Central Europe: direct access to scarce, motivated technical profiles.',
-      },
-      {
-        title: 'Fast staffing',
-        text: 'Technical and language pre-screening so you meet relevant candidates quickly.',
-      },
-      {
-        title: 'A secure framework',
-        text: 'Contracts, mobility and personal data handled in line with European law.',
-      },
+      { title: 'Mobile and fixed operators', text: '4G/5G densification, radio upgrades and fibre connection of sites.' },
+      { title: 'TowerCos and hosts', text: 'Construction and maintenance of shared towers and rooftop sites.' },
+      { title: 'Rail and transport', text: 'Trackside telecom networks, stations and technical sites.' },
+      { title: 'Local authorities and developers', text: 'Public fibre networks, broadband upgrades and related civil works.' },
     ],
   },
-  candidates: {
-    title: 'Candidates: join telecom projects across Europe',
+  commitments: {
+    title: 'Our commitments',
+    items: [
+      { title: 'Safety first', text: 'Prevention, protective equipment and a safety culture on every site.' },
+      { title: 'Responsiveness', text: 'Teams that can be mobilised quickly in France and Germany.' },
+      { title: 'Measured quality', text: 'Inspections, reporting and traceability for every job.' },
+    ],
+  },
+  careers: {
+    title: 'Join our teams',
     intro:
-      "Engineer, technician or sales professional? We support you from your application to your first day on the job.",
+      'Technicians, site supervisors, project managers, engineers: we are hiring in France, Germany and Eastern Europe.',
     steps: [
       { title: 'Apply online', text: 'Send your CV in 2 minutes, in the language of your choice.' },
-      { title: 'Talk to a recruiter', text: 'An interview to understand your skills and expectations.' },
-      { title: 'Start your assignment', text: 'We help with the contract, relocation and onboarding.' },
+      { title: 'Meet our teams', text: 'An interview to understand your skills and expectations.' },
+      { title: 'Start in the field', text: 'Onboarding, safety training and support on your first sites.' },
     ],
   },
   form: {
@@ -79,20 +103,20 @@ const en: Dictionary = {
     country: 'Country of residence',
     countryPlaceholder: 'Select a country',
     otherCountry: 'Other country',
-    domain: 'Field',
-    domainPlaceholder: 'Select a field',
+    domain: 'Trade',
+    domainPlaceholder: 'Select a trade',
     domains: {
-      rf: 'Radio engineering (RF)',
-      core: 'Core network / transmission',
-      field: 'Field technician',
-      it: 'IT / software',
-      sales: 'Sales & retail',
-      care: 'Customer care',
-      pm: 'Project management',
+      studies: 'Engineering office',
+      infra: 'Telecom infrastructure',
+      radio: 'Radio',
+      maintenance: 'Maintenance',
+      fiber: 'Fibre optics',
+      civil: 'Civil works',
+      management: 'Works supervision / project manager',
       other: 'Other',
     },
     languages: 'Languages spoken',
-    languagesHint: 'E.g. Serbian, English, German',
+    languagesHint: 'E.g. French, Serbian, English',
     message: 'Message (optional)',
     cv: 'CV',
     cvHint: 'PDF, DOC or DOCX, 5 MB max.',
@@ -108,12 +132,12 @@ const en: Dictionary = {
     errorCaptcha: 'The spam check failed. Please reload the page and try again.',
   },
   contact: {
-    title: "Let's talk about your needs",
-    text: 'Operator, integrator or subcontractor: tell us about your project and we will get back to you within 2 business days.',
+    title: 'A rollout or maintenance project?',
+    text: 'Tell us what you need: we will get back to you within 2 business days with an initial proposal.',
     cta: 'Email us',
   },
   footer: {
-    tagline: 'Eastern European telecom talent for European operators.',
+    tagline: 'Telecom project management and field works in France and Germany.',
     privacy: 'Privacy',
     rights: 'All rights reserved.',
   },
@@ -127,11 +151,11 @@ const en: Dictionary = {
       },
       {
         title: 'Data collected',
-        text: 'Identity, contact details, country, field, languages, message and CV submitted through the application form.',
+        text: 'Identity, contact details, country, trade, languages, message and CV submitted through the application form.',
       },
       {
         title: 'Purpose and legal basis',
-        text: 'Handling your application and introducing you to our clients, based on your consent.',
+        text: 'Handling your application, based on your consent.',
       },
       {
         title: 'Hosting and retention',

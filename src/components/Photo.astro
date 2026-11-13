@@ -1,0 +1,23 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '../lib/photos';
+
+interface Props {
+  name: string;
+  alt: string;
+  class?: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+const { name, alt, class: className, widths = [480, 800, 1200], sizes = '(min-width: 768px) 33vw, 100vw', loading = 'lazy' } = Astro.props;
+const src = photo(name);
+---
+
+{
+  src ? (
+    <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} format="webp" quality={78} class:list={['object-cover', className]} />
+  ) : (
+    <div aria-hidden="true" class:list={['photo-fallback', className]} />
+  )
+}

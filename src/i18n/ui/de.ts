@@ -2,71 +2,95 @@ import type { Dictionary } from './fr';
 
 const de: Dictionary = {
   meta: {
-    title: '{brand} — Telekom-Fachkräfte für Mobilfunkbetreiber',
+    title: '{brand} — Projektsteuerung und Bauleistungen für die Telekommunikation',
     description:
-      '{brand} rekrutiert Ingenieure, Techniker und Vertriebsteams aus Osteuropa für europäische Mobilfunkbetreiber.',
+      '{brand} unterstützt Netzbetreiber und Infrastrukturbetreiber: Ingenieurbüro, Infrastruktur- und Funkstandortausbau, Glasfaser, Tiefbau und Wartung.',
   },
   nav: {
-    services: 'Betreiber',
-    why: 'Warum wir',
-    candidates: 'Bewerber',
-    apply: 'Bewerben',
+    activities: 'Leistungen',
+    approach: 'Vorgehen',
+    sectors: 'Kunden',
+    careers: 'Karriere',
     contact: 'Kontakt',
+    quote: 'Anfrage senden',
     language: 'Sprache',
     skip: 'Zum Inhalt springen',
   },
   hero: {
-    eyebrow: 'Telekom-Recruiting · Osteuropa',
-    title: 'Die richtigen Fachkräfte für Ihre Netze.',
+    eyebrow: 'Telekom-Projektsteuerung · Frankreich & Deutschland',
+    title: 'Wir planen, bauen und warten Ihre Telekommunikationsnetze.',
     subtitle:
-      'Wir bringen Mobilfunkbetreiber mit qualifizierten Fachkräften aus Osteuropa zusammen: Funk- und Core-Netz-Ingenieure, Außendiensttechniker, Vertriebs- und Kundenservice-Teams.',
-    ctaClients: 'Ich bin Betreiber',
-    ctaCandidates: 'Ich suche einen Job',
-    badges: ['5G · LTE · Glasfaser', 'Mehrsprachige Teams', 'DSGVO-konform'],
+      'Von der Planung über die Inbetriebnahme bis zur Wartung: ein Ansprechpartner für Ihre Funk-, Glasfaser- und Infrastrukturprojekte.',
+    ctaPrimary: 'Anfrage senden',
+    ctaSecondary: 'Unsere Leistungen',
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Masten & Dachstandorte', 'Tiefbau'],
   },
-  services: {
-    title: 'Was wir Betreibern bieten',
-    intro: 'Einsatzbereite Teams, rekrutiert und betreut von Telekom-Spezialisten.',
-    items: [
-      {
-        title: 'Netzausbau & Engineering',
-        text: 'RF-Ingenieure, Funkoptimierung, Core-Netz und Übertragungstechnik für Ihren 4G/5G-Ausbau.',
+  activities: {
+    title: 'Unsere Leistungen',
+    intro: 'Sechs sich ergänzende Gewerke für den gesamten Lebenszyklus Ihrer Telekommunikationsinfrastruktur.',
+    items: {
+      studies: {
+        title: 'Ingenieurbüro',
+        text: 'Standortbegehungen, Machbarkeitsstudien, Ausführungspläne, Genehmigungsunterlagen sowie Funk- und Glasfaserplanung.',
       },
-      {
-        title: 'Außendiensttechniker',
-        text: 'Standortinstallation und -wartung, Glasfaseranschlüsse und Einsätze in Ihrem gesamten Gebiet.',
+      infra: {
+        title: 'Ausbau der Telekom-Infrastruktur',
+        text: 'Standortbau: Masten, Dachstandorte, Shelter, Energie und Anschlüsse, mit vollständiger Bauleitung.',
       },
-      {
-        title: 'Vertrieb & Kundenservice',
-        text: 'Mehrsprachige Shop-Berater und Contact-Center-Agenten, geschult auf Ihre Angebote und Tools.',
+      radio: {
+        title: 'Funkausbau',
+        text: 'Installation, Integration und Inbetriebnahme von 2G- bis 5G-Technik, Swaps und Standortmodernisierung.',
       },
+      maintenance: {
+        title: 'Präventive und korrektive Wartung',
+        text: 'Geplante Begehungen, Störungsbeseitigung, Bereitschaftsdienst und Überwachung der Servicelevel.',
+      },
+      fiber: {
+        title: 'Glasfaser',
+        text: 'Einzug, Anschluss, Spleißen und Messungen in FTTH-, FTTO- und Backbone-Netzen, oberirdisch und unterirdisch.',
+      },
+      civil: {
+        title: 'Tiefbau',
+        text: 'Gräben, Leerrohre, Kabelschächte, Fundamente und Wiederherstellung der Oberflächen.',
+      },
+    },
+  },
+  approach: {
+    title: 'Unser Vorgehen in der Projektsteuerung',
+    intro: 'Eine zentrale Steuerung von der ersten Begehung bis zur Wartung.',
+    steps: [
+      { title: 'Planen', text: 'Bedarfsanalyse, Begehungen und technische Planung.' },
+      { title: 'Bauen', text: 'Koordination der Gewerke, Arbeitssicherheit und Termintreue.' },
+      { title: 'In Betrieb nehmen', text: 'Abnahme, Prüfungen, Bestandsdokumentation und Übergabe.' },
+      { title: 'Warten', text: 'Präventive und korrektive Wartung für maximale Verfügbarkeit.' },
     ],
   },
-  why: {
-    title: 'Warum mit uns arbeiten',
+  sectors: {
+    title: 'Für wen wir arbeiten',
+    intro: 'Wir arbeiten an der Seite der Unternehmen, die Netze bauen und betreiben.',
     items: [
-      {
-        title: 'Ein Talentpool in Osteuropa',
-        text: 'Serbien, Balkan, Mitteleuropa: direkter Zugang zu seltenen, motivierten technischen Profilen.',
-      },
-      {
-        title: 'Schnelle Besetzung',
-        text: 'Fachliche und sprachliche Vorauswahl, damit Sie schnell passende Kandidaten kennenlernen.',
-      },
-      {
-        title: 'Sicherer Rahmen',
-        text: 'Verträge, Mobilität und personenbezogene Daten im Einklang mit europäischem Recht.',
-      },
+      { title: 'Mobilfunk- und Festnetzbetreiber', text: '4G/5G-Verdichtung, Funkmodernisierung und Glasfaseranbindung von Standorten.' },
+      { title: 'TowerCos und Standortbetreiber', text: 'Bau und Wartung gemeinsam genutzter Masten und Dachstandorte.' },
+      { title: 'Bahn und Verkehr', text: 'Telekommunikationsnetze entlang der Strecke, in Bahnhöfen und an technischen Standorten.' },
+      { title: 'Kommunen und Erschließungsträger', text: 'Geförderte Glasfasernetze, Breitbandausbau und zugehöriger Tiefbau.' },
     ],
   },
-  candidates: {
-    title: 'Bewerber: Arbeiten Sie an Telekom-Projekten in Europa',
+  commitments: {
+    title: 'Unsere Verpflichtungen',
+    items: [
+      { title: 'Sicherheit zuerst', text: 'Prävention, Schutzausrüstung und Sicherheitskultur auf jeder Baustelle.' },
+      { title: 'Reaktionsfähigkeit', text: 'Schnell einsetzbare Teams in Frankreich und Deutschland.' },
+      { title: 'Messbare Qualität', text: 'Kontrollen, Reporting und Nachverfolgbarkeit jedes Einsatzes.' },
+    ],
+  },
+  careers: {
+    title: 'Werden Sie Teil unseres Teams',
     intro:
-      'Ingenieur, Techniker oder im Vertrieb? Wir begleiten Sie von der Bewerbung bis zum ersten Arbeitstag.',
+      'Techniker, Bauleiter, Projektleiter, Ingenieure: Wir stellen in Frankreich, Deutschland und Osteuropa ein.',
     steps: [
       { title: 'Online bewerben', text: 'Senden Sie Ihren Lebenslauf in 2 Minuten, in der Sprache Ihrer Wahl.' },
-      { title: 'Gespräch mit einem Recruiter', text: 'Ein Gespräch über Ihre Kompetenzen und Wünsche.' },
-      { title: 'Einsatz starten', text: 'Wir unterstützen Sie bei Vertrag, Umzug und Einarbeitung.' },
+      { title: 'Gespräch mit unserem Team', text: 'Ein Gespräch über Ihre Kompetenzen und Wünsche.' },
+      { title: 'Start auf der Baustelle', text: 'Einarbeitung, Sicherheitsschulung und Begleitung bei den ersten Einsätzen.' },
     ],
   },
   form: {
@@ -79,20 +103,20 @@ const de: Dictionary = {
     country: 'Wohnsitzland',
     countryPlaceholder: 'Land auswählen',
     otherCountry: 'Anderes Land',
-    domain: 'Bereich',
-    domainPlaceholder: 'Bereich auswählen',
+    domain: 'Fachbereich',
+    domainPlaceholder: 'Fachbereich auswählen',
     domains: {
-      rf: 'Funktechnik (RF)',
-      core: 'Core-Netz / Übertragung',
-      field: 'Außendiensttechniker',
-      it: 'IT / Software',
-      sales: 'Vertrieb & Shop',
-      care: 'Kundenservice',
-      pm: 'Projektmanagement',
+      studies: 'Ingenieurbüro',
+      infra: 'Telekom-Infrastruktur',
+      radio: 'Funk',
+      maintenance: 'Wartung',
+      fiber: 'Glasfaser',
+      civil: 'Tiefbau',
+      management: 'Bauleitung / Projektleitung',
       other: 'Sonstiges',
     },
     languages: 'Sprachkenntnisse',
-    languagesHint: 'z. B. Serbisch, Englisch, Deutsch',
+    languagesHint: 'z. B. Deutsch, Serbisch, Englisch',
     message: 'Nachricht (optional)',
     cv: 'Lebenslauf',
     cvHint: 'PDF, DOC oder DOCX, max. 5 MB.',
@@ -108,12 +132,12 @@ const de: Dictionary = {
     errorCaptcha: 'Die Spam-Prüfung ist fehlgeschlagen. Bitte laden Sie die Seite neu.',
   },
   contact: {
-    title: 'Sprechen wir über Ihren Bedarf',
-    text: 'Betreiber, Integrator oder Subunternehmer: Beschreiben Sie Ihr Projekt, wir melden uns innerhalb von 2 Werktagen.',
+    title: 'Ein Ausbau- oder Wartungsprojekt?',
+    text: 'Beschreiben Sie uns Ihren Bedarf: Wir melden uns innerhalb von 2 Werktagen mit einem ersten Vorschlag.',
     cta: 'Schreiben Sie uns',
   },
   footer: {
-    tagline: 'Telekom-Fachkräfte aus Osteuropa für europäische Betreiber.',
+    tagline: 'Projektsteuerung und Bauleistungen für die Telekommunikation in Frankreich und Deutschland.',
     privacy: 'Datenschutz',
     rights: 'Alle Rechte vorbehalten.',
   },
@@ -127,11 +151,11 @@ const de: Dictionary = {
       },
       {
         title: 'Erhobene Daten',
-        text: 'Identität, Kontaktdaten, Land, Bereich, Sprachen, Nachricht und Lebenslauf aus dem Bewerbungsformular.',
+        text: 'Identität, Kontaktdaten, Land, Fachbereich, Sprachen, Nachricht und Lebenslauf aus dem Bewerbungsformular.',
       },
       {
         title: 'Zweck und Rechtsgrundlage',
-        text: 'Bearbeitung Ihrer Bewerbung und Vermittlung an unsere Kunden, auf Grundlage Ihrer Einwilligung.',
+        text: 'Bearbeitung Ihrer Bewerbung auf Grundlage Ihrer Einwilligung.',
       },
       {
         title: 'Hosting und Speicherdauer',

@@ -2,72 +2,96 @@
 // {brand} est remplacé par le nom de la société (voir src/i18n/site.ts).
 const fr = {
   meta: {
-    title: '{brand} — Talents télécoms pour les opérateurs mobiles',
+    title: "{brand} — Maîtrise d'œuvre et travaux télécoms",
     description:
-      "{brand} recrute et met à disposition des ingénieurs, techniciens et équipes commerciales d'Europe de l'Est pour les opérateurs mobiles européens.",
+      "{brand} accompagne opérateurs et gestionnaires d'infrastructures : bureau d'études, déploiement d'infrastructures et de sites radio, fibre optique, génie civil et maintenance.",
   },
   nav: {
-    services: 'Opérateurs',
-    why: 'Pourquoi nous',
-    candidates: 'Candidats',
-    apply: 'Postuler',
+    activities: 'Activités',
+    approach: 'Méthode',
+    sectors: 'Clients',
+    careers: 'Carrières',
     contact: 'Contact',
+    quote: 'Nous consulter',
     language: 'Langue',
     skip: 'Aller au contenu',
   },
   hero: {
-    eyebrow: "Recrutement télécom · Europe de l'Est",
-    title: 'Les bons talents pour faire tourner vos réseaux.',
+    eyebrow: "Maîtrise d'œuvre télécom · France & Allemagne",
+    title: 'Nous concevons, déployons et maintenons vos réseaux télécoms.',
     subtitle:
-      "Nous connectons les opérateurs mobiles avec des profils qualifiés d'Europe de l'Est : ingénieurs radio et cœur de réseau, techniciens terrain, équipes de vente et de relation client.",
-    ctaClients: 'Je suis un opérateur',
-    ctaCandidates: 'Je cherche une mission',
-    badges: ['5G · LTE · Fibre', 'Équipes multilingues', 'Conforme RGPD'],
+      "De l'étude à la mise en service, puis en maintenance : un interlocuteur unique pour vos projets radio, fibre et infrastructures.",
+    ctaPrimary: 'Nous consulter',
+    ctaSecondary: 'Nos activités',
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Pylônes & points hauts', 'Génie civil'],
   },
-  services: {
-    title: 'Ce que nous apportons aux opérateurs',
+  activities: {
+    title: 'Nos activités',
     intro:
-      'Des équipes prêtes à intervenir, recrutées et suivies par des spécialistes du secteur télécom.',
-    items: [
-      {
-        title: 'Déploiement & ingénierie réseau',
-        text: 'Ingénieurs RF, optimisation radio, cœur de réseau et transmission pour vos déploiements 4G/5G.',
+      "Six métiers complémentaires pour couvrir l'ensemble du cycle de vie de vos infrastructures télécoms.",
+    items: {
+      studies: {
+        title: "Bureau d'études",
+        text: "Relevés terrain, études de faisabilité, plans d'exécution, dossiers réglementaires et ingénierie radio et fibre.",
       },
-      {
-        title: 'Techniciens terrain',
-        text: 'Installation et maintenance de sites, raccordements fibre, interventions sur toute la zone couverte.',
+      infra: {
+        title: 'Déploiement infrastructure télécom',
+        text: 'Construction de sites : pylônes, toits-terrasses, shelters, énergie et raccordements, en conduite de travaux complète.',
       },
-      {
-        title: 'Vente & relation client',
-        text: 'Conseillers en boutique et centres de contact multilingues, formés à vos offres et à vos outils.',
+      radio: {
+        title: 'Déploiement radio',
+        text: 'Installation, intégration et mise en service des équipements 2G à 5G, swaps et modernisation des sites.',
       },
+      maintenance: {
+        title: 'Maintenance curative et préventive',
+        text: "Visites programmées, interventions sur incident, astreinte et suivi des engagements de qualité de service.",
+      },
+      fiber: {
+        title: 'Fibre optique',
+        text: 'Tirage, raccordement, soudure et mesures sur réseaux FTTH, FTTO et transport, en aérien comme en souterrain.',
+      },
+      civil: {
+        title: 'Génie civil',
+        text: 'Tranchées, fourreaux, chambres de tirage, massifs de fondation et remise en état de la voirie.',
+      },
+    },
+  },
+  approach: {
+    title: "Notre méthode de maîtrise d'œuvre",
+    intro: 'Un pilotage unique, du premier relevé à la maintenance.',
+    steps: [
+      { title: 'Étudier', text: 'Analyse du besoin, relevés et conception technique.' },
+      { title: 'Construire', text: 'Coordination des corps de métier, sécurité et respect des délais.' },
+      { title: 'Mettre en service', text: 'Recette, contrôles, dossiers des ouvrages exécutés et livraison.' },
+      { title: 'Maintenir', text: 'Maintenance préventive et curative pour garantir la disponibilité.' },
     ],
   },
-  why: {
-    title: 'Pourquoi travailler avec nous',
+  sectors: {
+    title: 'Pour qui nous intervenons',
+    intro: "Nous travaillons aux côtés des acteurs qui construisent et exploitent les réseaux.",
     items: [
-      {
-        title: "Un vivier en Europe de l'Est",
-        text: 'Serbie, Balkans, Europe centrale : un accès direct à des profils techniques rares et motivés.',
-      },
-      {
-        title: 'Rapidité de staffing',
-        text: 'Une présélection technique et linguistique pour vous présenter des candidats pertinents rapidement.',
-      },
-      {
-        title: 'Cadre sécurisé',
-        text: 'Contrats, mobilité et données personnelles gérés dans le respect du droit européen.',
-      },
+      { title: 'Opérateurs mobiles et fixes', text: 'Densification 4G/5G, modernisation radio et raccordement fibre des sites.' },
+      { title: 'TowerCos et hébergeurs', text: 'Construction et maintenance de pylônes et de points hauts mutualisés.' },
+      { title: 'Ferroviaire et transport', text: "Réseaux télécoms le long des voies, en gares et sur les sites techniques." },
+      { title: 'Collectivités et aménageurs', text: "Réseaux d'initiative publique, montée en débit et génie civil associé." },
     ],
   },
-  candidates: {
-    title: 'Candidats : rejoignez des projets télécoms en Europe',
+  commitments: {
+    title: 'Nos engagements',
+    items: [
+      { title: 'Sécurité avant tout', text: 'Prévention, équipements de protection et culture sécurité sur chaque chantier.' },
+      { title: 'Réactivité', text: 'Des équipes mobilisables rapidement en France et en Allemagne.' },
+      { title: 'Qualité mesurée', text: 'Contrôles, reporting et traçabilité de chaque intervention.' },
+    ],
+  },
+  careers: {
+    title: 'Rejoignez nos équipes',
     intro:
-      "Vous êtes ingénieur, technicien ou commercial ? Nous vous accompagnons de la candidature jusqu'au premier jour de mission.",
+      "Techniciens, chefs de chantier, chargés d'affaires, ingénieurs : nous recrutons en France, en Allemagne et en Europe de l'Est.",
     steps: [
       { title: 'Postulez en ligne', text: 'Envoyez votre CV en 2 minutes, dans la langue de votre choix.' },
-      { title: 'Échange avec un recruteur', text: 'Un entretien pour comprendre vos compétences et vos souhaits.' },
-      { title: 'Démarrez votre mission', text: 'Nous vous accompagnons sur le contrat, la mobilité et l’intégration.' },
+      { title: 'Échange avec nos équipes', text: 'Un entretien pour comprendre vos compétences et vos souhaits.' },
+      { title: 'Démarrez sur le terrain', text: 'Accueil, formation sécurité et accompagnement sur vos premiers chantiers.' },
     ],
   },
   form: {
@@ -80,20 +104,20 @@ const fr = {
     country: 'Pays de résidence',
     countryPlaceholder: 'Sélectionnez un pays',
     otherCountry: 'Autre pays',
-    domain: 'Domaine',
-    domainPlaceholder: 'Sélectionnez un domaine',
+    domain: 'Métier',
+    domainPlaceholder: 'Sélectionnez un métier',
     domains: {
-      rf: 'Ingénierie radio (RF)',
-      core: 'Cœur de réseau / transmission',
-      field: 'Technicien terrain',
-      it: 'IT / logiciel',
-      sales: 'Vente & boutique',
-      care: 'Relation client',
-      pm: 'Gestion de projet',
+      studies: "Bureau d'études",
+      infra: 'Infrastructure télécom',
+      radio: 'Radio',
+      maintenance: 'Maintenance',
+      fiber: 'Fibre optique',
+      civil: 'Génie civil',
+      management: "Conduite de travaux / chargé d'affaires",
       other: 'Autre',
     },
     languages: 'Langues parlées',
-    languagesHint: 'Ex. : serbe, anglais, allemand',
+    languagesHint: 'Ex. : français, serbe, anglais',
     message: 'Message (facultatif)',
     cv: 'CV',
     cvHint: 'PDF, DOC ou DOCX, 5 Mo maximum.',
@@ -109,12 +133,12 @@ const fr = {
     errorCaptcha: 'La vérification anti-spam a échoué. Rechargez la page et réessayez.',
   },
   contact: {
-    title: 'Parlons de vos besoins',
-    text: 'Opérateur, intégrateur ou sous-traitant : décrivez-nous votre projet, nous revenons vers vous sous 48 h ouvrées.',
+    title: 'Un projet de déploiement ou de maintenance ?',
+    text: 'Décrivez-nous votre besoin : nous revenons vers vous sous 48 h ouvrées avec une première proposition.',
     cta: 'Nous écrire',
   },
   footer: {
-    tagline: "Talents télécoms d'Europe de l'Est pour les opérateurs européens.",
+    tagline: "Maîtrise d'œuvre et travaux télécoms en France et en Allemagne.",
     privacy: 'Confidentialité',
     rights: 'Tous droits réservés.',
   },
@@ -128,11 +152,11 @@ const fr = {
       },
       {
         title: 'Données collectées',
-        text: 'Identité, coordonnées, pays, domaine, langues, message et CV transmis via le formulaire de candidature.',
+        text: 'Identité, coordonnées, pays, métier, langues, message et CV transmis via le formulaire de candidature.',
       },
       {
         title: 'Finalité et base légale',
-        text: 'Gestion de votre candidature et mise en relation avec nos clients, sur la base de votre consentement.',
+        text: 'Gestion de votre candidature, sur la base de votre consentement.',
       },
       {
         title: 'Hébergement et durée de conservation',

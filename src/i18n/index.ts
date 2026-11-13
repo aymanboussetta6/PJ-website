@@ -46,8 +46,8 @@ export function switchLocalePath(pathname: string, target: Locale): string {
 }
 
 export const COUNTRY_CODES = [
-  'RS', 'BA', 'ME', 'MK', 'HR', 'SI', 'AL', 'RO', 'BG', 'HU', 'PL', 'CZ', 'SK', 'UA', 'MD',
-  'AT', 'DE', 'CH', 'FR', 'BE', 'LU',
+  'FR', 'DE', 'RS', 'BA', 'ME', 'MK', 'HR', 'SI', 'AL', 'RO', 'BG', 'HU', 'PL', 'CZ', 'SK', 'UA', 'MD',
+  'AT', 'CH', 'BE', 'LU', 'PT', 'ES', 'IT', 'MA', 'TN', 'DZ',
 ] as const;
 
 export function countryOptions(locale: Locale) {
@@ -57,4 +57,7 @@ export function countryOptions(locale: Locale) {
   );
 }
 
-export const DOMAIN_KEYS = ['rf', 'core', 'field', 'it', 'sales', 'care', 'pm', 'other'] as const;
+export const DOMAIN_KEYS = ['studies', 'infra', 'radio', 'maintenance', 'fiber', 'civil', 'management', 'other'] as const;
+
+/** Order of the activity cards on the home page (keys of dictionary.activities.items, and photo names). */
+export const ACTIVITY_KEYS = ['studies', 'infra', 'radio', 'maintenance', 'fiber', 'civil'] as const;
