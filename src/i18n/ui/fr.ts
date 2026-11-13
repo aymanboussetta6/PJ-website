@@ -13,6 +13,8 @@ const fr = {
     careers: 'Carrières',
     contact: 'Contact',
     quote: 'Nous consulter',
+    menu: 'Menu',
+    home: 'Accueil',
     language: 'Langue',
     skip: 'Aller au contenu',
   },

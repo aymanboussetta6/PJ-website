@@ -17,6 +17,8 @@ const year = new Date().getFullYear();
       <p class="mt-1 text-sm">{t.footer.tagline}</p>
     </div>
     <div class="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+      <a href={`/${locale}/careers/`} class="hover:text-white">{t.nav.careers}</a>
+      <a href={`/${locale}/contact/`} class="hover:text-white">{t.nav.contact}</a>
       <a href={`mailto:${SITE.email}`} class="hover:text-white">{SITE.email}</a>
       <a href={`/${locale}/privacy/`} class="hover:text-white">{t.footer.privacy}</a>
       <span>© {year} {SITE.brand}. {t.footer.rights}</span>
