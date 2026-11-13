@@ -3,14 +3,18 @@
 
 @theme {
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --color-ink: #0b1530;
-  --color-ink-soft: #1a2647;
-  --color-brand: #2f6bff;
-  --color-brand-dark: #1d4fd6;
-  --color-signal: #22d3a6;
-  --color-mist: #f3f6fc;
-  --color-line: #dde4f2;
-  --color-muted: #5b6785;
+  /* Palette bleu clair : brand = boutons/liens (contraste AA sur blanc), sky = accents */
+  --color-ink: #0f2a44;
+  --color-ink-soft: #1d3d5c;
+  --color-brand: #0a72c2;
+  --color-brand-dark: #085d9f;
+  --color-sky: #4fb7f2;
+  --color-sky-light: #bfe6fc;
+  --color-sky-deep: #1580cc; /* plus clair possible derrière du texte blanc (contraste ≥ 4,2) */
+  --color-signal: #4fb7f2;
+  --color-mist: #eef7fd;
+  --color-line: #d4e6f4;
+  --color-muted: #4d6378;
 }
 
 @layer base {
@@ -20,6 +24,13 @@
   }
   body {
     @apply bg-white font-sans text-ink antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    /* Long compound words (German, Serbian) must wrap on phones */
+    hyphens: auto;
+    overflow-wrap: break-word;
   }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-brand;
@@ -36,7 +47,15 @@
   @apply btn bg-brand text-white shadow-lg shadow-brand/25 hover:bg-brand-dark;
 }
 @utility btn-ghost {
-  @apply btn border border-white/25 text-white hover:bg-white/10;
+  @apply btn border border-white/60 bg-white/10 text-white backdrop-blur hover:bg-white/20;
+}
+@utility btn-light {
+  @apply btn bg-white text-brand shadow-lg shadow-ink/10 hover:bg-mist;
+}
+@utility photo-fallback {
+  background:
+    radial-gradient(circle at 80% 20%, rgb(255 255 255 / 0.35), transparent 45%),
+    linear-gradient(135deg, var(--color-brand) 0%, var(--color-sky) 100%);
 }
 @utility eyebrow {
   @apply text-xs font-semibold tracking-[0.18em] uppercase text-brand;

@@ -10,25 +10,26 @@ const { locale } = Astro.props;
 const t = getDictionary(locale);
 const home = `/${locale}/`;
 const links = [
-  { href: `${home}#services`, label: t.nav.services },
-  { href: `${home}#why`, label: t.nav.why },
-  { href: `${home}#candidates`, label: t.nav.candidates },
+  { href: `${home}#activities`, label: t.nav.activities },
+  { href: `${home}#approach`, label: t.nav.approach },
+  { href: `${home}#sectors`, label: t.nav.sectors },
+  { href: `${home}#careers`, label: t.nav.careers },
   { href: `${home}#contact`, label: t.nav.contact },
 ];
 ---
 
-<header class="sticky top-0 z-40 border-b border-white/10 bg-ink/90 backdrop-blur">
+<header class="sticky top-0 z-40 border-b border-line/70 bg-white/90 backdrop-blur">
   <div class="container-page flex h-16 items-center justify-between gap-4">
-    <a href={home} class="flex items-center gap-2.5 text-white">
-      <span class="grid size-9 place-items-center rounded-xl bg-brand font-bold">PJ</span>
+    <a href={home} class="flex items-center gap-2.5 text-ink">
+      <span class="grid size-9 place-items-center rounded-xl bg-gradient-to-br from-brand to-sky font-bold text-white">PJ</span>
       <span class="hidden text-sm font-semibold tracking-tight sm:block">{SITE.brand}</span>
     </a>
     <nav class="hidden items-center gap-1 lg:flex" aria-label="Main">
-      {links.map((l) => <a href={l.href} class="rounded-full px-3 py-2 text-sm text-white/80 transition hover:bg-white/10 hover:text-white">{l.label}</a>)}
+      {links.map((l) => <a href={l.href} class="rounded-full px-3 py-2 text-sm text-ink/75 transition hover:bg-mist hover:text-brand">{l.label}</a>)}
     </nav>
     <div class="flex items-center gap-2">
-      <LanguageSwitcher locale={locale} dark />
-      <a href={`${home}#apply`} class="btn-primary px-4! py-2!">{t.nav.apply}</a>
+      <LanguageSwitcher locale={locale} />
+      <a href={`${home}#contact`} class="btn-primary px-4! py-2!">{t.nav.quote}</a>
     </div>
   </div>
 </header>

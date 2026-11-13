@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import ApplyForm from '../../components/ApplyForm.astro';
+import Photo from '../../components/Photo.astro';
 import { SITE } from '../../i18n/site';
-import { LOCALE_KEYS, getDictionary, fill, type Locale } from '../../i18n';
+import { ACTIVITY_KEYS, LOCALE_KEYS, getDictionary, fill, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
   return LOCALE_KEYS.map((lang) => ({ params: { lang } }));
@@ -10,98 +11,93 @@ export function getStaticPaths() {
 
 const locale = Astro.params.lang as Locale;
 const t = getDictionary(locale);
-const icons = [
-  'M4 20V10m5 10V4m5 16v-7m5 7V8', // antennas / signal bars
-  'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z', // tools
-  'M4 5h16v10H8l-4 4zM8 9h8M8 12h5', // chat
+
+// Simple line icons (24×24, stroke) for each activity.
+const ICONS: Record<(typeof ACTIVITY_KEYS)[number], string> = {
+  studies: 'M4 20h16M6 16l4-10 4 6 2-3 2 7M4 4h6',
+  infra: 'M12 2v20M8 22l4-14 4 14M9 12h6M7 6l5-4 5 4',
+  radio: 'M12 12v10M8.5 8.5a5 5 0 0 1 7 0M5.6 5.6a9 9 0 0 1 12.8 0M12 12h.01',
+  maintenance: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
+  fiber: 'M3 12c3-6 6 6 9 0s6 6 9 0M3 6c3-6 6 6 9 0s6 6 9 0M3 18c3-6 6 6 9 0s6 6 9 0',
+  civil: 'M3 20h18M5 20V10l7-6 7 6v10M9 20v-6h6v6',
+};
+const SECTOR_ICONS = [
+  'M8 2h8v20H8zM11 18h2', // phone / operators
+  'M12 2v20M8 22l4-14 4 14M9 12h6', // tower
+  'M5 16V6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v10M5 16h14M7 20l2-4M17 20l-2-4M8 10h8', // train
+  'M3 21h18M5 21V9l7-5 7 5v12M10 21v-5h4v5', // town hall
 ];
 ---
 
 <Base locale={locale}>
   <!-- Hero -->
-  <section class="relative overflow-hidden bg-ink text-white">
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <div class="absolute -top-40 -right-40 size-[36rem] rounded-full bg-brand/30 blur-3xl"></div>
-      <div class="absolute -bottom-48 -left-24 size-[28rem] rounded-full bg-signal/20 blur-3xl"></div>
-      <svg class="absolute top-1/2 right-[-6rem] hidden w-[38rem] -translate-y-1/2 opacity-30 lg:block" viewBox="0 0 400 400" fill="none" stroke="currentColor">
-        {[60, 110, 160, 210].map((r) => <circle cx="200" cy="200" r={r} stroke-width="1" class="text-signal" />)}
-        <circle cx="200" cy="200" r="10" class="fill-signal text-signal" />
-      </svg>
-    </div>
-    <div class="container-page relative py-20 sm:py-28 lg:py-32">
-      <p class="eyebrow text-signal!">{t.hero.eyebrow}</p>
-      <h1 class="mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
-      <p class="mt-6 max-w-2xl text-lg text-pretty text-white/75">{t.hero.subtitle}</p>
+  <section class="relative isolate overflow-hidden text-white">
+    <Photo name="hero" alt="" class="absolute inset-0 -z-20 size-full" widths={[768, 1280, 1920]} sizes="100vw" loading="eager" />
+    <div aria-hidden="true" class="absolute inset-0 -z-10 bg-brand/80 lg:bg-transparent lg:bg-gradient-to-r lg:from-brand/90 lg:via-brand/70 lg:to-sky/30"></div>
+    <div class="container-page py-24 sm:py-32 lg:py-40">
+      <p class="text-xs font-semibold tracking-[0.18em] text-sky-light uppercase">{t.hero.eyebrow}</p>
+      <h1 class="mt-5 max-w-3xl text-[2rem] leading-tight font-bold sm:leading-none tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
+      <p class="mt-6 max-w-2xl text-lg text-pretty text-white/90">{t.hero.subtitle}</p>
       <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-        <a href="#contact" class="btn-primary">{t.hero.ctaClients}</a>
-        <a href="#apply" class="btn-ghost">{t.hero.ctaCandidates} →</a>
+        <a href="#contact" class="btn-light">{t.hero.ctaPrimary}</a>
+        <a href="#activities" class="btn-ghost">{t.hero.ctaSecondary} →</a>
       </div>
       <ul class="mt-12 flex flex-wrap gap-2">
-        {t.hero.badges.map((b) => <li class="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80">{b}</li>)}
+        {t.hero.badges.map((b) => <li class="rounded-full border border-white/30 bg-white/15 px-4 py-1.5 text-xs font-medium backdrop-blur">{b}</li>)}
       </ul>
     </div>
   </section>
 
-  <!-- Services -->
-  <section id="services" class="py-20 sm:py-24">
+  <!-- Activities -->
+  <section id="activities" class="py-20 sm:py-24">
     <div class="container-page">
       <div class="max-w-2xl">
-        <p class="eyebrow">{t.nav.services}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.services.title}</h2>
-        <p class="mt-4 text-lg text-muted">{t.services.intro}</p>
+        <p class="eyebrow">{t.nav.activities}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.activities.title}</h2>
+        <p class="mt-4 text-lg text-muted">{t.activities.intro}</p>
       </div>
-      <div class="mt-12 grid gap-6 md:grid-cols-3">
+      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {
-          t.services.items.map((item, i) => (
-            <article class="group rounded-3xl border border-line bg-white p-7 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/10">
-              <span class="grid size-12 place-items-center rounded-2xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
-                <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[i]} /></svg>
+          ACTIVITY_KEYS.map((key) => {
+            const item = t.activities.items[key];
+            return (
+              <article class="group overflow-hidden rounded-3xl border border-line bg-white transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/10">
+                <div class="relative aspect-[16/10] overflow-hidden">
+                  <Photo name={key} alt={item.title} class="size-full transition duration-500 group-hover:scale-105" />
+                  <span class="absolute bottom-4 left-4 grid size-11 place-items-center rounded-2xl bg-white/95 text-brand shadow-lg">
+                    <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d={ICONS[key]} />
+                    </svg>
+                  </span>
+                </div>
+                <div class="p-6">
+                  <h3 class="text-lg font-semibold">{item.title}</h3>
+                  <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+                </div>
+              </article>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Approach -->
+  <section id="approach" class="bg-mist py-20 sm:py-24">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="eyebrow">{t.nav.approach}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.approach.title}</h2>
+        <p class="mt-4 text-lg text-muted">{t.approach.intro}</p>
+      </div>
+      <ol class="relative mt-12 grid gap-6 md:grid-cols-4">
+        <div aria-hidden="true" class="absolute top-6 right-[12.5%] left-[12.5%] hidden h-0.5 bg-gradient-to-r from-brand to-sky md:block"></div>
+        {
+          t.approach.steps.map((step, i) => (
+            <li class="relative rounded-3xl bg-white p-6 text-center shadow-sm md:bg-transparent md:p-0 md:shadow-none">
+              <span class="relative mx-auto grid size-12 place-items-center rounded-full bg-gradient-to-br from-brand to-sky text-lg font-bold text-white ring-8 ring-mist">
+                {i + 1}
               </span>
-              <h3 class="mt-6 text-lg font-semibold">{item.title}</h3>
-              <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <!-- Why us -->
-  <section id="why" class="bg-mist py-20 sm:py-24">
-    <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-start">
-      <div>
-        <p class="eyebrow">{t.nav.why}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.why.title}</h2>
-      </div>
-      <ol class="grid gap-4">
-        {
-          t.why.items.map((item, i) => (
-            <li class="flex gap-5 rounded-3xl bg-white p-6 shadow-sm">
-              <span class="text-3xl font-bold text-brand/25 tabular-nums">0{i + 1}</span>
-              <div>
-                <h3 class="font-semibold">{item.title}</h3>
-                <p class="mt-1 text-sm leading-relaxed text-muted">{item.text}</p>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-    </div>
-  </section>
-
-  <!-- Candidates -->
-  <section id="candidates" class="py-20 sm:py-24">
-    <div class="container-page">
-      <div class="max-w-2xl">
-        <p class="eyebrow">{t.nav.candidates}</p>
-        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.candidates.title}</h2>
-        <p class="mt-4 text-lg text-muted">{t.candidates.intro}</p>
-      </div>
-      <ol class="mt-12 grid gap-6 md:grid-cols-3">
-        {
-          t.candidates.steps.map((step, i) => (
-            <li class="relative rounded-3xl border border-line p-7">
-              <span class="grid size-10 place-items-center rounded-full bg-ink text-sm font-bold text-white">{i + 1}</span>
               <h3 class="mt-5 font-semibold">{step.title}</h3>
               <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
             </li>
@@ -111,12 +107,77 @@ const icons = [
     </div>
   </section>
 
-  <!-- Application form -->
-  <section id="apply" class="bg-mist py-20 sm:py-24">
+  <!-- Sectors + commitments -->
+  <section id="sectors" class="py-20 sm:py-24">
+    <div class="container-page grid gap-12 lg:grid-cols-[1.4fr_1fr]">
+      <div>
+        <p class="eyebrow">{t.nav.sectors}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.sectors.title}</h2>
+        <p class="mt-4 text-lg text-muted">{t.sectors.intro}</p>
+        <div class="mt-10 grid gap-4 sm:grid-cols-2">
+          {
+            t.sectors.items.map((item, i) => (
+              <article class="rounded-3xl border border-line p-6">
+                <svg class="size-7 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d={SECTOR_ICONS[i]} />
+                </svg>
+                <h3 class="mt-4 font-semibold">{item.title}</h3>
+                <p class="mt-1.5 text-sm leading-relaxed text-muted">{item.text}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+      <aside class="self-start rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep p-8 text-white shadow-xl shadow-brand/20">
+        <h2 class="text-2xl font-bold">{t.commitments.title}</h2>
+        <ul class="mt-6 space-y-5">
+          {
+            t.commitments.items.map((item) => (
+              <li class="flex gap-4">
+                <svg class="mt-0.5 size-6 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 6 9 17l-5-5" />
+                </svg>
+                <div>
+                  <h3 class="font-semibold">{item.title}</h3>
+                  <p class="mt-1 text-sm text-white/90">{item.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Careers -->
+  <section id="careers" class="bg-mist py-20 sm:py-24">
     <div class="container-page">
-      <div class="mx-auto max-w-3xl rounded-[2rem] bg-white p-6 shadow-xl shadow-ink/5 sm:p-10">
-        <p class="eyebrow">{t.nav.apply}</p>
-        <h2 class="mt-3 mb-8 text-3xl font-bold tracking-tight">{t.form.title}</h2>
+      <div class="grid items-center gap-10 lg:grid-cols-2">
+        <div>
+          <p class="eyebrow">{t.nav.careers}</p>
+          <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.careers.title}</h2>
+          <p class="mt-4 text-lg text-muted">{t.careers.intro}</p>
+          <ol class="mt-8 space-y-4">
+            {
+              t.careers.steps.map((step, i) => (
+                <li class="flex gap-4">
+                  <span class="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-white">{i + 1}</span>
+                  <div>
+                    <h3 class="font-semibold">{step.title}</h3>
+                    <p class="text-sm text-muted">{step.text}</p>
+                  </div>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+        <div class="overflow-hidden rounded-[2rem] shadow-xl shadow-ink/10">
+          <Photo name="careers" alt={t.careers.title} class="aspect-[4/3] w-full" sizes="(min-width: 1024px) 50vw, 100vw" />
+        </div>
+      </div>
+
+      <div id="apply" class="mx-auto mt-16 max-w-3xl scroll-mt-24 rounded-[2rem] bg-white p-6 shadow-xl shadow-ink/5 sm:p-10">
+        <h2 class="mb-8 text-3xl font-bold tracking-tight">{t.form.title}</h2>
         <ApplyForm locale={locale} />
       </div>
     </div>
@@ -125,11 +186,11 @@ const icons = [
   <!-- Contact -->
   <section id="contact" class="py-20 sm:py-24">
     <div class="container-page">
-      <div class="relative overflow-hidden rounded-[2rem] bg-brand px-6 py-14 text-center text-white sm:px-12">
-        <div aria-hidden="true" class="absolute -top-24 -right-24 size-72 rounded-full bg-signal/30 blur-3xl"></div>
+      <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep px-6 py-14 text-center text-white sm:px-12">
+        <div aria-hidden="true" class="absolute -top-24 -right-24 size-72 rounded-full bg-white/20 blur-3xl"></div>
         <h2 class="relative text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.contact.title}</h2>
-        <p class="relative mx-auto mt-4 max-w-2xl text-white/85">{fill(t.contact.text)}</p>
-        <a href={`mailto:${SITE.email}`} class="btn relative mt-8 bg-white text-brand hover:bg-mist">{t.contact.cta} · {SITE.email}</a>
+        <p class="relative mx-auto mt-4 max-w-2xl text-white/90">{fill(t.contact.text)}</p>
+        <a href={`mailto:${SITE.email}`} class="btn-light relative mt-8">{t.contact.cta} · {SITE.email}</a>
       </div>
     </div>
   </section>

@@ -3,71 +3,95 @@ import type { Dictionary } from './fr';
 // Srpski (latinica). Ćirilična verzija se generiše automatski (vidi src/i18n/translit.ts).
 const sr: Dictionary = {
   meta: {
-    title: '{brand} — Telekom stručnjaci za mobilne operatere',
+    title: '{brand} — Nadzor i izvođenje telekomunikacionih radova',
     description:
-      '{brand} zapošljava inženjere, tehničare i prodajne timove iz Istočne Evrope za evropske mobilne operatere.',
+      '{brand} sarađuje sa operaterima i upraviteljima infrastrukture: projektni biro, izgradnja infrastrukture i radio lokacija, optička vlakna, građevinski radovi i održavanje.',
   },
   nav: {
-    services: 'Operateri',
-    why: 'Zašto mi',
-    candidates: 'Kandidati',
-    apply: 'Prijava',
+    activities: 'Delatnosti',
+    approach: 'Metod',
+    sectors: 'Klijenti',
+    careers: 'Karijera',
     contact: 'Kontakt',
+    quote: 'Kontaktirajte nas',
     language: 'Jezik',
     skip: 'Preskoči na sadržaj',
   },
   hero: {
-    eyebrow: 'Telekom zapošljavanje · Istočna Evropa',
-    title: 'Pravi ljudi za mreže koje rade bez prekida.',
+    eyebrow: 'Telekom projektni nadzor · Francuska i Nemačka',
+    title: 'Projektujemo, gradimo i održavamo vaše telekomunikacione mreže.',
     subtitle:
-      'Povezujemo mobilne operatere sa kvalifikovanim stručnjacima iz Istočne Evrope: inženjerima za radio i jezgro mreže, terenskim tehničarima, timovima prodaje i korisničke podrške.',
-    ctaClients: 'Ja sam operater',
-    ctaCandidates: 'Tražim posao',
-    badges: ['5G · LTE · Optika', 'Višejezični timovi', 'Usklađeno sa GDPR'],
+      'Od projekta do puštanja u rad, a zatim i održavanja: jedan partner za vaše radio, optičke i infrastrukturne projekte.',
+    ctaPrimary: 'Kontaktirajte nas',
+    ctaSecondary: 'Naše delatnosti',
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Stubovi i krovne lokacije', 'Građevinski radovi'],
   },
-  services: {
-    title: 'Šta nudimo operaterima',
-    intro: 'Timove spremne za rad, koje zapošljavaju i prate stručnjaci za telekomunikacije.',
-    items: [
-      {
-        title: 'Izgradnja i inženjering mreže',
-        text: 'RF inženjeri, optimizacija radio mreže, jezgro mreže i transmisija za vaše 4G/5G projekte.',
+  activities: {
+    title: 'Naše delatnosti',
+    intro: 'Šest komplementarnih oblasti koje pokrivaju ceo životni ciklus vaše telekom infrastrukture.',
+    items: {
+      studies: {
+        title: 'Projektni biro',
+        text: 'Snimanje terena, studije izvodljivosti, izvođački projekti, dozvole i projektovanje radio i optičkih mreža.',
       },
-      {
-        title: 'Terenski tehničari',
-        text: 'Instalacija i održavanje baznih stanica, optički priključci i intervencije na celoj teritoriji.',
+      infra: {
+        title: 'Izgradnja telekom infrastrukture',
+        text: 'Izgradnja lokacija: stubovi, krovovi, kontejneri, napajanje i priključci, uz kompletno vođenje radova.',
       },
-      {
-        title: 'Prodaja i korisnička podrška',
-        text: 'Višejezični savetnici u prodavnicama i agenti kontakt centra, obučeni za vaše ponude i alate.',
+      radio: {
+        title: 'Izgradnja radio mreže',
+        text: 'Instalacija, integracija i puštanje u rad opreme od 2G do 5G, zamena i modernizacija lokacija.',
       },
+      maintenance: {
+        title: 'Korektivno i preventivno održavanje',
+        text: 'Planirani obilasci, intervencije pri kvarovima, dežurstvo i praćenje nivoa usluge.',
+      },
+      fiber: {
+        title: 'Optička vlakna',
+        text: 'Uvlačenje, povezivanje, spajanje i merenja na FTTH, FTTO i transportnim mrežama, nadzemno i podzemno.',
+      },
+      civil: {
+        title: 'Građevinski radovi',
+        text: 'Rovovi, cevi, kablovska okna, temelji i sanacija kolovoza.',
+      },
+    },
+  },
+  approach: {
+    title: 'Naš metod projektnog nadzora',
+    intro: 'Jedinstveno upravljanje, od prvog snimanja terena do održavanja.',
+    steps: [
+      { title: 'Projektovanje', text: 'Analiza potreba, snimanje terena i tehničko projektovanje.' },
+      { title: 'Izgradnja', text: 'Koordinacija izvođača, bezbednost i poštovanje rokova.' },
+      { title: 'Puštanje u rad', text: 'Prijem, kontrole, dokumentacija izvedenog stanja i primopredaja.' },
+      { title: 'Održavanje', text: 'Preventivno i korektivno održavanje radi pune dostupnosti.' },
     ],
   },
-  why: {
-    title: 'Zašto raditi sa nama',
+  sectors: {
+    title: 'Za koga radimo',
+    intro: 'Radimo zajedno sa kompanijama koje grade i upravljaju mrežama.',
     items: [
-      {
-        title: 'Baza talenata u Istočnoj Evropi',
-        text: 'Srbija, Balkan, Centralna Evropa: direktan pristup retkim i motivisanim tehničkim profilima.',
-      },
-      {
-        title: 'Brzo popunjavanje pozicija',
-        text: 'Tehnička i jezička preselekcija kako biste brzo upoznali odgovarajuće kandidate.',
-      },
-      {
-        title: 'Siguran okvir',
-        text: 'Ugovori, mobilnost i lični podaci u skladu sa evropskim propisima.',
-      },
+      { title: 'Mobilni i fiksni operateri', text: 'Zgušnjavanje 4G/5G mreže, modernizacija radio opreme i optičko povezivanje lokacija.' },
+      { title: 'TowerCo kompanije', text: 'Izgradnja i održavanje zajedničkih stubova i krovnih lokacija.' },
+      { title: 'Železnica i saobraćaj', text: 'Telekom mreže duž pruga, na stanicama i tehničkim lokacijama.' },
+      { title: 'Lokalne samouprave i investitori', text: 'Javne optičke mreže, širokopojasni pristup i prateći građevinski radovi.' },
     ],
   },
-  candidates: {
-    title: 'Kandidati: radite na telekom projektima širom Evrope',
+  commitments: {
+    title: 'Naše obaveze',
+    items: [
+      { title: 'Bezbednost na prvom mestu', text: 'Prevencija, zaštitna oprema i kultura bezbednosti na svakom gradilištu.' },
+      { title: 'Brza reakcija', text: 'Timovi spremni za brzo angažovanje u Francuskoj i Nemačkoj.' },
+      { title: 'Merljiv kvalitet', text: 'Kontrole, izveštavanje i sledljivost svake intervencije.' },
+    ],
+  },
+  careers: {
+    title: 'Pridružite se našim timovima',
     intro:
-      'Inženjer, tehničar ili prodavac? Pratimo vas od prijave do prvog radnog dana.',
+      'Tehničari, šefovi gradilišta, rukovodioci projekata, inženjeri: zapošljavamo u Francuskoj, Nemačkoj i Istočnoj Evropi.',
     steps: [
       { title: 'Prijavite se onlajn', text: 'Pošaljite CV za 2 minuta, na jeziku po vašem izboru.' },
-      { title: 'Razgovor sa regruterom', text: 'Intervju o vašim veštinama i očekivanjima.' },
-      { title: 'Počnite sa radom', text: 'Pomažemo oko ugovora, preseljenja i uvođenja u posao.' },
+      { title: 'Razgovor sa našim timom', text: 'Intervju o vašim veštinama i očekivanjima.' },
+      { title: 'Počnite na terenu', text: 'Uvodna obuka, obuka iz bezbednosti i podrška na prvim gradilištima.' },
     ],
   },
   form: {
@@ -80,20 +104,20 @@ const sr: Dictionary = {
     country: 'Zemlja boravka',
     countryPlaceholder: 'Izaberite zemlju',
     otherCountry: 'Druga zemlja',
-    domain: 'Oblast',
-    domainPlaceholder: 'Izaberite oblast',
+    domain: 'Zanimanje',
+    domainPlaceholder: 'Izaberite zanimanje',
     domains: {
-      rf: 'Radio inženjering (RF)',
-      core: 'Jezgro mreže / transmisija',
-      field: 'Terenski tehničar',
-      it: 'IT / softver',
-      sales: 'Prodaja i maloprodaja',
-      care: 'Korisnička podrška',
-      pm: 'Upravljanje projektima',
+      studies: 'Projektni biro',
+      infra: 'Telekom infrastruktura',
+      radio: 'Radio',
+      maintenance: 'Održavanje',
+      fiber: 'Optička vlakna',
+      civil: 'Građevinski radovi',
+      management: 'Vođenje radova / rukovodilac projekta',
       other: 'Ostalo',
     },
     languages: 'Jezici koje govorite',
-    languagesHint: 'Npr. srpski, engleski, nemački',
+    languagesHint: 'Npr. srpski, francuski, engleski',
     message: 'Poruka (opciono)',
     cv: 'CV',
     cvHint: 'PDF, DOC ili DOCX, najviše 5 MB.',
@@ -109,12 +133,12 @@ const sr: Dictionary = {
     errorCaptcha: 'Provera protiv spama nije uspela. Osvežite stranicu i pokušajte ponovo.',
   },
   contact: {
-    title: 'Razgovarajmo o vašim potrebama',
-    text: 'Operater, integrator ili podizvođač: opišite nam projekat, javićemo vam se u roku od 2 radna dana.',
+    title: 'Projekat izgradnje ili održavanja?',
+    text: 'Opišite nam vaše potrebe: javićemo vam se u roku od 2 radna dana sa prvim predlogom.',
     cta: 'Pišite nam',
   },
   footer: {
-    tagline: 'Telekom stručnjaci iz Istočne Evrope za evropske operatere.',
+    tagline: 'Nadzor i izvođenje telekomunikacionih radova u Francuskoj i Nemačkoj.',
     privacy: 'Privatnost',
     rights: 'Sva prava zadržana.',
   },
@@ -128,11 +152,11 @@ const sr: Dictionary = {
       },
       {
         title: 'Prikupljeni podaci',
-        text: 'Identitet, kontakt podaci, zemlja, oblast, jezici, poruka i CV poslati putem formulara za prijavu.',
+        text: 'Identitet, kontakt podaci, zemlja, zanimanje, jezici, poruka i CV poslati putem formulara za prijavu.',
       },
       {
         title: 'Svrha i pravni osnov',
-        text: 'Razmatranje vaše prijave i predstavljanje našim klijentima, na osnovu vašeg pristanka.',
+        text: 'Razmatranje vaše prijave, na osnovu vašeg pristanka.',
       },
       {
         title: 'Smeštaj i rok čuvanja',
