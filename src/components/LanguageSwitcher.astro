@@ -1,30 +1,25 @@
 ---
+import Flag from './Flag.astro';
 import { LOCALES, LOCALE_KEYS, getDictionary, switchLocalePath, type Locale } from '../i18n';
 
 interface Props {
   locale: Locale;
-  dark?: boolean;
 }
-const { locale, dark = false } = Astro.props;
+const { locale } = Astro.props;
 const t = getDictionary(locale);
 const path = Astro.url.pathname;
 ---
 
 <details class="group relative">
   <summary
-    class:list={[
-      'flex cursor-pointer list-none items-center gap-1.5 rounded-full px-3 py-2 text-sm font-medium transition [&::-webkit-details-marker]:hidden',
-      dark ? 'text-white/85 hover:bg-white/10' : 'text-ink hover:bg-mist',
-    ]}
-    aria-label={t.nav.language}
+    class="flex cursor-pointer list-none items-center gap-2 rounded-full px-3 py-2 text-sm font-medium text-ink transition hover:bg-mist [&::-webkit-details-marker]:hidden"
+    aria-label={`${t.nav.language} : ${LOCALES[locale].label}`}
   >
-    <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-      <circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-    </svg>
+    <Flag code={LOCALES[locale].flag} />
     {LOCALES[locale].short}
     <svg class="size-3 transition group-open:rotate-180" viewBox="0 0 12 12" fill="currentColor" aria-hidden="true"><path d="M2 4l4 4 4-4z" /></svg>
   </summary>
-  <ul class="absolute right-0 z-50 mt-2 w-56 overflow-hidden rounded-2xl border border-line bg-white py-1.5 shadow-xl">
+  <ul class="absolute right-0 z-50 mt-2 w-60 overflow-hidden rounded-2xl border border-line bg-white p-1.5 shadow-xl">
     {
       LOCALE_KEYS.map((l) => (
         <li>
@@ -33,13 +28,15 @@ const path = Astro.url.pathname;
             hreflang={LOCALES[l].lang}
             lang={LOCALES[l].lang}
             aria-current={l === locale ? 'true' : undefined}
-            class:list={[
-              'flex items-center justify-between px-4 py-2 text-sm text-ink hover:bg-mist',
-              l === locale && 'font-semibold text-brand',
-            ]}
+            class:list={['flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm text-ink hover:bg-mist', l === locale && 'bg-mist font-semibold']}
           >
-            {LOCALES[l].label}
-            <span class="text-xs text-muted">{LOCALES[l].short}</span>
+            <Flag code={LOCALES[l].flag} />
+            <span class="flex-1">{LOCALES[l].label}</span>
+            {l === locale && (
+              <svg class="size-4 text-brand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            )}
           </a>
         </li>
       ))

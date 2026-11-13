@@ -76,7 +76,7 @@ const messages = {
     <div class="flex flex-wrap gap-2">
       {
         ACTIVITY_KEYS.map((key) => (
-          <label class="cursor-pointer rounded-full border border-line px-3.5 py-1.5 text-sm transition hover:border-brand has-checked:border-brand has-checked:bg-brand has-checked:text-white">
+          <label class="cursor-pointer rounded-full border border-line px-3.5 py-1.5 text-sm transition hover:border-brand has-checked:border-sky has-checked:bg-sky has-checked:font-semibold">
             <input type="checkbox" name="trades" value={key} class="sr-only" />
             {t.activities.items[key].title}
           </label>

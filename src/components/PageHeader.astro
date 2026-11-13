@@ -7,11 +7,13 @@ interface Props {
 const { eyebrow, title, intro } = Astro.props;
 ---
 
-<section class="relative overflow-hidden bg-gradient-to-br from-brand-dark via-brand to-sky-deep text-white">
-  <div aria-hidden="true" class="absolute -top-32 -right-24 size-96 rounded-full bg-white/15 blur-3xl"></div>
-  <div class="container-page relative py-14 sm:py-20">
-    <p class="text-xs font-semibold tracking-[0.18em] text-sky-light uppercase">{eyebrow}</p>
-    <h1 class="mt-4 max-w-3xl text-3xl font-bold tracking-tight text-balance sm:text-5xl">{title}</h1>
-    {intro && <p class="mt-5 max-w-2xl text-lg text-pretty text-white/90">{intro}</p>}
+<section class="sky-gradient relative overflow-hidden">
+  <div class="container-page relative pt-14 pb-20 sm:pt-20 sm:pb-28">
+    <p class="eyebrow">{eyebrow}</p>
+    <h1 class="mt-4 max-w-3xl text-3xl font-extrabold tracking-tight text-balance sm:text-5xl">{title}</h1>
+    {intro && <p class="mt-5 max-w-2xl text-lg text-pretty text-ink-soft">{intro}</p>}
   </div>
+  <svg class="absolute inset-x-0 bottom-0 h-10 w-full text-white sm:h-16" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+    <path fill="currentColor" d="M0 48c180 28 360 32 540 16S900 0 1080 8s300 40 360 48v24H0z" />
+  </svg>
 </section>

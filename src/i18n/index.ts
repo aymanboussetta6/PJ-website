@@ -7,11 +7,11 @@ import { SITE } from './site';
 
 /** URL segment → locale metadata. Order = order in the language switcher. */
 export const LOCALES = {
-  fr: { lang: 'fr', label: 'Français', short: 'FR' },
-  en: { lang: 'en', label: 'English', short: 'EN' },
-  de: { lang: 'de', label: 'Deutsch', short: 'DE' },
-  sr: { lang: 'sr-Latn', label: 'Srpski (latinica)', short: 'SR' },
-  'sr-cyrl': { lang: 'sr-Cyrl', label: 'Српски (ћирилица)', short: 'СР' },
+  fr: { lang: 'fr', label: 'Français', short: 'FR', flag: 'fr' },
+  en: { lang: 'en', label: 'English', short: 'EN', flag: 'gb' },
+  de: { lang: 'de', label: 'Deutsch', short: 'DE', flag: 'de' },
+  sr: { lang: 'sr-Latn', label: 'Srpski (latinica)', short: 'SR', flag: 'rs' },
+  'sr-cyrl': { lang: 'sr-Cyrl', label: 'Српски (ћирилица)', short: 'СР', flag: 'rs' },
 } as const;
 
 export type Locale = keyof typeof LOCALES;

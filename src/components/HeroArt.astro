@@ -1,0 +1,79 @@
+---
+/**
+ * Decorative hero illustration (lattice tower, radio waves, fibre link to a shelter).
+ * Pure SVG + CSS animations; disabled for prefers-reduced-motion (global.css).
+ */
+interface Props {
+  chips: string[];
+}
+const { chips } = Astro.props;
+
+// Lattice tower geometry: legs converge from the base (y=360) to the top (y=100).
+const leftX = (y: number) => 228 + ((360 - y) * 34) / 260;
+const rightX = (y: number) => 312 - ((360 - y) * 34) / 260;
+const levels = [360, 320, 280, 240, 200, 160, 120];
+let bracing = '';
+for (let i = 0; i < levels.length - 1; i++) {
+  const [a, b] = [levels[i], levels[i + 1]];
+  bracing += `M${leftX(a)} ${a}L${rightX(b)} ${b}M${rightX(a)} ${a}L${leftX(b)} ${b}M${leftX(b)} ${b}H${rightX(b)}`;
+}
+const chipPos = ['top-[6%] left-[2%]', 'top-[34%] right-[0%]', 'bottom-[22%] left-[0%]', 'bottom-[4%] right-[10%]'];
+---
+
+<div class="relative mx-auto aspect-square w-full max-w-md" aria-hidden="true">
+  <div class="absolute inset-[8%] rounded-full bg-white/50 blur-2xl"></div>
+  <svg viewBox="0 0 400 400" class="relative size-full" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <!-- ground -->
+    <ellipse cx="200" cy="362" rx="170" ry="16" fill="#fff" opacity="0.7" />
+
+    <!-- radio waves -->
+    <g stroke="#036aa6" stroke-width="2.5">
+      {[0, 1, 2].map((i) => (
+        <circle cx="270" cy="78" r="46" class="animate-pulse-ring" style={`transform-box: fill-box; transform-origin: center; animation-delay: ${i}s`} />
+      ))}
+    </g>
+
+    <!-- tower -->
+    <g stroke="#0c2d48" stroke-width="3">
+      <path d={`M${leftX(360)} 360L${leftX(100)} 100M${rightX(360)} 360L${rightX(100)} 100`} />
+      <path d={bracing} stroke-width="1.6" opacity="0.75" />
+      <path d="M270 100V48" />
+    </g>
+    <!-- antenna panels -->
+    <g stroke="#0c2d48" stroke-width="2.5" fill="#fff">
+      <rect x="236" y="92" width="12" height="44" rx="4" />
+      <rect x="292" y="92" width="12" height="44" rx="4" />
+      <rect x="264" y="104" width="12" height="40" rx="4" />
+    </g>
+    <circle cx="270" cy="46" r="5" fill="#38bdf8" stroke="#0c2d48" stroke-width="2.5" />
+    <!-- microwave dish -->
+    <g stroke="#0c2d48" stroke-width="2.5" fill="#fff">
+      <path d="M232 190a18 18 0 0 0 0 30z" />
+    </g>
+
+    <!-- shelter / street cabinet -->
+    <g stroke="#0c2d48" stroke-width="2.5">
+      <rect x="66" y="296" width="84" height="64" rx="8" fill="#fff" />
+      <path d="M108 300v56M78 318h20M118 318h20" stroke-width="2" />
+      <circle cx="102" cy="330" r="2" fill="#0c2d48" />
+      <circle cx="114" cy="330" r="2" fill="#0c2d48" />
+    </g>
+
+    <!-- fibre links (animated dashes) -->
+    <path d="M150 340C185 340 200 352 236 352" stroke="#036aa6" stroke-width="3" stroke-dasharray="8 12" class="animate-dash" />
+    <path d="M66 340H14" stroke="#036aa6" stroke-width="3" stroke-dasharray="8 12" class="animate-dash" />
+    <circle cx="150" cy="340" r="4.5" fill="#38bdf8" stroke="#0c2d48" stroke-width="2" />
+    <circle cx="236" cy="352" r="4.5" fill="#38bdf8" stroke="#0c2d48" stroke-width="2" />
+  </svg>
+
+  {
+    chips.slice(0, 4).map((chip, i) => (
+      <span
+        class:list={['animate-float absolute rounded-full bg-white/90 px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg shadow-ink/10 backdrop-blur', chipPos[i]]}
+        style={`animation-delay: ${i * 0.8}s`}
+      >
+        {chip}
+      </span>
+    ))
+  }
+</div>
