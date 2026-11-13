@@ -13,6 +13,8 @@ const en: Dictionary = {
     careers: 'Careers',
     contact: 'Contact',
     quote: 'Contact us',
+    menu: 'Menu',
+    home: 'Home',
     language: 'Language',
     skip: 'Skip to content',
   },

@@ -1,9 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import ApplyForm from '../../components/ApplyForm.astro';
-import ContactForm from '../../components/ContactForm.astro';
 import Photo from '../../components/Photo.astro';
-import { SITE } from '../../i18n/site';
 import { ACTIVITY_KEYS, LOCALE_KEYS, getDictionary, type Locale } from '../../i18n';
 
 export function getStaticPaths() {
@@ -40,7 +37,7 @@ const SECTOR_ICONS = [
       <h1 class="mt-5 max-w-3xl text-[2rem] leading-tight font-bold sm:leading-none tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
       <p class="mt-6 max-w-2xl text-lg text-pretty text-white/90">{t.hero.subtitle}</p>
       <div class="mt-10 flex flex-col gap-3 sm:flex-row">
-        <a href="#contact" class="btn-light">{t.hero.ctaPrimary}</a>
+        <a href={`/${locale}/contact/`} class="btn-light">{t.hero.ctaPrimary}</a>
         <a href="#activities" class="btn-ghost">{t.hero.ctaSecondary} →</a>
       </div>
       <ul class="mt-12 flex flex-wrap gap-2">
@@ -150,61 +147,22 @@ const SECTOR_ICONS = [
     </div>
   </section>
 
-  <!-- Careers -->
-  <section id="careers" class="bg-mist py-20 sm:py-24">
-    <div class="container-page">
-      <div class="grid items-center gap-10 lg:grid-cols-2">
-        <div>
-          <p class="eyebrow">{t.nav.careers}</p>
-          <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.careers.title}</h2>
-          <p class="mt-4 text-lg text-muted">{t.careers.intro}</p>
-          <ol class="mt-8 space-y-4">
-            {
-              t.careers.steps.map((step, i) => (
-                <li class="flex gap-4">
-                  <span class="grid size-9 shrink-0 place-items-center rounded-full bg-brand text-sm font-bold text-white">{i + 1}</span>
-                  <div>
-                    <h3 class="font-semibold">{step.title}</h3>
-                    <p class="text-sm text-muted">{step.text}</p>
-                  </div>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-        <div class="overflow-hidden rounded-[2rem] shadow-xl shadow-ink/10">
-          <Photo name="careers" alt={t.careers.title} class="aspect-[4/3] w-full" sizes="(min-width: 1024px) 50vw, 100vw" />
-        </div>
-      </div>
-
-      <div id="apply" class="mx-auto mt-16 max-w-3xl scroll-mt-24 rounded-[2rem] bg-white p-6 shadow-xl shadow-ink/5 sm:p-10">
-        <h2 class="mb-8 text-3xl font-bold tracking-tight">{t.form.title}</h2>
-        <ApplyForm locale={locale} />
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact: clients, subcontractors, suppliers -->
-  <section id="contact" class="scroll-mt-16 py-20 sm:py-24">
-    <div class="container-page grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:items-start">
-      <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep p-8 text-white sm:p-10 lg:sticky lg:top-24">
+  <!-- Next steps: contact (clients, partners) and careers -->
+  <section class="bg-mist py-20 sm:py-24">
+    <div class="container-page grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+      <div class="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-brand-dark via-brand to-sky-deep p-8 text-white sm:p-12">
         <div aria-hidden="true" class="absolute -top-24 -right-24 size-72 rounded-full bg-white/20 blur-3xl"></div>
-        <p class="relative text-xs font-semibold tracking-[0.18em] text-sky-light uppercase">{t.contactForm.eyebrow}</p>
-        <h2 class="relative mt-3 text-3xl font-bold tracking-tight text-balance">{t.contactForm.title}</h2>
-        <p class="relative mt-4 text-white/90">{t.contactForm.intro}</p>
-        <div class="relative mt-8 space-y-6 text-sm">
-          <div>
-            <p class="text-white/80">{t.contactForm.direct}</p>
-            <a href={`mailto:${SITE.email}`} class="mt-1 inline-block font-semibold underline-offset-4 hover:underline">{SITE.email}</a>
-          </div>
-          <div class="rounded-2xl bg-white/10 p-4">
-            <p class="font-semibold">{t.contactForm.candidate}</p>
-            <a href="#apply" class="mt-1 inline-block text-white/90 underline underline-offset-4">{t.contactForm.candidateLink} →</a>
-          </div>
-        </div>
+        <h2 class="relative text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.contactForm.title}</h2>
+        <p class="relative mt-4 max-w-xl text-white/90">{t.contactForm.intro}</p>
+        <a href={`/${locale}/contact/`} class="btn-light relative mt-8">{t.nav.quote} →</a>
       </div>
-      <div class="rounded-[2rem] border border-line bg-white p-6 shadow-xl shadow-ink/5 sm:p-10">
-        <ContactForm locale={locale} />
+      <div class="flex flex-col overflow-hidden rounded-[2rem] bg-white shadow-sm">
+        <Photo name="careers" alt="" class="aspect-[16/9] w-full" sizes="(min-width: 1024px) 40vw, 100vw" />
+        <div class="flex flex-1 flex-col p-8">
+          <h2 class="text-2xl font-bold tracking-tight">{t.careers.title}</h2>
+          <p class="mt-3 text-sm text-muted">{t.careers.intro}</p>
+          <a href={`/${locale}/careers/`} class="btn-primary mt-6 self-start">{t.form.title} →</a>
+        </div>
       </div>
     </div>
   </section>

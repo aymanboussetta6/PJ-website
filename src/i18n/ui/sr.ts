@@ -14,6 +14,8 @@ const sr: Dictionary = {
     careers: 'Karijera',
     contact: 'Kontakt',
     quote: 'Kontaktirajte nas',
+    menu: 'Meni',
+    home: 'Početna',
     language: 'Jezik',
     skip: 'Preskoči na sadržaj',
   },
