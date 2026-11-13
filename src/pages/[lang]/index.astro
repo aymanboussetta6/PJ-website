@@ -1,0 +1,136 @@
+---
+import Base from '../../layouts/Base.astro';
+import ApplyForm from '../../components/ApplyForm.astro';
+import { SITE } from '../../i18n/site';
+import { LOCALE_KEYS, getDictionary, fill, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALE_KEYS.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+const t = getDictionary(locale);
+const icons = [
+  'M4 20V10m5 10V4m5 16v-7m5 7V8', // antennas / signal bars
+  'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z', // tools
+  'M4 5h16v10H8l-4 4zM8 9h8M8 12h5', // chat
+];
+---
+
+<Base locale={locale}>
+  <!-- Hero -->
+  <section class="relative overflow-hidden bg-ink text-white">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute -top-40 -right-40 size-[36rem] rounded-full bg-brand/30 blur-3xl"></div>
+      <div class="absolute -bottom-48 -left-24 size-[28rem] rounded-full bg-signal/20 blur-3xl"></div>
+      <svg class="absolute top-1/2 right-[-6rem] hidden w-[38rem] -translate-y-1/2 opacity-30 lg:block" viewBox="0 0 400 400" fill="none" stroke="currentColor">
+        {[60, 110, 160, 210].map((r) => <circle cx="200" cy="200" r={r} stroke-width="1" class="text-signal" />)}
+        <circle cx="200" cy="200" r="10" class="fill-signal text-signal" />
+      </svg>
+    </div>
+    <div class="container-page relative py-20 sm:py-28 lg:py-32">
+      <p class="eyebrow text-signal!">{t.hero.eyebrow}</p>
+      <h1 class="mt-5 max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">{t.hero.title}</h1>
+      <p class="mt-6 max-w-2xl text-lg text-pretty text-white/75">{t.hero.subtitle}</p>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row">
+        <a href="#contact" class="btn-primary">{t.hero.ctaClients}</a>
+        <a href="#apply" class="btn-ghost">{t.hero.ctaCandidates} →</a>
+      </div>
+      <ul class="mt-12 flex flex-wrap gap-2">
+        {t.hero.badges.map((b) => <li class="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/80">{b}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section id="services" class="py-20 sm:py-24">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="eyebrow">{t.nav.services}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.services.title}</h2>
+        <p class="mt-4 text-lg text-muted">{t.services.intro}</p>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-3">
+        {
+          t.services.items.map((item, i) => (
+            <article class="group rounded-3xl border border-line bg-white p-7 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-brand/10">
+              <span class="grid size-12 place-items-center rounded-2xl bg-brand/10 text-brand transition group-hover:bg-brand group-hover:text-white">
+                <svg class="size-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={icons[i]} /></svg>
+              </span>
+              <h3 class="mt-6 text-lg font-semibold">{item.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- Why us -->
+  <section id="why" class="bg-mist py-20 sm:py-24">
+    <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:items-start">
+      <div>
+        <p class="eyebrow">{t.nav.why}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.why.title}</h2>
+      </div>
+      <ol class="grid gap-4">
+        {
+          t.why.items.map((item, i) => (
+            <li class="flex gap-5 rounded-3xl bg-white p-6 shadow-sm">
+              <span class="text-3xl font-bold text-brand/25 tabular-nums">0{i + 1}</span>
+              <div>
+                <h3 class="font-semibold">{item.title}</h3>
+                <p class="mt-1 text-sm leading-relaxed text-muted">{item.text}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Candidates -->
+  <section id="candidates" class="py-20 sm:py-24">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="eyebrow">{t.nav.candidates}</p>
+        <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.candidates.title}</h2>
+        <p class="mt-4 text-lg text-muted">{t.candidates.intro}</p>
+      </div>
+      <ol class="mt-12 grid gap-6 md:grid-cols-3">
+        {
+          t.candidates.steps.map((step, i) => (
+            <li class="relative rounded-3xl border border-line p-7">
+              <span class="grid size-10 place-items-center rounded-full bg-ink text-sm font-bold text-white">{i + 1}</span>
+              <h3 class="mt-5 font-semibold">{step.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{step.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Application form -->
+  <section id="apply" class="bg-mist py-20 sm:py-24">
+    <div class="container-page">
+      <div class="mx-auto max-w-3xl rounded-[2rem] bg-white p-6 shadow-xl shadow-ink/5 sm:p-10">
+        <p class="eyebrow">{t.nav.apply}</p>
+        <h2 class="mt-3 mb-8 text-3xl font-bold tracking-tight">{t.form.title}</h2>
+        <ApplyForm locale={locale} />
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="py-20 sm:py-24">
+    <div class="container-page">
+      <div class="relative overflow-hidden rounded-[2rem] bg-brand px-6 py-14 text-center text-white sm:px-12">
+        <div aria-hidden="true" class="absolute -top-24 -right-24 size-72 rounded-full bg-signal/30 blur-3xl"></div>
+        <h2 class="relative text-3xl font-bold tracking-tight text-balance sm:text-4xl">{t.contact.title}</h2>
+        <p class="relative mx-auto mt-4 max-w-2xl text-white/85">{fill(t.contact.text)}</p>
+        <a href={`mailto:${SITE.email}`} class="btn relative mt-8 bg-white text-brand hover:bg-mist">{t.contact.cta} · {SITE.email}</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { LOCALE_KEYS, getDictionary, fill, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALE_KEYS.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+const t = getDictionary(locale);
+---
+
+<Base locale={locale} title={`${t.privacy.title} — {brand}`}>
+  <section class="container-page max-w-3xl py-16 sm:py-20">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">{t.privacy.title}</h1>
+    <p class="mt-2 text-sm text-muted">{t.privacy.updated}</p>
+    <div class="mt-10 space-y-8">
+      {
+        t.privacy.sections.map((s) => (
+          <section>
+            <h2 class="text-lg font-semibold">{s.title}</h2>
+            <p class="mt-2 leading-relaxed text-muted">{fill(s.text)}</p>
+          </section>
+        ))
+      }
+    </div>
+    <a href={`/${locale}/`} class="btn-primary mt-12">← {t.privacy.back}</a>
+  </section>
+</Base>

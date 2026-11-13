@@ -1,0 +1,31 @@
+---
+import { LOCALES, LOCALE_KEYS, DEFAULT_LOCALE } from '../i18n';
+// Root page: sends visitors to their browser language (static, no server needed).
+const map = Object.fromEntries(LOCALE_KEYS.map((k) => [LOCALES[k].lang.toLowerCase(), k]));
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <meta http-equiv="refresh" content={`2; url=/${DEFAULT_LOCALE}/`} />
+    <title>PJ</title>
+    <script is:inline define:vars={{ map, fallback: DEFAULT_LOCALE }}>
+      const pick = () => {
+        for (const raw of navigator.languages || [navigator.language]) {
+          const l = raw.toLowerCase();
+          if (map[l]) return map[l];
+          if (l.startsWith('sr')) return l.includes('cyrl') ? 'sr-cyrl' : 'sr';
+          const base = l.split('-')[0];
+          if (map[base]) return map[base];
+        }
+        return fallback;
+      };
+      location.replace('/' + pick() + '/');
+    </script>
+  </head>
+  <body>
+    <a href={`/${DEFAULT_LOCALE}/`}>Continuer / Continue</a>
+  </body>
+</html>
