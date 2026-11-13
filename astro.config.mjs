@@ -3,8 +3,13 @@ import { defineConfig, envField } from 'astro/config';
 import vercel from '@astrojs/vercel';
 import tailwindcss from '@tailwindcss/vite';
 
+// Public URL used for canonical/hreflang links: SITE_URL if set, otherwise the
+// production domain Vercel exposes at build time (follows a custom domain once added).
+const vercelDomain = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+const site = process.env.SITE_URL ?? (vercelDomain ? `https://${vercelDomain}` : 'https://example.com');
+
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://example.com',
+  site,
   output: 'static',
   adapter: vercel(),
   trailingSlash: 'always',
