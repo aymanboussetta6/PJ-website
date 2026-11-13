@@ -1,0 +1,150 @@
+---
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+import { ACTIVITY_KEYS, countryOptions, getDictionary, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getDictionary(locale);
+const c = t.contactForm;
+const countries = countryOptions(locale);
+const types = ['client', 'subcontractor', 'supplier', 'other'] as const;
+const messages = {
+  sending: t.form.sending,
+  submit: c.submit,
+  success: c.success,
+  errorGeneric: t.form.errorGeneric,
+  errorInvalid: t.form.errorInvalid,
+  errorFile: c.errorFile,
+  errorCaptcha: t.form.errorCaptcha,
+};
+---
+
+<form id="contact-form" class="grid gap-5 sm:grid-cols-2" enctype="multipart/form-data" novalidate data-messages={JSON.stringify(messages)}>
+  <input type="hidden" name="locale" value={locale} />
+  <div class="hidden" aria-hidden="true">
+    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  <fieldset class="sm:col-span-2">
+    <legend class="field-label">{c.typeLabel} *</legend>
+    <div class="grid grid-cols-2 gap-3 lg:grid-cols-4">
+      {
+        types.map((type, i) => (
+          <label class="cursor-pointer rounded-2xl border border-line p-3 transition hover:border-brand has-checked:border-brand has-checked:bg-mist has-checked:ring-2 has-checked:ring-brand/20">
+            <input type="radio" name="requesterType" value={type} required checked={i === 0} class="sr-only" />
+            <span class="block text-sm font-semibold">{c.types[type].label}</span>
+            <span class="mt-0.5 block text-xs leading-snug text-muted">{c.types[type].hint}</span>
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <div>
+    <label class="field-label" for="c-company">{c.company} *</label>
+    <input class="field" id="c-company" name="company" required maxlength="120" autocomplete="organization" />
+  </div>
+  <div>
+    <label class="field-label" for="c-fullName">{c.fullName} *</label>
+    <input class="field" id="c-fullName" name="fullName" required maxlength="120" autocomplete="name" />
+  </div>
+  <div>
+    <label class="field-label" for="c-email">{c.email} *</label>
+    <input class="field" id="c-email" name="email" type="email" required maxlength="200" autocomplete="email" />
+  </div>
+  <div>
+    <label class="field-label" for="c-phone">{c.phone}</label>
+    <input class="field" id="c-phone" name="phone" type="tel" maxlength="30" autocomplete="tel" pattern="[+\d\s().\-]{6,30}" />
+  </div>
+  <div>
+    <label class="field-label" for="c-jobTitle">{c.jobTitle}</label>
+    <input class="field" id="c-jobTitle" name="jobTitle" maxlength="120" autocomplete="organization-title" />
+  </div>
+  <div>
+    <label class="field-label" for="c-country">{c.country} *</label>
+    <select class="field" id="c-country" name="country" required>
+      <option value="">{t.form.countryPlaceholder}</option>
+      {countries.map((country) => <option value={country.code}>{country.name}</option>)}
+      <option value="OTHER">{t.form.otherCountry}</option>
+    </select>
+  </div>
+
+  <fieldset id="c-trades" class="hidden sm:col-span-2">
+    <legend class="field-label">{c.trades}</legend>
+    <div class="flex flex-wrap gap-2">
+      {
+        ACTIVITY_KEYS.map((key) => (
+          <label class="cursor-pointer rounded-full border border-line px-3.5 py-1.5 text-sm transition hover:border-brand has-checked:border-brand has-checked:bg-brand has-checked:text-white">
+            <input type="checkbox" name="trades" value={key} class="sr-only" />
+            {t.activities.items[key].title}
+          </label>
+        ))
+      }
+    </div>
+  </fieldset>
+
+  <div class="sm:col-span-2">
+    <label class="field-label" for="c-message">{c.message} *</label>
+    <textarea class="field min-h-32" id="c-message" name="message" required maxlength="3000" rows="5" placeholder={c.messagePlaceholder}></textarea>
+  </div>
+  <div class="sm:col-span-2">
+    <label class="field-label" for="c-attachment">{c.attachment}</label>
+    <input
+      class="field cursor-pointer file:mr-4 file:rounded-full file:border-0 file:bg-brand/10 file:px-4 file:py-1.5 file:text-sm file:font-semibold file:text-brand"
+      id="c-attachment"
+      name="attachment"
+      type="file"
+      accept=".pdf,application/pdf"
+      aria-describedby="c-attachment-hint"
+    />
+    <p id="c-attachment-hint" class="mt-1.5 text-xs text-muted">{c.attachmentHint}</p>
+  </div>
+  <div class="sm:col-span-2">
+    <label class="flex items-start gap-3 text-sm text-muted">
+      <input type="checkbox" name="consent" required class="mt-0.5 size-4 shrink-0 accent-brand" />
+      <span>
+        {c.consent}{' '}
+        <a href={`/${locale}/privacy/`} class="font-medium text-brand underline-offset-2 hover:underline">{t.form.privacyLink}</a>
+      </span>
+    </label>
+  </div>
+
+  {PUBLIC_TURNSTILE_SITE_KEY && <div class="cf-turnstile sm:col-span-2" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} />}
+
+  <div class="flex flex-col gap-4 sm:col-span-2 sm:flex-row sm:items-center">
+    <button type="submit" class="btn-primary disabled:cursor-wait disabled:opacity-60">{c.submit}</button>
+    <p class="text-xs text-muted">{t.form.intro}</p>
+  </div>
+  <p role="status" aria-live="polite" class="hidden"></p>
+</form>
+
+<script>
+  import { actions } from 'astro:actions';
+  import { enhanceForm } from '../lib/form-client';
+
+  const form = document.querySelector<HTMLFormElement>('#contact-form');
+  if (form) {
+    const trades = form.querySelector<HTMLFieldSetElement>('#c-trades')!;
+    const sync = () => {
+      const type = (form.elements.namedItem('requesterType') as RadioNodeList).value;
+      trades.classList.toggle('hidden', type !== 'subcontractor');
+    };
+    form.addEventListener('change', sync);
+    sync();
+
+    enhanceForm(form, (data) => actions.contact(data), {
+      name: 'attachment',
+      required: false,
+      maxBytes: 10 * 1024 * 1024,
+      pattern: /\.pdf$/i,
+    });
+  }
+</script>
+
+<style>
+  [aria-invalid='true'] {
+    border-color: rgb(220 38 38);
+  }
+</style>

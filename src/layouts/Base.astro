@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { LOCALES, LOCALE_KEYS, DEFAULT_LOCALE, getDictionary, fill, switchLocalePath, type Locale } from '../i18n';
@@ -39,6 +40,7 @@ const canonical = new URL(path, Astro.site);
     <meta property="og:locale" content={LOCALES[locale].lang.replace('-', '_')} />
     <meta name="theme-color" content="#0a72c2" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {PUBLIC_TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
   </head>
   <body>
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
