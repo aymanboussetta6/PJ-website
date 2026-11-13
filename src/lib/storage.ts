@@ -1,5 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_CV_BUCKET } from 'astro:env/server';
+import {
+  SUPABASE_URL,
+  SUPABASE_SERVICE_ROLE_KEY,
+  SUPABASE_CV_BUCKET,
+  SUPABASE_CONTACT_BUCKET,
+} from 'astro:env/server';
 
 let client: SupabaseClient | null = null;
 
@@ -45,6 +50,43 @@ export async function saveApplication(record: ApplicationRecord, cv: File): Prom
   if (insertError) {
     await supabase().storage.from(SUPABASE_CV_BUCKET).remove([cvPath]);
     throw insertError;
+  }
+  return id;
+}
+
+export interface ContactRecord {
+  requester_type: string;
+  company: string;
+  full_name: string;
+  job_title: string | null;
+  email: string;
+  phone: string | null;
+  country: string;
+  trades: string[];
+  message: string;
+  locale: string;
+  consent_at: string;
+}
+
+/** Uploads the optional attachment, then inserts the contact request row. */
+export async function saveContactRequest(record: ContactRecord, attachment?: File): Promise<string> {
+  const id = crypto.randomUUID();
+  let attachmentPath: string | null = null;
+
+  if (attachment) {
+    attachmentPath = `${id}/attachment.pdf`;
+    const { error } = await supabase()
+      .storage.from(SUPABASE_CONTACT_BUCKET)
+      .upload(attachmentPath, attachment, { contentType: 'application/pdf', upsert: false });
+    if (error) throw error;
+  }
+
+  const { error } = await supabase()
+    .from('contact_requests')
+    .insert({ id, ...record, attachment_path: attachmentPath });
+  if (error) {
+    if (attachmentPath) await supabase().storage.from(SUPABASE_CONTACT_BUCKET).remove([attachmentPath]);
+    throw error;
   }
   return id;
 }

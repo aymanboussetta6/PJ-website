@@ -98,60 +98,17 @@ const messages = {
   <p id="apply-status" role="status" aria-live="polite" class="hidden rounded-xl px-4 py-3 text-sm sm:col-span-2"></p>
 </form>
 
-{PUBLIC_TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}
-
 <script>
-  import { actions, isInputError } from 'astro:actions';
+  import { actions } from 'astro:actions';
+  import { enhanceForm } from '../lib/form-client';
 
-  const MAX = 5 * 1024 * 1024;
   const form = document.querySelector<HTMLFormElement>('#apply-form');
   if (form) {
-    const msg = JSON.parse(form.dataset.messages ?? '{}') as Record<string, string>;
-    const status = form.querySelector<HTMLParagraphElement>('#apply-status')!;
-    const button = form.querySelector<HTMLButtonElement>('button[type=submit]')!;
-
-    const show = (text: string, ok: boolean) => {
-      status.textContent = text;
-      status.className = `rounded-xl px-4 py-3 text-sm sm:col-span-2 ${ok ? 'bg-sky-light/60 text-ink' : 'bg-red-50 text-red-800'}`;
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
-
-      if (!form.checkValidity()) {
-        form.querySelectorAll<HTMLInputElement>(':invalid').forEach((el) => el.setAttribute('aria-invalid', 'true'));
-        form.querySelector<HTMLElement>(':invalid')?.focus();
-        return show(msg.errorInvalid, false);
-      }
-      const cv = (form.elements.namedItem('cv') as HTMLInputElement).files?.[0];
-      if (!cv || cv.size > MAX || !/\.(pdf|docx?)$/i.test(cv.name)) {
-        form.querySelector<HTMLInputElement>('#cv')?.setAttribute('aria-invalid', 'true');
-        return show(msg.errorFile, false);
-      }
-
-      button.disabled = true;
-      button.textContent = msg.sending;
-      try {
-        const { error } = await actions.apply(new FormData(form));
-        if (!error) {
-          form.reset();
-          return show(msg.success, true);
-        }
-        if (isInputError(error)) {
-          for (const name of Object.keys(error.fields)) {
-            form.querySelector(`[name="${name}"]`)?.setAttribute('aria-invalid', 'true');
-          }
-          return show('cv' in error.fields ? msg.errorFile : msg.errorInvalid, false);
-        }
-        show(error.message === 'captcha' ? msg.errorCaptcha : msg.errorGeneric, false);
-      } catch {
-        show(msg.errorGeneric, false);
-      } finally {
-        button.disabled = false;
-        button.textContent = msg.submit;
-        (window as { turnstile?: { reset: () => void } }).turnstile?.reset();
-      }
+    enhanceForm(form, (data) => actions.apply(data), {
+      name: 'cv',
+      required: true,
+      maxBytes: 5 * 1024 * 1024,
+      pattern: /\.(pdf|docx?)$/i,
     });
   }
 </script>
