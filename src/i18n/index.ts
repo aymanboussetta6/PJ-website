@@ -2,7 +2,6 @@ import fr, { type Dictionary } from './ui/fr';
 import en from './ui/en';
 import de from './ui/de';
 import sr from './ui/sr';
-import { transliterateDeep } from './translit';
 import { SITE } from './site';
 
 /** URL segment → locale metadata. Order = order in the language switcher. */
@@ -10,8 +9,8 @@ export const LOCALES = {
   fr: { lang: 'fr', label: 'Français', short: 'FR', flag: 'fr' },
   en: { lang: 'en', label: 'English', short: 'EN', flag: 'gb' },
   de: { lang: 'de', label: 'Deutsch', short: 'DE', flag: 'de' },
-  sr: { lang: 'sr-Latn', label: 'Srpski (latinica)', short: 'SR', flag: 'rs' },
-  'sr-cyrl': { lang: 'sr-Cyrl', label: 'Српски (ћирилица)', short: 'СР', flag: 'rs' },
+  // Serbian in Latin script: the everyday script, also read without effort in Croatia, Bosnia and Montenegro.
+  sr: { lang: 'sr-Latn', label: 'Srpski', short: 'SR', flag: 'rs' },
 } as const;
 
 export type Locale = keyof typeof LOCALES;
@@ -23,7 +22,6 @@ const DICTIONARIES: Record<Locale, Dictionary> = {
   en,
   de,
   sr,
-  'sr-cyrl': transliterateDeep(sr),
 };
 
 export function isLocale(value: unknown): value is Locale {

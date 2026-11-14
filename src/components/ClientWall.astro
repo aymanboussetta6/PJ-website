@@ -38,7 +38,7 @@ const tile =
           CLIENTS.map((client) => {
             const logo = logos[client.key];
             const content = logo ? (
-              <Image src={logo} alt={copy ? '' : client.name} class="max-h-12 w-auto max-w-full object-contain" loading="lazy" />
+              <Image src={logo} alt={copy ? '' : client.name} class="max-h-11 w-auto max-w-full object-contain sm:max-h-14" loading="eager" />
             ) : (
               <span class="text-lg font-bold tracking-tight whitespace-nowrap text-ink">{client.name}</span>
             );

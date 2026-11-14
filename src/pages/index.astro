@@ -16,7 +16,8 @@ const map = Object.fromEntries(LOCALE_KEYS.map((k) => [LOCALES[k].lang.toLowerCa
         for (const raw of navigator.languages || [navigator.language]) {
           const l = raw.toLowerCase();
           if (map[l]) return map[l];
-          if (l.startsWith('sr')) return l.includes('cyrl') ? 'sr-cyrl' : 'sr';
+          // Serbian (either script), Croatian, Bosnian and Montenegrin readers get the Serbian Latin version.
+          if (/^(sr|hr|bs|cnr|sh)\b/.test(l)) return 'sr';
           const base = l.split('-')[0];
           if (map[base]) return map[base];
         }

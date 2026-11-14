@@ -9,3 +9,10 @@ Déposez ici le logo de chaque client, nommé d'après sa clé dans `src/data/cl
 - **Un logo est une marque déposée** : utilisez le fichier officiel fourni par le client
   (kit de marque ou service communication) et gardez une trace écrite de son accord
   pour être cité comme référence.
+
+## Provenance des logos présents
+
+`orange.svg`, `free.svg`, `telefonica.svg` et `axians.png` viennent de Wikimedia Commons
+(fichiers « Orange logo.svg », « Free logo.svg », « Telefónica 2021 logo.svg », « Axians logo.png »).
+Ils restent des marques de leurs propriétaires. Les autres clients s'affichent en texte
+en attendant leur logo officiel.

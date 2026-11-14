@@ -1,6 +1,6 @@
 import type { Dictionary } from './fr';
 
-// Srpski (latinica). Ćirilična verzija se generiše automatski (vidi src/i18n/translit.ts).
+// Srpski, latinica.
 const sr: Dictionary = {
   meta: {
     title: '{brand} — Nadzor i izvođenje telekomunikacionih radova',

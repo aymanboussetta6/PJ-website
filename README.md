@@ -1,6 +1,6 @@
 # PJ Website
 
-Site vitrine multilingue (FR · EN · DE · SR latinica · SR ћирилица) avec formulaire de candidature.
+Site vitrine multilingue (FR · EN · DE · SR) avec formulaire de candidature.
 
 **Stack :** Astro 7 · Tailwind CSS 4 · actions Astro (serverless Vercel) · Supabase (UE) · Resend · Cloudflare Turnstile.
 
@@ -18,9 +18,8 @@ npm run check && npm run build
 | Chemin | Rôle |
 | --- | --- |
 | `src/i18n/ui/*.ts` | Textes par langue (`fr.ts` = référence et type) |
-| `src/i18n/translit.ts` | Le serbe cyrillique est **généré automatiquement** depuis `sr.ts` |
 | `src/i18n/site.ts` | Nom de la société (PJ Telecom) et e-mails de contact |
-| `src/pages/[lang]/` | Pages par langue (`/fr/`, `/en/`, `/de/`, `/sr/`, `/sr-cyrl/`) |
+| `src/pages/[lang]/` | Pages par langue (`/fr/`, `/en/`, `/de/`, `/sr/`) |
 | `src/actions/index.ts` | Réception et validation des candidatures |
 | `supabase/migrations/` | Table `applications` + bucket privé `cvs` |
 
