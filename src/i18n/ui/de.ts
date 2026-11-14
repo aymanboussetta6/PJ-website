@@ -199,6 +199,7 @@ const de: Dictionary = {
     errorInvalid: 'Einige Felder sind ungültig. Bitte prüfen Sie das Formular.',
     errorFile: 'Der Lebenslauf muss eine PDF-, DOC- oder DOCX-Datei mit max. 5 MB sein.',
     errorCaptcha: 'Die Spam-Prüfung ist fehlgeschlagen. Bitte laden Sie die Seite neu.',
+    errorRate: "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut.",
   },
   contactForm: {
     eyebrow: 'Kontakt',

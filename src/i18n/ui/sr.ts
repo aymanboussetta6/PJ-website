@@ -200,6 +200,7 @@ const sr: Dictionary = {
     errorInvalid: 'Neka polja nisu ispravna. Proverite formular.',
     errorFile: 'CV mora biti PDF, DOC ili DOCX fajl do 5 MB.',
     errorCaptcha: 'Provera protiv spama nije uspela. Osvežite stranicu i pokušajte ponovo.',
+    errorRate: "Previše slanja u kratkom roku. Pokušajte ponovo za nekoliko minuta.",
   },
   contactForm: {
     eyebrow: 'Kontakt',

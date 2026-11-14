@@ -199,6 +199,7 @@ const fr = {
     errorInvalid: 'Certains champs sont invalides. Vérifiez le formulaire.',
     errorFile: 'Le CV doit être un fichier PDF, DOC ou DOCX de 5 Mo maximum.',
     errorCaptcha: 'La vérification anti-spam a échoué. Rechargez la page et réessayez.',
+    errorRate: "Trop d'envois en peu de temps. Réessayez dans quelques minutes.",
   },
   contactForm: {
     eyebrow: 'Contact',

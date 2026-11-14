@@ -2,6 +2,7 @@ import { defineAction, ActionError, type ActionAPIContext } from 'astro:actions'
 import { z } from 'astro/zod';
 import { ACTIVITY_KEYS, COUNTRY_CODES, DOMAIN_KEYS, LOCALE_KEYS, type Locale } from '../i18n';
 import { verifyTurnstile } from '../lib/turnstile';
+import { filledTooFast, rateLimited } from '../lib/antispam';
 import {
   getJob,
   isStorageAvailable,
@@ -32,17 +33,25 @@ const common = {
   consent: z.literal('on'),
   locale: z.enum(LOCALE_KEYS as [Locale, ...Locale[]]),
   website: z.string().max(0).optional(), // honeypot: must stay empty
+  elapsed: z.string().max(12).optional(), // time trap: ms the form was open (set by the browser)
   'cf-turnstile-response': z.string().optional(),
 };
 
-async function guard(token: string | undefined, context: ActionAPIContext) {
+/** Anti-spam checks shared by the public forms: time trap, rate limit, then the captcha. */
+async function guard(scope: string, input: { elapsed?: string; 'cf-turnstile-response'?: string }, context: ActionAPIContext) {
   let ip: string | undefined;
   try {
     ip = context.clientAddress;
   } catch {
     ip = undefined;
   }
-  if (!(await verifyTurnstile(token, ip))) {
+  if (filledTooFast(input.elapsed)) {
+    throw new ActionError({ code: 'FORBIDDEN', message: 'captcha' });
+  }
+  if (rateLimited(scope, ip, 5)) {
+    throw new ActionError({ code: 'TOO_MANY_REQUESTS', message: 'rate_limited' });
+  }
+  if (!(await verifyTurnstile(input['cf-turnstile-response'], ip))) {
     throw new ActionError({ code: 'FORBIDDEN', message: 'captcha' });
   }
 }
@@ -80,7 +89,7 @@ export const server = {
       ...common,
     }),
     handler: async (input, context) => {
-      await guard(input['cf-turnstile-response'], context);
+      await guard('apply', input, context);
       // The job title is read from the database, never trusted from the browser.
       const job = input.jobId && isStorageAvailable() ? await getJob(input.jobId).catch(() => null) : null;
       const record: ApplicationRecord = {
@@ -140,7 +149,7 @@ export const server = {
       ...common,
     }),
     handler: async (input, context) => {
-      await guard(input['cf-turnstile-response'], context);
+      await guard('contact', input, context);
       const attachment = input.attachment && input.attachment.size > 0 ? input.attachment : undefined;
       const record: ContactRecord = {
         requester_type: input.requesterType,

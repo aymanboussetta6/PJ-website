@@ -1,6 +1,9 @@
 ---
 import Admin from '../../layouts/Admin.astro';
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
 import { checkPassword, endSession, isAdminConfigured, isAuthenticated, startSession } from '../../lib/admin-auth';
+import { rateLimited } from '../../lib/antispam';
+import { verifyTurnstile } from '../../lib/turnstile';
 
 export const prerender = false;
 
@@ -11,15 +14,29 @@ if (Astro.request.method === 'POST') {
     endSession(Astro.cookies);
     return Astro.redirect('/admin/login/');
   }
+  let ip: string | undefined;
+  try {
+    ip = Astro.clientAddress;
+  } catch {
+    ip = undefined;
+  }
   const password = String(form.get('password') ?? '');
-  if (checkPassword(password)) {
+  const token = form.get('cf-turnstile-response');
+  if (rateLimited('admin-login', ip, 8)) {
+    error = 'Trop de tentatives. Réessayez dans quelques minutes.';
+    Astro.response.status = 429;
+  } else if (!(await verifyTurnstile(typeof token === 'string' ? token : undefined, ip))) {
+    error = 'La vérification anti-robot a échoué. Rechargez la page et réessayez.';
+    Astro.response.status = 403;
+  } else if (checkPassword(password)) {
     startSession(Astro.cookies);
     return Astro.redirect('/admin/');
+  } else {
+    // Slow down guessing on top of the per-address limit above.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    error = 'Mot de passe incorrect.';
+    Astro.response.status = 401;
   }
-  // Slow down guessing; there is no shared state between serverless instances for a real lockout.
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  error = 'Mot de passe incorrect.';
-  Astro.response.status = 401;
 } else if (isAuthenticated(Astro.cookies)) {
   return Astro.redirect('/admin/');
 }
@@ -36,6 +53,7 @@ const configured = isAdminConfigured();
             <label class="field-label" for="password">Mot de passe</label>
             <input class="field" id="password" name="password" type="password" required autocomplete="current-password" autofocus />
           </div>
+          {PUBLIC_TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} />}
           {error && <p role="alert" class="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>}
           <button class="btn-primary w-full">Se connecter</button>
         </form>
@@ -48,3 +66,5 @@ const configured = isAdminConfigured();
     }
   </div>
 </Admin>
+
+{PUBLIC_TURNSTILE_SITE_KEY && <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>}

@@ -199,6 +199,7 @@ const en: Dictionary = {
     errorInvalid: 'Some fields are invalid. Please check the form.',
     errorFile: 'Your CV must be a PDF, DOC or DOCX file of 5 MB or less.',
     errorCaptcha: 'The spam check failed. Please reload the page and try again.',
+    errorRate: "Too many submissions in a short time. Please try again in a few minutes.",
   },
   contactForm: {
     eyebrow: 'Contact',
