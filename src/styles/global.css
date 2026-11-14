@@ -25,6 +25,10 @@
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 3s ease-out infinite;
   --animate-dash: dash 3s linear infinite;
+  --animate-wave-left: wave-left 2.1s ease-out infinite;
+  --animate-wave-right: wave-right 2.1s ease-out infinite;
+  --animate-blink: blink 1.6s ease-in-out infinite;
+  --animate-drift: drift 18s ease-in-out infinite;
 
   @keyframes marquee {
     to {
@@ -44,6 +48,36 @@
     100% {
       opacity: 0;
       transform: scale(1.4);
+    }
+  }
+  @keyframes wave-left {
+    0% {
+      opacity: 0.9;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(-34px);
+    }
+  }
+  @keyframes wave-right {
+    0% {
+      opacity: 0.9;
+      transform: translateX(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateX(34px);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0.9;
+    }
+  }
+  @keyframes drift {
+    50% {
+      transform: translateX(14px);
     }
   }
   @keyframes dash {
