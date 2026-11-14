@@ -102,6 +102,14 @@ const sr: Dictionary = {
       { title: 'Lokalne samouprave i investitori', text: 'Javne optičke mreže, širokopojasni pristup i prateći građevinski radovi.' },
     ],
   },
+  presence: {
+    eyebrow: "Lokacije",
+    title: "Dve lokacije, u Francuskoj i Hrvatskoj",
+    intro: "Prisutni smo u regionu Pariza i u Zagrebu, blizu naših gradilišta i naših timova.",
+    mapLabel: "Mapa lokacija kompanije PJ Telecom: Villepinte i Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Region Pariza, Francuska" },
+    zagreb: { city: "Zagreb", region: "Hrvatska" },
+  },
   references: {
     eyebrow: "Reference",
     title: "Ukazali su nam poverenje",

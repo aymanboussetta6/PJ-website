@@ -101,6 +101,14 @@ const de: Dictionary = {
       { title: 'Kommunen und Erschließungsträger', text: 'Geförderte Glasfasernetze, Breitbandausbau und zugehöriger Tiefbau.' },
     ],
   },
+  presence: {
+    eyebrow: "Standorte",
+    title: "Zwei Standorte, in Frankreich und Kroatien",
+    intro: "Präsenz im Großraum Paris und in Zagreb, nah an unseren Baustellen und unseren Teams.",
+    mapLabel: "Karte der Standorte von PJ Telecom: Villepinte und Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Großraum Paris, Frankreich" },
+    zagreb: { city: "Zagreb", region: "Kroatien" },
+  },
   references: {
     eyebrow: "Referenzen",
     title: "Sie vertrauen uns",

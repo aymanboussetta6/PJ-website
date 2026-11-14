@@ -29,6 +29,14 @@ const c = t.contactForm;
           <a href={`mailto:${SITE.email}`} class="mt-1 inline-block font-semibold text-brand underline-offset-4 hover:underline">{SITE.email}</a>
         </div>
         <div class="rounded-[2rem] bg-mist p-6">
+          <p class="text-sm text-muted">{t.presence.eyebrow}</p>
+          <ul class="mt-2 space-y-2">
+            {[t.presence.villepinte, t.presence.zagreb].map((site) => (
+              <li><strong>{site.city}</strong> <span class="text-sm text-muted">· {site.region}</span></li>
+            ))}
+          </ul>
+        </div>
+        <div class="rounded-[2rem] bg-mist p-6">
           <p class="font-semibold">{c.candidate}</p>
           <a href={`/${locale}/careers/`} class="mt-1 inline-block text-sm text-brand underline underline-offset-4">{c.candidateLink} →</a>
         </div>

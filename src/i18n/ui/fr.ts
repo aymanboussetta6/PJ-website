@@ -101,6 +101,14 @@ const fr = {
       { title: 'Collectivités et aménageurs', text: "Réseaux d'initiative publique, montée en débit et génie civil associé." },
     ],
   },
+  presence: {
+    eyebrow: "Implantations",
+    title: "Deux implantations, en France et en Croatie",
+    intro: "Une présence en Île-de-France et à Zagreb pour être au plus près de nos chantiers et de nos équipes.",
+    mapLabel: "Carte des implantations de PJ Telecom : Villepinte et Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Île-de-France, France" },
+    zagreb: { city: "Zagreb", region: "Croatie" },
+  },
   references: {
     eyebrow: "Références",
     title: "Ils nous font confiance",

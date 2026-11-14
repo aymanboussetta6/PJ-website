@@ -101,6 +101,14 @@ const en: Dictionary = {
       { title: 'Local authorities and developers', text: 'Public fibre networks, broadband upgrades and related civil works.' },
     ],
   },
+  presence: {
+    eyebrow: "Locations",
+    title: "Two locations, in France and Croatia",
+    intro: "A presence in the Paris region and in Zagreb, close to our sites and our teams.",
+    mapLabel: "Map of PJ Telecom locations: Villepinte and Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Paris region, France" },
+    zagreb: { city: "Zagreb", region: "Croatia" },
+  },
   references: {
     eyebrow: "References",
     title: "They trust us",
