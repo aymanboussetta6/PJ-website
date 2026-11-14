@@ -27,6 +27,7 @@ const sr: Dictionary = {
     ctaPrimary: 'Kontaktirajte nas',
     ctaSecondary: 'Naše delatnosti',
     badges: ['4G · 5G', 'FTTH · FTTO', 'Stubovi i krovne lokacije', 'Građevinski radovi'],
+    explore: 'Dodirnite tačku da otkrijete naše delatnosti',
   },
   activities: {
     title: 'Naše delatnosti',

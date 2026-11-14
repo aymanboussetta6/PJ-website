@@ -26,6 +26,7 @@ const fr = {
     ctaPrimary: 'Nous consulter',
     ctaSecondary: 'Nos activités',
     badges: ['4G · 5G', 'FTTH · FTTO', 'Pylônes & points hauts', 'Génie civil'],
+    explore: 'Touchez un point pour découvrir nos métiers',
   },
   activities: {
     title: 'Nos activités',

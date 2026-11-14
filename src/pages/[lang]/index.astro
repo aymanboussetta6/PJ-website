@@ -63,7 +63,7 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
               <Photo name="hero" alt="" class="aspect-[4/5] w-full" widths={[480, 800, 1200]} sizes="(min-width: 1024px) 40vw, 90vw" loading="eager" />
             </div>
           ) : (
-            <HeroArt chips={t.hero.badges} />
+            <HeroArt items={ACTIVITY_KEYS.map((key) => ({ key, ...t.activities.items[key] }))} hint={t.hero.explore} />
           )
         }
       </div>
@@ -109,7 +109,7 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
                 data-reveal
                 style={`--reveal-i: ${i % 4}`}
                 class:list={[
-                  'group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-line bg-white transition duration-300 hover:-translate-y-1 hover:border-sky hover:shadow-xl hover:shadow-sky/20',
+                  'spotlight group relative flex flex-col overflow-hidden rounded-[1.75rem] border border-line bg-white transition duration-300 hover:-translate-y-1 hover:border-sky hover:shadow-xl hover:shadow-sky/20',
                   BENTO[key],
                 ]}
               >

@@ -26,6 +26,7 @@ const de: Dictionary = {
     ctaPrimary: 'Anfrage senden',
     ctaSecondary: 'Unsere Leistungen',
     badges: ['4G · 5G', 'FTTH · FTTO', 'Masten & Dachstandorte', 'Tiefbau'],
+    explore: 'Tippen Sie auf einen Punkt, um unsere Leistungen zu entdecken',
   },
   activities: {
     title: 'Unsere Leistungen',

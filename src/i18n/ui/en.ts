@@ -26,6 +26,7 @@ const en: Dictionary = {
     ctaPrimary: 'Contact us',
     ctaSecondary: 'Our services',
     badges: ['4G · 5G', 'FTTH · FTTO', 'Towers & rooftops', 'Civil works'],
+    explore: 'Tap a point to explore our services',
   },
   activities: {
     title: 'Our services',

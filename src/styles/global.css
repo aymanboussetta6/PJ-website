@@ -136,6 +136,56 @@
   }
 }
 
+/* Smooth cross-page transitions (browsers without support simply navigate normally) */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Reading progress bar, driven by scroll position (no JS) */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 3px;
+  background: var(--color-sky);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Soft light following the mouse on cards */
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(56 189 248 / 0.18), transparent 70%);
+}
+.spotlight:hover::after {
+  opacity: 1;
+}
+
 @utility container-page {
   @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
 }

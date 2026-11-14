@@ -1,16 +1,20 @@
 ---
 /**
- * Decorative hero illustration of a telecom site: lattice tower with sector antennas,
- * RRUs and microwave dishes, fenced compound, shelter, and an underground fibre link.
+ * Interactive hero illustration of a telecom site. Each of the six activities has a
+ * hotspot on the drawing; selecting one shows its description in the card below.
+ * Without JS the first activity is shown and the full list is further down the page.
  * Pure SVG + CSS animations (disabled for prefers-reduced-motion, see global.css).
- *
- * Chips are placed next to what they describe. Badge order in every dictionary:
- * [0] 4G·5G, [1] FTTH·FTTO, [2] towers & rooftops, [3] civil works.
  */
-interface Props {
-  chips: string[];
+interface Item {
+  key: string;
+  title: string;
+  text: string;
 }
-const { chips } = Astro.props;
+interface Props {
+  items: Item[];
+  hint: string;
+}
+const { items, hint } = Astro.props;
 
 const INK = '#0c2d48';
 const STEEL = '#8aa4b8';
@@ -29,134 +33,209 @@ for (let i = 0; i < levels.length - 1; i++) {
   xBracing += `M${L(a)} ${a}L${R(b)} ${b}M${R(a)} ${a}L${L(b)} ${b}`;
   horizontals += `M${L(b)} ${b}H${R(b)}`;
 }
-
-// Fence posts around the compound (in front of the tower base).
 const fencePosts = Array.from({ length: 15 }, (_, i) => 196 + i * 11);
 
-// Chip placement keyed by meaning, not by index.
-const placement = [
-  'top-[8%] left-[16%]', // 4G·5G → next to the radio waves leaving the antennas
-  'bottom-[33%] left-[3%]', // FTTH·FTTO → above the shelter where the fibre arrives
-  'top-[43%] left-[3%]', // towers & rooftops → beside the tower body
-  'bottom-[1%] right-[4%]', // civil works → next to the trench
-];
+// Hotspot position (in % of the 400×420 drawing) for each activity key.
+const SPOTS: Record<string, { x: number; y: number }> = {
+  studies: { x: 30, y: 316 }, // surveying tripod
+  infra: { x: 270, y: 262 }, // tower body
+  radio: { x: 348, y: 62 }, // antennas
+  maintenance: { x: 352, y: 312 }, // power cabinet
+  fiber: { x: 108, y: 292 }, // shelter where the fibre lands
+  civil: { x: 192, y: 396 }, // trench
+};
+const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
 ---
 
-<div class="relative mx-auto aspect-[20/21] w-full max-w-md" aria-hidden="true">
-  <div class="absolute inset-[10%] rounded-full bg-white/50 blur-2xl"></div>
+<div class="mx-auto w-full max-w-md" data-explorer>
+  <div class="relative aspect-[20/21] w-full">
+    <div class="absolute inset-[10%] rounded-full bg-white/50 blur-2xl" aria-hidden="true"></div>
 
-  <svg viewBox="0 0 400 420" class="relative size-full" fill="none" stroke-linecap="round" stroke-linejoin="round">
-    <defs>
-      <linearGradient id="hero-ground" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#ffffff" />
-        <stop offset="1" stop-color="#d9f0fd" />
-      </linearGradient>
-      <linearGradient id="hero-steel" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0" stop-color="#ffffff" />
-        <stop offset="1" stop-color="#cfe2ee" />
-      </linearGradient>
-    </defs>
+    <svg viewBox="0 0 400 420" class="relative size-full" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <defs>
+        <linearGradient id="hero-ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="1" stop-color="#d9f0fd" />
+        </linearGradient>
+        <linearGradient id="hero-steel" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#ffffff" />
+          <stop offset="1" stop-color="#cfe2ee" />
+        </linearGradient>
+      </defs>
 
-    <!-- clouds -->
-    <g fill="#fff" opacity="0.9">
-      <path class="animate-drift" d="M40 92a14 14 0 0 1 26-8 12 12 0 0 1 20 9 10 10 0 0 1-2 20H46a12 12 0 0 1-6-21z" />
-      <path class="animate-drift" style="animation-delay: -9s" d="M330 160a10 10 0 0 1 19-6 9 9 0 0 1 15 7 7 7 0 0 1-1 14h-29a9 9 0 0 1-4-15z" opacity="0.8" />
-    </g>
+      <!-- clouds -->
+      <g fill="#fff" opacity="0.9">
+        <path class="animate-drift" d="M40 92a14 14 0 0 1 26-8 12 12 0 0 1 20 9 10 10 0 0 1-2 20H46a12 12 0 0 1-6-21z" />
+        <path class="animate-drift" style="animation-delay: -9s" d="M330 160a10 10 0 0 1 19-6 9 9 0 0 1 15 7 7 7 0 0 1-1 14h-29a9 9 0 0 1-4-15z" opacity="0.8" />
+      </g>
 
-    <!-- ground island + trench -->
-    <ellipse cx="200" cy="380" rx="188" ry="26" fill="url(#hero-ground)" />
-    <ellipse cx="200" cy="380" rx="188" ry="26" stroke={INK} stroke-opacity="0.12" stroke-width="1.5" />
-    <path d="M112 384H272" stroke="#9fc9e3" stroke-width="7" />
-    <!-- underground fibre (animated) -->
-    <path d="M112 372V384H272V372" stroke="#036aa6" stroke-width="2.5" stroke-dasharray="6 8" class="animate-dash" />
+      <!-- ground island + trench -->
+      <ellipse cx="200" cy="380" rx="188" ry="26" fill="url(#hero-ground)" />
+      <ellipse cx="200" cy="380" rx="188" ry="26" stroke={INK} stroke-opacity="0.12" stroke-width="1.5" />
+      <path d="M112 384H272" stroke="#9fc9e3" stroke-width="7" />
+      <path d="M112 372V384H272V372" stroke="#036aa6" stroke-width="2.5" stroke-dasharray="6 8" class="animate-dash" />
 
-    <!-- radio waves from the sector antennas (left and right beams) -->
-    <g stroke="#036aa6" stroke-width="2.5">
+      <!-- surveying tripod (engineering studies) -->
+      <g stroke={INK} stroke-width="2">
+        <path d="M30 352L21 374M30 352L39 374M30 352V374" />
+        <rect x="23" y="343" width="14" height="9" rx="2" fill="#fff" />
+        <circle cx="38.5" cy="347.5" r="2" fill="#38bdf8" stroke-width="1.5" />
+      </g>
+
+      <!-- radio waves -->
+      <g stroke="#036aa6" stroke-width="2.5">
+        {[0, 1, 2].map((i) => <path d="M214 66a30 30 0 0 0 0 44" class="animate-wave-left" style={`animation-delay: ${i * 0.7}s`} />)}
+        {[0, 1, 2].map((i) => <path d="M326 66a30 30 0 0 1 0 44" class="animate-wave-right" style={`animation-delay: ${i * 0.7 + 0.35}s`} />)}
+      </g>
+
+      <!-- tower -->
+      <path d={`M270 ${BASE}V${TOP}`} stroke={STEEL} stroke-width="3" />
+      <path d={xBracing} stroke={STEEL} stroke-width="1.4" />
+      <path d={`M${L(BASE)} ${BASE}L${L(TOP)} ${TOP}L${R(TOP)} ${TOP}L${R(BASE)} ${BASE}Z`} fill="url(#hero-steel)" fill-opacity="0.35" />
+      <path d={horizontals} stroke={INK} stroke-width="1.6" stroke-opacity="0.8" />
+      <path d={`M${L(BASE)} ${BASE}L${L(TOP)} ${TOP}M${R(BASE)} ${BASE}L${R(TOP)} ${TOP}`} stroke={INK} stroke-width="4" />
+      <path d={`M276 ${BASE}V${TOP + 4}`} stroke={INK} stroke-width="1.5" stroke-dasharray="2 4" stroke-opacity="0.6" />
+
+      <!-- microwave dishes -->
+      <g stroke={INK} stroke-width="2">
+        <path d="M240 214h-8" />
+        <path d="M232 200a7 15 0 0 0 0 30z" fill="#fff" />
+        <ellipse cx="232" cy="215" rx="3.5" ry="15" fill="#e6f6fe" />
+        <path d="M302 248h8" />
+        <path d="M310 236a6 12 0 0 1 0 24z" fill="#fff" />
+        <ellipse cx="310" cy="248" rx="3" ry="12" fill="#e6f6fe" />
+      </g>
+
+      <!-- platform, mast, aviation light -->
+      <g stroke={INK} stroke-width="2">
+        <rect x="226" y={TOP - 4} width="88" height="7" rx="2" fill="#fff" />
+        <path d={`M230 ${TOP - 4}v-10M244 ${TOP - 4}v-10M296 ${TOP - 4}v-10M310 ${TOP - 4}v-10M228 ${TOP - 14}H312`} stroke-width="1.5" />
+      </g>
+      <path d={`M270 ${TOP - 4}V42`} stroke={INK} stroke-width="3" />
+      <path d="M270 42V24" stroke={INK} stroke-width="1.5" />
+      <circle cx="270" cy="46" r="7" fill="#ef4444" opacity="0.25" class="animate-blink" />
+      <circle cx="270" cy="46" r="3.5" fill="#ef4444" stroke={INK} stroke-width="1.5" />
+
+      <!-- sector antennas + RRUs -->
+      <g stroke={INK} stroke-width="2">
+        <path d="M236 116V58M270 116V60M304 116V58" stroke-width="1.5" />
+        <rect x="226" y="58" width="13" height="50" rx="3" fill="#fff" />
+        <rect x="263" y="62" width="14" height="46" rx="3" fill="#fff" />
+        <rect x="301" y="58" width="13" height="50" rx="3" fill="#fff" />
+        <path d="M232 64v38M270 68v34M308 64v38" stroke="#bae6fd" stroke-width="2.5" />
+        <rect x="240" y="86" width="9" height="14" rx="1.5" fill={STEEL} />
+        <rect x="291" y="86" width="9" height="14" rx="1.5" fill={STEEL} />
+      </g>
+
+      <!-- fenced compound + power cabinet -->
+      <g stroke={INK} stroke-opacity="0.45" stroke-width="1.5">
+        <path d="M192 346H354M192 358H354" />
+        {fencePosts.map((x) => <path d={`M${x} 340V374`} />)}
+      </g>
+      <g stroke={INK} stroke-width="2">
+        <rect x="318" y="334" width="26" height="38" rx="3" fill="#fff" />
+        <path d="M322 342h18M322 348h18" stroke-width="1.3" />
+      </g>
+
+      <!-- equipment shelter -->
+      <g stroke={INK} stroke-width="2.2">
+        <path d="M56 312h104l-6-10H62z" fill="#e6f6fe" />
+        <rect x="60" y="312" width="96" height="60" rx="4" fill="#fff" />
+        <rect x="70" y="326" width="22" height="46" rx="2" fill="#e6f6fe" />
+        <circle cx="87" cy="350" r="1.8" fill={INK} />
+        <path d="M104 326h40M104 333h40M104 340h40" stroke-width="1.4" />
+        <circle cx="140" cy="358" r="4" fill="#38bdf8" />
+      </g>
+      <circle cx="112" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
+      <circle cx="272" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
+    </svg>
+
+    <!-- hotspots -->
+    {
+      items.map((item, i) => {
+        const spot = SPOTS[item.key];
+        return (
+          spot && (
+            <button
+              type="button"
+              data-spot={i}
+              aria-pressed={i === START ? 'true' : 'false'}
+              aria-controls={`explorer-panel-${i}`}
+              aria-label={item.title}
+              class="group absolute grid size-9 -translate-x-1/2 -translate-y-1/2 cursor-pointer place-items-center rounded-full"
+              style={`left: ${(spot.x / 400) * 100}%; top: ${(spot.y / 420) * 100}%`}
+            >
+              <span class="animate-pulse-ring absolute inset-0 rounded-full bg-sky group-aria-pressed:bg-ink" style={`animation-delay: ${i * 0.4}s`} aria-hidden="true" />
+              <span class="relative grid size-7 place-items-center rounded-full bg-white text-xs font-bold text-ink shadow-md ring-2 ring-sky transition group-hover:scale-110 group-aria-pressed:scale-110 group-aria-pressed:bg-ink group-aria-pressed:text-white group-aria-pressed:ring-ink">
+                {i + 1}
+              </span>
+            </button>
+          )
+        );
+      })
+    }
+  </div>
+
+  <!-- description card: all panels share one grid cell so the height never jumps -->
+  <div class="relative mt-4 rounded-3xl bg-white/85 p-5 shadow-lg shadow-ink/10 ring-1 ring-white backdrop-blur" data-panels>
+    <div class="grid">
       {
-        [0, 1, 2].map((i) => (
-          <path d="M214 66a30 30 0 0 0 0 44" class="animate-wave-left" style={`animation-delay: ${i * 0.7}s`} />
+        items.map((item, i) => (
+          <div
+            id={`explorer-panel-${i}`}
+            data-panel={i}
+            class:list={['[grid-area:1/1] transition duration-300', i === START ? '' : 'invisible translate-y-2 opacity-0']}
+          >
+            <p class="flex items-center gap-2 font-semibold">
+              <span class="grid size-6 shrink-0 place-items-center rounded-full bg-ink text-xs font-bold text-white">{i + 1}</span>
+              {item.title}
+            </p>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted">{item.text}</p>
+          </div>
         ))
       }
-      {
-        [0, 1, 2].map((i) => (
-          <path d="M326 66a30 30 0 0 1 0 44" class="animate-wave-right" style={`animation-delay: ${i * 0.7 + 0.35}s`} />
-        ))
-      }
-    </g>
-
-    <!-- tower: rear leg for depth, then the front face -->
-    <path d={`M270 ${BASE}V${TOP}`} stroke={STEEL} stroke-width="3" />
-    <path d={xBracing} stroke={STEEL} stroke-width="1.4" />
-    <path d={`M${L(BASE)} ${BASE}L${L(TOP)} ${TOP}L${R(TOP)} ${TOP}L${R(BASE)} ${BASE}Z`} fill="url(#hero-steel)" fill-opacity="0.35" />
-    <path d={horizontals} stroke={INK} stroke-width="1.6" stroke-opacity="0.8" />
-    <path d={`M${L(BASE)} ${BASE}L${L(TOP)} ${TOP}M${R(BASE)} ${BASE}L${R(TOP)} ${TOP}`} stroke={INK} stroke-width="4" />
-    <!-- cable ladder -->
-    <path d={`M276 ${BASE}V${TOP + 4}`} stroke={INK} stroke-width="1.5" stroke-dasharray="2 4" stroke-opacity="0.6" />
-
-    <!-- microwave dishes on an intermediate level -->
-    <g stroke={INK} stroke-width="2">
-      <path d="M240 214h-8" />
-      <path d="M232 200a7 15 0 0 0 0 30z" fill="#fff" />
-      <ellipse cx="232" cy="215" rx="3.5" ry="15" fill="#e6f6fe" />
-      <path d="M302 248h8" />
-      <path d="M310 236a6 12 0 0 1 0 24z" fill="#fff" />
-      <ellipse cx="310" cy="248" rx="3" ry="12" fill="#e6f6fe" />
-    </g>
-
-    <!-- antenna platform with railing -->
-    <g stroke={INK} stroke-width="2">
-      <rect x="226" y={TOP - 4} width="88" height="7" rx="2" fill="#fff" />
-      <path d={`M230 ${TOP - 4}v-10M244 ${TOP - 4}v-10M296 ${TOP - 4}v-10M310 ${TOP - 4}v-10M228 ${TOP - 14}H312`} stroke-width="1.5" />
-    </g>
-    <!-- mast, lightning rod, aviation light -->
-    <path d={`M270 ${TOP - 4}V42`} stroke={INK} stroke-width="3" />
-    <path d="M270 42V24" stroke={INK} stroke-width="1.5" />
-    <circle cx="270" cy="46" r="7" fill="#ef4444" opacity="0.25" class="animate-blink" />
-    <circle cx="270" cy="46" r="3.5" fill="#ef4444" stroke={INK} stroke-width="1.5" />
-
-    <!-- sector antennas (panels) with mounting pipes and RRUs -->
-    <g stroke={INK} stroke-width="2">
-      <path d="M236 116V58M270 116V60M304 116V58" stroke-width="1.5" />
-      <rect x="226" y="58" width="13" height="50" rx="3" fill="#fff" />
-      <rect x="263" y="62" width="14" height="46" rx="3" fill="#fff" />
-      <rect x="301" y="58" width="13" height="50" rx="3" fill="#fff" />
-      <path d="M232 64v38M270 68v34M308 64v38" stroke="#bae6fd" stroke-width="2.5" />
-      <rect x="240" y="86" width="9" height="14" rx="1.5" fill={STEEL} />
-      <rect x="291" y="86" width="9" height="14" rx="1.5" fill={STEEL} />
-    </g>
-
-    <!-- fenced compound around the tower base -->
-    <g stroke={INK} stroke-opacity="0.45" stroke-width="1.5">
-      <path d="M192 346H354M192 358H354" />
-      {fencePosts.map((x) => <path d={`M${x} 340V374`} />)}
-    </g>
-    <!-- outdoor power cabinet inside the compound -->
-    <g stroke={INK} stroke-width="2">
-      <rect x="318" y="334" width="26" height="38" rx="3" fill="#fff" />
-      <path d="M322 342h18M322 348h18" stroke-width="1.3" />
-    </g>
-
-    <!-- equipment shelter -->
-    <g stroke={INK} stroke-width="2.2">
-      <path d="M56 312h104l-6-10H62z" fill="#e6f6fe" />
-      <rect x="60" y="312" width="96" height="60" rx="4" fill="#fff" />
-      <rect x="70" y="326" width="22" height="46" rx="2" fill="#e6f6fe" />
-      <circle cx="87" cy="350" r="1.8" fill={INK} />
-      <path d="M104 326h40M104 333h40M104 340h40" stroke-width="1.4" />
-      <circle cx="140" cy="358" r="4" fill="#38bdf8" />
-    </g>
-    <circle cx="112" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
-    <circle cx="272" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
-  </svg>
-
-  {
-    chips.slice(0, 4).map((chip, i) => (
-      <span
-        class:list={['animate-float absolute rounded-full bg-white/95 px-3.5 py-1.5 text-xs font-semibold text-ink shadow-lg shadow-ink/10 ring-1 ring-sky/40 backdrop-blur', placement[i]]}
-        style={`animation-delay: ${i * 0.8}s`}
-      >
-        {chip}
-      </span>
-    ))
-  }
+    </div>
+    <p class="mt-3 flex items-center gap-2 text-xs font-medium text-brand">
+      <svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M9 11V5a2 2 0 1 1 4 0v6m0-2a2 2 0 1 1 4 0v3m0-1a2 2 0 1 1 4 0v4a7 7 0 0 1-7 7h-1a7 7 0 0 1-6-3.5L5 16a2 2 0 0 1 3.4-2L9 15" />
+      </svg>
+      {hint}
+    </p>
+  </div>
 </div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-explorer]').forEach((root) => {
+    const spots = [...root.querySelectorAll<HTMLButtonElement>('[data-spot]')];
+    const panels = [...root.querySelectorAll<HTMLElement>('[data-panel]')];
+    const live = root.querySelector<HTMLElement>('[data-panels]')!;
+    let current = spots.findIndex((s) => s.getAttribute('aria-pressed') === 'true');
+
+    const select = (index: number) => {
+      current = index;
+      spots.forEach((s) => s.setAttribute('aria-pressed', String(Number(s.dataset.spot) === index)));
+      panels.forEach((p) => {
+        const on = Number(p.dataset.panel) === index;
+        p.classList.toggle('invisible', !on);
+        p.classList.toggle('opacity-0', !on);
+        p.classList.toggle('translate-y-2', !on);
+      });
+    };
+
+    // Gentle auto-tour until the visitor takes over (never with reduced motion).
+    let timer: number | undefined;
+    if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      timer = window.setInterval(() => select((current + 1) % spots.length), 3500);
+    }
+    const takeOver = () => {
+      window.clearInterval(timer);
+      live.setAttribute('aria-live', 'polite'); // announce only user-driven changes
+    };
+    spots.forEach((s) => {
+      const index = Number(s.dataset.spot);
+      s.addEventListener('click', () => (takeOver(), select(index)));
+      s.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && (takeOver(), select(index)));
+      s.addEventListener('focus', () => (takeOver(), select(index)));
+    });
+  });
+</script>
