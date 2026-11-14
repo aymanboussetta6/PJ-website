@@ -1,0 +1,152 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { formatDate, isUuid, requireAdmin } from '../../lib/admin-page';
+import { deleteJob, getJob, isStorageAvailable, listJobs, saveJob, setJobPublished, type JobOffer } from '../../lib/storage';
+import { DOMAIN_KEYS, getDictionary } from '../../i18n';
+
+export const prerender = false;
+
+const denied = requireAdmin(Astro);
+if (denied) return denied;
+
+const domains = getDictionary('fr').form.domains as Record<string, string>;
+const CONTRACTS = ['CDI', 'CDD', 'Intérim', 'Freelance / sous-traitance', 'Alternance', 'Stage'];
+const clean = (value: FormDataEntryValue | null, max: number) => String(value ?? '').trim().slice(0, max);
+
+let formError = '';
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const intent = form.get('intent');
+  const id = form.get('id');
+  if (intent === 'delete' && isUuid(id)) await deleteJob(id);
+  else if (intent === 'publish' && isUuid(id)) await setJobPublished(id, true);
+  else if (intent === 'unpublish' && isUuid(id)) await setJobPublished(id, false);
+  else if (intent === 'save') {
+    const input = {
+      title: clean(form.get('title'), 120),
+      location: clean(form.get('location'), 120),
+      contract: clean(form.get('contract'), 60),
+      domain: clean(form.get('domain'), 40),
+      description: clean(form.get('description'), 5000),
+      published: form.get('published') === 'on',
+    };
+    const valid =
+      input.title && input.location && input.description && CONTRACTS.includes(input.contract) && (DOMAIN_KEYS as readonly string[]).includes(input.domain);
+    if (valid) await saveJob(input, isUuid(id) ? id : undefined);
+    else formError = 'Tous les champs sont obligatoires.';
+  }
+  if (!formError) return Astro.redirect('/admin/jobs/');
+}
+
+const editId = Astro.url.searchParams.get('edit');
+let jobs: JobOffer[] = [];
+let editing: JobOffer | null = null;
+let loadError = '';
+if (isStorageAvailable()) {
+  try {
+    jobs = await listJobs();
+    editing = isUuid(editId) ? await getJob(editId) : null;
+  } catch (err) {
+    console.error('[admin]', err);
+    loadError = "Impossible de lire les offres. Vérifiez la configuration Supabase et la table job_offers.";
+  }
+} else {
+  loadError = "La base de données n'est pas configurée (variables SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY).";
+}
+---
+
+<Admin title="Offres d'emploi" current="jobs">
+  <h1 class="text-3xl font-bold tracking-tight">Offres d'emploi</h1>
+  {loadError && <p role="alert" class="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{loadError}</p>}
+
+  <div class="mt-6 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+    <section>
+      <h2 class="text-lg font-semibold">{jobs.length} offre{jobs.length > 1 ? 's' : ''}</h2>
+      {jobs.length === 0 && !loadError && <p class="mt-4 rounded-2xl bg-white p-6 text-muted">Aucune offre. Créez la première avec le formulaire.</p>}
+      <ul class="mt-4 space-y-4">
+        {
+          jobs.map((job) => (
+            <li class="rounded-2xl bg-white p-6 shadow-sm">
+              <div class="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <h3 class="font-semibold">{job.title}</h3>
+                  <p class="text-sm text-muted">
+                    {job.location} · {job.contract} · {domains[job.domain] ?? job.domain}
+                  </p>
+                  <p class="text-xs text-muted">Créée le {formatDate(job.created_at)}</p>
+                </div>
+                <span class:list={['rounded-full px-3 py-1 text-xs font-semibold', job.published ? 'bg-sky text-ink' : 'bg-mist text-muted']}>
+                  {job.published ? 'En ligne' : 'Brouillon'}
+                </span>
+              </div>
+              <div class="mt-4 flex flex-wrap items-center gap-3">
+                <a href={`/admin/jobs/?edit=${job.id}`} class="btn-ghost px-4! py-2!">Modifier</a>
+                <form method="post" action="/admin/jobs/">
+                  <input type="hidden" name="intent" value={job.published ? 'unpublish' : 'publish'} />
+                  <input type="hidden" name="id" value={job.id} />
+                  <button class="btn-ghost px-4! py-2!">{job.published ? 'Retirer du site' : 'Mettre en ligne'}</button>
+                </form>
+                <form method="post" action="/admin/jobs/" data-confirm="Supprimer définitivement cette offre ?">
+                  <input type="hidden" name="intent" value="delete" />
+                  <input type="hidden" name="id" value={job.id} />
+                  <button class="text-sm text-red-700 underline">Supprimer</button>
+                </form>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="rounded-[2rem] bg-white p-6 shadow-xl shadow-ink/5 sm:p-8">
+      <h2 class="text-lg font-semibold">{editing ? "Modifier l'offre" : 'Nouvelle offre'}</h2>
+      <form method="post" action="/admin/jobs/" class="mt-5 space-y-4">
+        <input type="hidden" name="intent" value="save" />
+        {editing && <input type="hidden" name="id" value={editing.id} />}
+        <div>
+          <label class="field-label" for="title">Intitulé du poste</label>
+          <input class="field" id="title" name="title" required maxlength="120" value={editing?.title ?? ''} />
+        </div>
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label class="field-label" for="location">Lieu</label>
+            <input class="field" id="location" name="location" required maxlength="120" placeholder="Villepinte (93)" value={editing?.location ?? ''} />
+          </div>
+          <div>
+            <label class="field-label" for="contract">Contrat</label>
+            <select class="field" id="contract" name="contract" required>
+              {CONTRACTS.map((c) => <option value={c} selected={editing?.contract === c}>{c}</option>)}
+            </select>
+          </div>
+        </div>
+        <div>
+          <label class="field-label" for="domain">Métier</label>
+          <select class="field" id="domain" name="domain" required>
+            {DOMAIN_KEYS.map((d) => <option value={d} selected={editing?.domain === d}>{domains[d]}</option>)}
+          </select>
+        </div>
+        <div>
+          <label class="field-label" for="description">Description (missions, profil recherché)</label>
+          <textarea class="field min-h-48" id="description" name="description" required maxlength="5000" rows="8">{editing?.description ?? ''}</textarea>
+        </div>
+        <label class="flex items-center gap-3 text-sm">
+          <input type="checkbox" name="published" class="size-4 accent-brand" checked={editing?.published ?? false} />
+          Mettre en ligne sur la page Carrières
+        </label>
+        {formError && <p role="alert" class="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{formError}</p>}
+        <div class="flex flex-wrap items-center gap-3">
+          <button class="btn-primary">{editing ? 'Enregistrer' : "Créer l'offre"}</button>
+          {editing && <a href="/admin/jobs/" class="text-sm text-muted underline">Annuler</a>}
+        </div>
+      </form>
+    </section>
+  </div>
+</Admin>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!confirm(form.dataset.confirm)) event.preventDefault();
+    });
+  });
+</script>

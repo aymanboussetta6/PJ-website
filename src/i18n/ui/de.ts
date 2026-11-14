@@ -101,6 +101,14 @@ const de: Dictionary = {
       { title: 'Kommunen und Erschließungsträger', text: 'Geförderte Glasfasernetze, Breitbandausbau und zugehöriger Tiefbau.' },
     ],
   },
+  presence: {
+    eyebrow: "Standorte",
+    title: "Zwei Standorte, in Frankreich und Kroatien",
+    intro: "Präsenz im Großraum Paris und in Zagreb, nah an unseren Baustellen und unseren Teams.",
+    mapLabel: "Karte der Standorte von PJ Telecom: Villepinte und Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Großraum Paris, Frankreich" },
+    zagreb: { city: "Zagreb", region: "Kroatien" },
+  },
   references: {
     eyebrow: "Referenzen",
     title: "Sie vertrauen uns",
@@ -141,6 +149,10 @@ const de: Dictionary = {
     title: 'Werden Sie Teil unseres Teams',
     intro:
       'Techniker, Bauleiter, Projektleiter, Ingenieure: Wir stellen in Frankreich, Deutschland und Osteuropa ein.',
+    offersTitle: "Unsere Stellenangebote",
+    offersApply: "Auf diese Stelle bewerben",
+    offersApplying: "Sie bewerben sich auf:",
+    offersClear: "Zur Initiativbewerbung wechseln",
     steps: [
       { title: 'Online bewerben', text: 'Senden Sie Ihren Lebenslauf in 2 Minuten, in der Sprache Ihrer Wahl.' },
       { title: 'Gespräch mit unserem Team', text: 'Ein Gespräch über Ihre Kompetenzen und Wünsche.' },
@@ -187,6 +199,7 @@ const de: Dictionary = {
     errorInvalid: 'Einige Felder sind ungültig. Bitte prüfen Sie das Formular.',
     errorFile: 'Der Lebenslauf muss eine PDF-, DOC- oder DOCX-Datei mit max. 5 MB sein.',
     errorCaptcha: 'Die Spam-Prüfung ist fehlgeschlagen. Bitte laden Sie die Seite neu.',
+    errorRate: "Zu viele Anfragen in kurzer Zeit. Bitte versuchen Sie es in einigen Minuten erneut.",
   },
   contactForm: {
     eyebrow: 'Kontakt',

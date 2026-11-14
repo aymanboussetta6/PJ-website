@@ -21,7 +21,18 @@ npm run check && npm run build
 | `src/i18n/site.ts` | Nom de la société (PJ Telecom) et e-mails de contact |
 | `src/pages/[lang]/` | Pages par langue (`/fr/`, `/en/`, `/de/`, `/sr/`) |
 | `src/actions/index.ts` | Réception et validation des candidatures |
-| `supabase/migrations/` | Table `applications` + bucket privé `cvs` |
+| `src/pages/admin/` | Espace d'administration (rendu à la demande) |
+| `supabase/migrations/` | Tables `applications`, `contact_requests`, `job_offers` + buckets privés |
+
+## Espace d'administration
+
+`/admin/` (interne, non indexé) : candidatures, demandes de contact et offres d'emploi.
+
+- Activé seulement si `ADMIN_PASSWORD` (12 caractères minimum) et `ADMIN_SESSION_SECRET`
+  (32 caractères aléatoires minimum) sont définis dans les variables d'environnement.
+- Un mot de passe partagé, puis un cookie de session signé valable 8 heures.
+- Les fichiers (CV, pièces jointes) se téléchargent par des liens signés valables une minute.
+- En local sans Supabase, les données sont gardées en mémoire le temps du serveur de dev.
 
 ## Mise en production
 

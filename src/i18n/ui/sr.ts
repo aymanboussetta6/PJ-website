@@ -102,6 +102,14 @@ const sr: Dictionary = {
       { title: 'Lokalne samouprave i investitori', text: 'Javne optičke mreže, širokopojasni pristup i prateći građevinski radovi.' },
     ],
   },
+  presence: {
+    eyebrow: "Lokacije",
+    title: "Dve lokacije, u Francuskoj i Hrvatskoj",
+    intro: "Prisutni smo u regionu Pariza i u Zagrebu, blizu naših gradilišta i naših timova.",
+    mapLabel: "Mapa lokacija kompanije PJ Telecom: Villepinte i Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Region Pariza, Francuska" },
+    zagreb: { city: "Zagreb", region: "Hrvatska" },
+  },
   references: {
     eyebrow: "Reference",
     title: "Ukazali su nam poverenje",
@@ -142,6 +150,10 @@ const sr: Dictionary = {
     title: 'Pridružite se našim timovima',
     intro:
       'Tehničari, šefovi gradilišta, rukovodioci projekata, inženjeri: zapošljavamo u Francuskoj, Nemačkoj i Istočnoj Evropi.',
+    offersTitle: "Naši oglasi za posao",
+    offersApply: "Prijavite se na ovaj oglas",
+    offersApplying: "Prijavljujete se na oglas:",
+    offersClear: "Pošalji otvorenu prijavu",
     steps: [
       { title: 'Prijavite se onlajn', text: 'Pošaljite CV za 2 minuta, na jeziku po vašem izboru.' },
       { title: 'Razgovor sa našim timom', text: 'Intervju o vašim veštinama i očekivanjima.' },
@@ -188,6 +200,7 @@ const sr: Dictionary = {
     errorInvalid: 'Neka polja nisu ispravna. Proverite formular.',
     errorFile: 'CV mora biti PDF, DOC ili DOCX fajl do 5 MB.',
     errorCaptcha: 'Provera protiv spama nije uspela. Osvežite stranicu i pokušajte ponovo.',
+    errorRate: "Previše slanja u kratkom roku. Pokušajte ponovo za nekoliko minuta.",
   },
   contactForm: {
     eyebrow: 'Kontakt',

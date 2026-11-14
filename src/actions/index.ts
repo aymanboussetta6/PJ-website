@@ -2,8 +2,11 @@ import { defineAction, ActionError, type ActionAPIContext } from 'astro:actions'
 import { z } from 'astro/zod';
 import { ACTIVITY_KEYS, COUNTRY_CODES, DOMAIN_KEYS, LOCALE_KEYS, type Locale } from '../i18n';
 import { verifyTurnstile } from '../lib/turnstile';
+import { filledTooFast, rateLimited } from '../lib/antispam';
 import {
-  isStorageConfigured,
+  getJob,
+  isStorageAvailable,
+  listJobs,
   saveApplication,
   saveContactRequest,
   type ApplicationRecord,
@@ -30,28 +33,32 @@ const common = {
   consent: z.literal('on'),
   locale: z.enum(LOCALE_KEYS as [Locale, ...Locale[]]),
   website: z.string().max(0).optional(), // honeypot: must stay empty
+  elapsed: z.string().max(12).optional(), // time trap: ms the form was open (set by the browser)
   'cf-turnstile-response': z.string().optional(),
 };
 
-async function guard(token: string | undefined, context: ActionAPIContext) {
+/** Anti-spam checks shared by the public forms: time trap, rate limit, then the captcha. */
+async function guard(scope: string, input: { elapsed?: string; 'cf-turnstile-response'?: string }, context: ActionAPIContext) {
   let ip: string | undefined;
   try {
     ip = context.clientAddress;
   } catch {
     ip = undefined;
   }
-  if (!(await verifyTurnstile(token, ip))) {
+  if (filledTooFast(input.elapsed)) {
+    throw new ActionError({ code: 'FORBIDDEN', message: 'captcha' });
+  }
+  if (rateLimited(scope, ip, 5)) {
+    throw new ActionError({ code: 'TOO_MANY_REQUESTS', message: 'rate_limited' });
+  }
+  if (!(await verifyTurnstile(input['cf-turnstile-response'], ip))) {
     throw new ActionError({ code: 'FORBIDDEN', message: 'captcha' });
   }
 }
 
-/** Runs `save` when Supabase is configured; in dev without Supabase, only logs. */
-async function persist<T>(label: string, record: unknown, save: () => Promise<T>): Promise<T | 'dev'> {
-  if (!isStorageConfigured()) {
-    if (import.meta.env.DEV) {
-      console.warn(`[${label}] Supabase non configuré — rien n'est enregistré (mode dev).`, record);
-      return 'dev';
-    }
+/** Runs `save`, turning storage problems into a clean action error. */
+async function persist<T>(label: string, save: () => Promise<T>): Promise<T> {
+  if (!isStorageAvailable()) {
     throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'storage_not_configured' });
   }
   try {
@@ -74,6 +81,7 @@ export const server = {
       domain: z.enum(DOMAIN_KEYS),
       languages: text(200),
       message: optionalText(2000),
+      jobId: z.union([z.literal(''), z.uuid()]).optional(),
       cv: z
         .instanceof(File)
         .refine((f) => f.size > 0 && f.size <= 5 * MB, 'file_size')
@@ -81,8 +89,12 @@ export const server = {
       ...common,
     }),
     handler: async (input, context) => {
-      await guard(input['cf-turnstile-response'], context);
+      await guard('apply', input, context);
+      // The job title is read from the database, never trusted from the browser.
+      const job = input.jobId && isStorageAvailable() ? await getJob(input.jobId).catch(() => null) : null;
       const record: ApplicationRecord = {
+        job_offer_id: job?.published ? job.id : null,
+        job_title: job?.published ? job.title : null,
         first_name: input.firstName,
         last_name: input.lastName,
         email: input.email,
@@ -94,12 +106,26 @@ export const server = {
         locale: input.locale,
         consent_at: new Date().toISOString(),
       };
-      const id = await persist('apply', record, async () => {
+      const id = await persist('apply', async () => {
         const id = await saveApplication(record, input.cv);
         await sendApplicationEmails(record, id, input.locale);
         return id;
       });
       return { ok: true, id };
+    },
+  }),
+
+  /** Published job offers, shown on the careers page. */
+  jobs: defineAction({
+    handler: async () => {
+      if (!isStorageAvailable()) return [];
+      try {
+        const jobs = await listJobs({ publishedOnly: true });
+        return jobs.map(({ id, title, location, contract, domain, description }) => ({ id, title, location, contract, domain, description }));
+      } catch (err) {
+        console.error('[jobs]', err);
+        return [];
+      }
     },
   }),
 
@@ -123,7 +149,7 @@ export const server = {
       ...common,
     }),
     handler: async (input, context) => {
-      await guard(input['cf-turnstile-response'], context);
+      await guard('contact', input, context);
       const attachment = input.attachment && input.attachment.size > 0 ? input.attachment : undefined;
       const record: ContactRecord = {
         requester_type: input.requesterType,
@@ -138,7 +164,7 @@ export const server = {
         locale: input.locale,
         consent_at: new Date().toISOString(),
       };
-      const id = await persist('contact', record, async () => {
+      const id = await persist('contact', async () => {
         const id = await saveContactRequest(record, attachment);
         await sendContactEmails(record, id, input.locale, Boolean(attachment));
         return id;

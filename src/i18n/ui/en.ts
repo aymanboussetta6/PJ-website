@@ -101,6 +101,14 @@ const en: Dictionary = {
       { title: 'Local authorities and developers', text: 'Public fibre networks, broadband upgrades and related civil works.' },
     ],
   },
+  presence: {
+    eyebrow: "Locations",
+    title: "Two locations, in France and Croatia",
+    intro: "A presence in the Paris region and in Zagreb, close to our sites and our teams.",
+    mapLabel: "Map of PJ Telecom locations: Villepinte and Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Paris region, France" },
+    zagreb: { city: "Zagreb", region: "Croatia" },
+  },
   references: {
     eyebrow: "References",
     title: "They trust us",
@@ -141,6 +149,10 @@ const en: Dictionary = {
     title: 'Join our teams',
     intro:
       'Technicians, site supervisors, project managers, engineers: we are hiring in France, Germany and Eastern Europe.',
+    offersTitle: "Our job offers",
+    offersApply: "Apply for this job",
+    offersApplying: "You are applying for:",
+    offersClear: "Switch to an open application",
     steps: [
       { title: 'Apply online', text: 'Send your CV in 2 minutes, in the language of your choice.' },
       { title: 'Meet our teams', text: 'An interview to understand your skills and expectations.' },
@@ -187,6 +199,7 @@ const en: Dictionary = {
     errorInvalid: 'Some fields are invalid. Please check the form.',
     errorFile: 'Your CV must be a PDF, DOC or DOCX file of 5 MB or less.',
     errorCaptcha: 'The spam check failed. Please reload the page and try again.',
+    errorRate: "Too many submissions in a short time. Please try again in a few minutes.",
   },
   contactForm: {
     eyebrow: 'Contact',

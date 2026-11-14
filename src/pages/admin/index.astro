@@ -1,0 +1,88 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { countryName, formatDate, isUuid, requireAdmin } from '../../lib/admin-page';
+import { deleteApplication, isStorageAvailable, listApplications, type StoredApplication } from '../../lib/storage';
+import { getDictionary } from '../../i18n';
+
+export const prerender = false;
+
+const denied = requireAdmin(Astro);
+if (denied) return denied;
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const id = form.get('id');
+  if (form.get('intent') === 'delete' && isUuid(id)) await deleteApplication(id);
+  return Astro.redirect('/admin/');
+}
+
+const domains = getDictionary('fr').form.domains as Record<string, string>;
+let rows: StoredApplication[] = [];
+let loadError = '';
+if (isStorageAvailable()) {
+  try {
+    rows = await listApplications();
+  } catch (err) {
+    console.error('[admin]', err);
+    loadError = 'Impossible de lire les candidatures. Vérifiez la configuration Supabase et les tables.';
+  }
+} else {
+  loadError = "La base de données n'est pas configurée (variables SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY).";
+}
+---
+
+<Admin title="Candidatures" current="applications">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <h1 class="text-3xl font-bold tracking-tight">Candidatures</h1>
+    <p class="text-sm text-muted">{rows.length} candidature{rows.length > 1 ? 's' : ''} · conservation 24 mois</p>
+  </div>
+  {loadError && <p role="alert" class="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{loadError}</p>}
+  {!loadError && rows.length === 0 && <p class="mt-6 rounded-2xl bg-white p-6 text-muted">Aucune candidature pour le moment.</p>}
+
+  <ul class="mt-6 space-y-4">
+    {
+      rows.map((a) => (
+        <li class="rounded-2xl bg-white p-6 shadow-sm">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold">
+                {a.first_name} {a.last_name}
+              </h2>
+              <p class="text-sm text-muted">
+                {formatDate(a.created_at)} · {domains[a.domain] ?? a.domain} · {countryName(a.country)}
+              </p>
+            </div>
+            {a.job_title && <span class="rounded-full bg-sky-soft px-3 py-1 text-xs font-semibold">Offre : {a.job_title}</span>}
+          </div>
+          <dl class="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+            <div><dt class="inline text-muted">E-mail : </dt><dd class="inline"><a class="text-brand underline" href={`mailto:${a.email}`}>{a.email}</a></dd></div>
+            <div><dt class="inline text-muted">Téléphone : </dt><dd class="inline"><a class="text-brand underline" href={`tel:${a.phone}`}>{a.phone}</a></dd></div>
+            <div><dt class="inline text-muted">Langues : </dt><dd class="inline">{a.languages}</dd></div>
+            <div><dt class="inline text-muted">Langue du site : </dt><dd class="inline">{a.locale}</dd></div>
+          </dl>
+          {a.message && <p class="mt-3 rounded-xl bg-mist p-4 text-sm whitespace-pre-line">{a.message}</p>}
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            {a.cv_path ? (
+              <a class="btn-primary px-4! py-2!" href={`/admin/file/?kind=cv&id=${a.id}`}>Télécharger le CV</a>
+            ) : (
+              <span class="text-sm text-muted">CV non disponible</span>
+            )}
+            <form method="post" data-confirm="Supprimer définitivement cette candidature et son CV ?">
+              <input type="hidden" name="intent" value="delete" />
+              <input type="hidden" name="id" value={a.id} />
+              <button class="text-sm text-red-700 underline">Supprimer</button>
+            </form>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Admin>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!confirm(form.dataset.confirm)) event.preventDefault();
+    });
+  });
+</script>

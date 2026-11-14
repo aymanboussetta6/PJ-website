@@ -1,6 +1,8 @@
 ---
 /**
- * Interactive hero illustration of a telecom site. Each of the six activities has a
+ * Interactive hero illustration of a telecom site: lattice tower with antennas, dishes and a
+ * technician, fenced compound, power cabinet, shelter with the design-office screen, cable
+ * bridge, fibre street cabinet and trench. Each of the six activities has a
  * hotspot on the drawing; selecting one shows its description in the card below.
  * Without JS the first activity is shown and the full list is further down the page.
  * Pure SVG + CSS animations (disabled for prefers-reduced-motion, see global.css).
@@ -37,15 +39,15 @@ const fencePosts = Array.from({ length: 15 }, (_, i) => 196 + i * 11);
 
 // Hotspot position (in % of the 400×420 drawing) for each activity key.
 const SPOTS: Record<string, { x: number; y: number }> = {
-  studies: { x: 30, y: 316 }, // surveying tripod
+  studies: { x: 80, y: 200 }, // design-office screen on the shelter
   civil: { x: 192, y: 398 }, // trench
-  infra: { x: 270, y: 292 }, // tower body
+  infra: { x: 284, y: 276 }, // tower body
   energy: { x: 352, y: 312 }, // power cabinet
   radio: { x: 348, y: 62 }, // sector antennas
   microwave: { x: 200, y: 214 }, // microwave dish
-  fiber: { x: 82, y: 288 }, // shelter, where the fibre lands
+  fiber: { x: 29, y: 318 }, // fibre street cabinet
   commissioning: { x: 192, y: 84 }, // radio waves: the site goes on air
-  maintenance: { x: 136, y: 288 }, // shelter equipment
+  maintenance: { x: 190, y: 296 }, // technician on the tower
 };
 const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
 ---
@@ -78,12 +80,15 @@ const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
       <path d="M112 384H272" stroke="#9fc9e3" stroke-width="7" />
       <path d="M112 372V384H272V372" stroke="#036aa6" stroke-width="2.5" stroke-dasharray="6 8" class="animate-dash" />
 
-      <!-- surveying tripod (engineering studies) -->
+      <!-- fibre street cabinet feeding the site (fibre optics) -->
       <g stroke={INK} stroke-width="2">
-        <path d="M30 352L21 374M30 352L39 374M30 352V374" />
-        <rect x="23" y="343" width="14" height="9" rx="2" fill="#fff" />
-        <circle cx="38.5" cy="347.5" r="2" fill="#38bdf8" stroke-width="1.5" />
+        <rect x="14" y="338" width="30" height="34" rx="3" fill="#fff" />
+        <path d="M29 338v34" stroke-width="1.3" />
+        <circle cx="21.5" cy="350" r="3.2" fill="none" stroke="#036aa6" stroke-width="1.4" />
+        <circle cx="36.5" cy="350" r="3.2" fill="none" stroke="#036aa6" stroke-width="1.4" />
+        <path d="M18 362h7M33 362h7" stroke-width="1.2" />
       </g>
+      <path d="M44 366H60" stroke="#036aa6" stroke-width="2.5" stroke-dasharray="4 5" class="animate-dash" />
 
       <!-- radio waves -->
       <g stroke="#036aa6" stroke-width="2.5">
@@ -151,6 +156,44 @@ const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
       </g>
       <circle cx="112" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
       <circle cx="272" cy="372" r="4" fill="#38bdf8" stroke={INK} stroke-width="1.8" />
+
+      <!-- cable bridge from the shelter to the tower -->
+      <g stroke={INK} stroke-width="1.6">
+        <path d="M156 324H226M156 329H224" />
+        <path d="M168 324v5M180 324v5M192 324v5M204 324v5M216 324v5" stroke-width="1" />
+        <path d="M176 329v43" stroke-opacity="0.6" />
+      </g>
+
+      <!-- design-office screen standing on the shelter (engineering studies) -->
+      <g stroke={INK} stroke-width="2.2">
+        <path d="M80 286v14M64 302h32M70 302l4-5h12l4 5" />
+        <rect x="30" y="218" width="100" height="68" rx="5" fill="#fff" />
+        <rect x="35" y="223" width="90" height="58" rx="2" fill="#e6f6fe" stroke="none" />
+      </g>
+      <!-- on-screen drawing: grid, tower elevation with dimensions, site plan, title block -->
+      <g stroke="#bae6fd" stroke-width="0.8">
+        <path d="M35 235h90M35 247h90M35 259h90M35 271h90M50 223v58M65 223v58M80 223v58M95 223v58M110 223v58" />
+      </g>
+      <g stroke="#036aa6" stroke-width="1.4">
+        <path d="M49 277l8-42 8 42M51.5 266h11M53.5 255h7M55.5 244h3M57 235v-7" />
+        <path d="M54 229h6M54 232h6" stroke-width="1" />
+        <path d="M72 235v42M70 235h4M70 277h4" stroke-width="1" />
+        <rect x="84" y="230" width="34" height="24" rx="1.5" stroke-width="1.2" />
+        <path d="M84 242h14v12M106 230v10h12" stroke-width="1" />
+        <circle cx="110" cy="247" r="2.5" stroke-width="1" />
+        <path d="M84 262h34M84 267h24M84 272h30" stroke-width="1.1" />
+      </g>
+      <circle cx="80" cy="283.5" r="1.1" fill={INK} />
+
+      <!-- technician working at height on the tower (maintenance) -->
+      <g stroke={INK} stroke-width="2" stroke-linecap="round">
+        <path d="M222 310l-7 4 1 10M216 324l-5 9M216 324l6 8" />
+        <path d="M214 313l10-5" />
+        <rect x="211.5" y="311.5" width="7" height="9" rx="2" fill="#f59e0b" stroke-width="1.6" transform="rotate(8 215 316)" />
+        <circle cx="213.5" cy="305.5" r="3.6" fill="#fff" />
+        <path d="M209.6 304.6a4 4 0 0 1 7.8 0z" fill="#f59e0b" stroke-width="1.5" />
+        <path d="M218 318q7 3 9-6" stroke="#036aa6" stroke-width="1.3" fill="none" />
+      </g>
     </svg>
 
     <!-- hotspots -->

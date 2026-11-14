@@ -1,0 +1,18 @@
+---
+import { isUuid, requireAdmin } from '../../lib/admin-page';
+import { signedFileUrl } from '../../lib/storage';
+
+export const prerender = false;
+
+const denied = requireAdmin(Astro);
+if (denied) return denied;
+
+const kind = Astro.url.searchParams.get('kind');
+const id = Astro.url.searchParams.get('id');
+if ((kind !== 'cv' && kind !== 'attachment') || !isUuid(id)) return new Response('Requête invalide', { status: 400 });
+
+// One-minute signed link to the private bucket; never cached.
+const url = await signedFileUrl(kind, id).catch(() => null);
+if (!url) return new Response('Fichier introuvable', { status: 404 });
+return new Response(null, { status: 302, headers: { Location: url, 'Cache-Control': 'no-store' } });
+---

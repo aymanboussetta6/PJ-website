@@ -29,6 +29,9 @@ export function enhanceForm(form: HTMLFormElement, submit: (data: FormData) => P
   form.addEventListener('input', clear);
   form.addEventListener('change', clear);
 
+  let openedAt = performance.now();
+  form.addEventListener('reset', () => (openedAt = performance.now()));
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     form.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
@@ -47,6 +50,10 @@ export function enhanceForm(form: HTMLFormElement, submit: (data: FormData) => P
       }
     }
 
+    // Time trap (see src/lib/antispam.ts): how long the form has been open.
+    const elapsed = form.elements.namedItem('elapsed') as HTMLInputElement | null;
+    if (elapsed) elapsed.value = String(Math.round(performance.now() - openedAt));
+
     button.disabled = true;
     button.textContent = msg.sending;
     try {
@@ -60,7 +67,8 @@ export function enhanceForm(form: HTMLFormElement, submit: (data: FormData) => P
         Object.keys(error.fields).forEach(markInvalid);
         return show(file && file.name in error.fields ? msg.errorFile : msg.errorInvalid, false);
       }
-      show((error as { message?: string }).message === 'captcha' ? msg.errorCaptcha : msg.errorGeneric, false);
+      const reason = (error as { message?: string }).message;
+      show(reason === 'captcha' ? msg.errorCaptcha : reason === 'rate_limited' ? msg.errorRate : msg.errorGeneric, false);
     } catch {
       show(msg.errorGeneric, false);
     } finally {

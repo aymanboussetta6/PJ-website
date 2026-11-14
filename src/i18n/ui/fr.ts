@@ -101,6 +101,14 @@ const fr = {
       { title: 'Collectivités et aménageurs', text: "Réseaux d'initiative publique, montée en débit et génie civil associé." },
     ],
   },
+  presence: {
+    eyebrow: "Implantations",
+    title: "Deux implantations, en France et en Croatie",
+    intro: "Une présence en Île-de-France et à Zagreb pour être au plus près de nos chantiers et de nos équipes.",
+    mapLabel: "Carte des implantations de PJ Telecom : Villepinte et Zagreb",
+    villepinte: { city: "Villepinte (93)", region: "Île-de-France, France" },
+    zagreb: { city: "Zagreb", region: "Croatie" },
+  },
   references: {
     eyebrow: "Références",
     title: "Ils nous font confiance",
@@ -141,6 +149,10 @@ const fr = {
     title: 'Rejoignez nos équipes',
     intro:
       "Techniciens, chefs de chantier, chargés d'affaires, ingénieurs : nous recrutons en France, en Allemagne et en Europe de l'Est.",
+    offersTitle: "Nos offres d'emploi",
+    offersApply: "Postuler à cette offre",
+    offersApplying: "Vous postulez à l'offre :",
+    offersClear: "Passer en candidature spontanée",
     steps: [
       { title: 'Postulez en ligne', text: 'Envoyez votre CV en 2 minutes, dans la langue de votre choix.' },
       { title: 'Échange avec nos équipes', text: 'Un entretien pour comprendre vos compétences et vos souhaits.' },
@@ -187,6 +199,7 @@ const fr = {
     errorInvalid: 'Certains champs sont invalides. Vérifiez le formulaire.',
     errorFile: 'Le CV doit être un fichier PDF, DOC ou DOCX de 5 Mo maximum.',
     errorCaptcha: 'La vérification anti-spam a échoué. Rechargez la page et réessayez.',
+    errorRate: "Trop d'envois en peu de temps. Réessayez dans quelques minutes.",
   },
   contactForm: {
     eyebrow: 'Contact',
