@@ -1,0 +1,121 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { countryName, formatDate, isUuid, requireAdmin } from '../../lib/admin-page';
+import {
+  deleteContactRequest,
+  isStorageAvailable,
+  listContactRequests,
+  setContactHandled,
+  type StoredContact,
+} from '../../lib/storage';
+import { getDictionary } from '../../i18n';
+
+export const prerender = false;
+
+const denied = requireAdmin(Astro);
+if (denied) return denied;
+
+const TYPES: Record<string, string> = { client: 'Client', subcontractor: 'Sous-traitant', supplier: 'Fournisseur', other: 'Autre' };
+const filter = Astro.url.searchParams.get('type') ?? '';
+const self = filter in TYPES ? `/admin/contacts/?type=${filter}` : '/admin/contacts/';
+
+if (Astro.request.method === 'POST') {
+  const form = await Astro.request.formData();
+  const id = form.get('id');
+  const intent = form.get('intent');
+  if (isUuid(id)) {
+    if (intent === 'delete') await deleteContactRequest(id);
+    if (intent === 'handled') await setContactHandled(id, true);
+    if (intent === 'reopen') await setContactHandled(id, false);
+  }
+  return Astro.redirect(self);
+}
+
+const activities = getDictionary('fr').activities.items as Record<string, { title: string }>;
+let all: StoredContact[] = [];
+let loadError = '';
+if (isStorageAvailable()) {
+  try {
+    all = await listContactRequests();
+  } catch (err) {
+    console.error('[admin]', err);
+    loadError = 'Impossible de lire les demandes. Vérifiez la configuration Supabase et les tables.';
+  }
+} else {
+  loadError = "La base de données n'est pas configurée (variables SUPABASE_URL et SUPABASE_SERVICE_ROLE_KEY).";
+}
+const rows = filter in TYPES ? all.filter((c) => c.requester_type === filter) : all;
+const count = (type: string) => all.filter((c) => c.requester_type === type).length;
+---
+
+<Admin title="Demandes de contact" current="contacts">
+  <div class="flex flex-wrap items-end justify-between gap-3">
+    <h1 class="text-3xl font-bold tracking-tight">Demandes de contact</h1>
+    <p class="text-sm text-muted">{all.filter((c) => !c.handled_at).length} à traiter · conservation 3 ans</p>
+  </div>
+
+  <nav class="mt-6 flex flex-wrap gap-2" aria-label="Filtrer par type">
+    <a href="/admin/contacts/" class:list={['rounded-full px-4 py-1.5 text-sm', !(filter in TYPES) ? 'bg-ink font-semibold text-white' : 'bg-white']}>Toutes ({all.length})</a>
+    {
+      Object.entries(TYPES).map(([key, label]) => (
+        <a href={`/admin/contacts/?type=${key}`} class:list={['rounded-full px-4 py-1.5 text-sm', filter === key ? 'bg-ink font-semibold text-white' : 'bg-white']}>
+          {label}s ({count(key)})
+        </a>
+      ))
+    }
+  </nav>
+
+  {loadError && <p role="alert" class="mt-6 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800">{loadError}</p>}
+  {!loadError && rows.length === 0 && <p class="mt-6 rounded-2xl bg-white p-6 text-muted">Aucune demande pour le moment.</p>}
+
+  <ul class="mt-6 space-y-4">
+    {
+      rows.map((c) => (
+        <li class:list={['rounded-2xl bg-white p-6 shadow-sm', c.handled_at && 'opacity-70']}>
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h2 class="text-lg font-semibold">{c.company}</h2>
+              <p class="text-sm text-muted">
+                {c.full_name}
+                {c.job_title && `, ${c.job_title}`} · {formatDate(c.created_at)} · {countryName(c.country)}
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="rounded-full bg-sky-soft px-3 py-1 text-xs font-semibold">{TYPES[c.requester_type] ?? c.requester_type}</span>
+              {c.handled_at && <span class="rounded-full bg-mist px-3 py-1 text-xs font-semibold">Traitée</span>}
+            </div>
+          </div>
+          <dl class="mt-4 grid gap-x-6 gap-y-2 text-sm sm:grid-cols-2">
+            <div><dt class="inline text-muted">E-mail : </dt><dd class="inline"><a class="text-brand underline" href={`mailto:${c.email}`}>{c.email}</a></dd></div>
+            {c.phone && <div><dt class="inline text-muted">Téléphone : </dt><dd class="inline"><a class="text-brand underline" href={`tel:${c.phone}`}>{c.phone}</a></dd></div>}
+            {c.trades.length > 0 && (
+              <div class="sm:col-span-2"><dt class="inline text-muted">Métiers proposés : </dt><dd class="inline">{c.trades.map((t) => activities[t]?.title ?? t).join(', ')}</dd></div>
+            )}
+          </dl>
+          <p class="mt-3 rounded-xl bg-mist p-4 text-sm whitespace-pre-line">{c.message}</p>
+          <div class="mt-4 flex flex-wrap items-center gap-3">
+            {c.attachment_path && <a class="btn-primary px-4! py-2!" href={`/admin/file/?kind=attachment&id=${c.id}`}>Télécharger la pièce jointe</a>}
+            <form method="post" action={self}>
+              <input type="hidden" name="intent" value={c.handled_at ? 'reopen' : 'handled'} />
+              <input type="hidden" name="id" value={c.id} />
+              <button class="btn-ghost px-4! py-2!">{c.handled_at ? 'Rouvrir' : 'Marquer comme traitée'}</button>
+            </form>
+            <form method="post" action={self} data-confirm="Supprimer définitivement cette demande ?">
+              <input type="hidden" name="intent" value="delete" />
+              <input type="hidden" name="id" value={c.id} />
+              <button class="text-sm text-red-700 underline">Supprimer</button>
+            </form>
+          </div>
+        </li>
+      ))
+    }
+  </ul>
+</Admin>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-confirm]').forEach((form) => {
+    form.addEventListener('submit', (event) => {
+      if (!confirm(form.dataset.confirm)) event.preventDefault();
+    });
+  });
+</script>

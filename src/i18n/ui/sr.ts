@@ -150,6 +150,10 @@ const sr: Dictionary = {
     title: 'Pridružite se našim timovima',
     intro:
       'Tehničari, šefovi gradilišta, rukovodioci projekata, inženjeri: zapošljavamo u Francuskoj, Nemačkoj i Istočnoj Evropi.',
+    offersTitle: "Naši oglasi za posao",
+    offersApply: "Prijavite se na ovaj oglas",
+    offersApplying: "Prijavljujete se na oglas:",
+    offersClear: "Pošalji otvorenu prijavu",
     steps: [
       { title: 'Prijavite se onlajn', text: 'Pošaljite CV za 2 minuta, na jeziku po vašem izboru.' },
       { title: 'Razgovor sa našim timom', text: 'Intervju o vašim veštinama i očekivanjima.' },

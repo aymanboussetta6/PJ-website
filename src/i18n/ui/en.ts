@@ -149,6 +149,10 @@ const en: Dictionary = {
     title: 'Join our teams',
     intro:
       'Technicians, site supervisors, project managers, engineers: we are hiring in France, Germany and Eastern Europe.',
+    offersTitle: "Our job offers",
+    offersApply: "Apply for this job",
+    offersApplying: "You are applying for:",
+    offersClear: "Switch to an open application",
     steps: [
       { title: 'Apply online', text: 'Send your CV in 2 minutes, in the language of your choice.' },
       { title: 'Meet our teams', text: 'An interview to understand your skills and expectations.' },

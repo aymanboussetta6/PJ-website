@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+import { SITE } from '../i18n/site';
+import { LOCALES, LOCALE_KEYS } from '../i18n';
+// Not-found page. Its language is unknown, so it offers every language version of the home page.
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>Page introuvable — {SITE.brand}</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="sky-gradient grid min-h-screen place-items-center p-6">
+    <main class="w-full max-w-lg rounded-[2rem] bg-white p-8 text-center shadow-xl shadow-ink/10 sm:p-12">
+      <a href="/" class="inline-block text-[#012243]"><Logo label={SITE.brand} class="h-12 w-auto" /></a>
+      <p class="mt-8 text-6xl font-extrabold tracking-tight text-sky">404</p>
+      <h1 class="mt-2 text-2xl font-bold tracking-tight">Page introuvable</h1>
+      <p class="mt-2 text-muted">Page not found · Seite nicht gefunden · Stranica nije pronađena</p>
+      <ul class="mt-8 flex flex-wrap justify-center gap-2">
+        {LOCALE_KEYS.map((l) => <li><a href={`/${l}/`} lang={LOCALES[l].lang} class="btn-ghost px-4! py-2!">{LOCALES[l].label}</a></li>)}
+      </ul>
+    </main>
+  </body>
+</html>

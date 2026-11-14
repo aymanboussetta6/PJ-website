@@ -16,6 +16,14 @@ const t = getDictionary(locale);
 <Base locale={locale} title={`${t.nav.careers} — {brand}`} description={t.careers.intro}>
   <PageHeader eyebrow={t.nav.careers} title={t.careers.title} intro={t.careers.intro} />
 
+  <!-- Published job offers: filled in the browser from the `jobs` action, hidden while there are none -->
+  <section id="offers" class="hidden pt-14 sm:pt-20" data-apply-label={t.careers.offersApply}>
+    <div class="container-page">
+      <h2 class="text-2xl font-bold tracking-tight sm:text-3xl">{t.careers.offersTitle}</h2>
+      <ul class="mt-8 grid gap-4 md:grid-cols-2" data-offers></ul>
+    </div>
+  </section>
+
   <section class="py-14 sm:py-20">
     <div class="container-page grid gap-10 lg:grid-cols-[1fr_1.5fr] lg:items-start">
       <aside class="space-y-8 lg:sticky lg:top-24">
@@ -44,3 +52,54 @@ const t = getDictionary(locale);
     </div>
   </section>
 </Base>
+
+<script>
+  import { actions } from 'astro:actions';
+
+  const section = document.querySelector<HTMLElement>('#offers');
+  const form = document.querySelector<HTMLFormElement>('#apply-form');
+  if (section && form) {
+    const list = section.querySelector<HTMLElement>('[data-offers]')!;
+    const jobId = form.elements.namedItem('jobId') as HTMLInputElement;
+    const banner = form.querySelector<HTMLElement>('#apply-job')!;
+    const bannerTitle = banner.querySelector<HTMLElement>('[data-job-title]')!;
+
+    const choose = (id: string, title: string) => {
+      jobId.value = id;
+      bannerTitle.textContent = title;
+      banner.classList.toggle('hidden', !id);
+      banner.classList.toggle('flex', Boolean(id));
+    };
+    banner.querySelector('[data-job-clear]')!.addEventListener('click', () => choose('', ''));
+    form.addEventListener('reset', () => choose('', ''));
+
+    // Text is inserted with textContent only: job offers are never interpreted as HTML.
+    const el = (tag: string, className: string, text = '') => {
+      const node = document.createElement(tag);
+      node.className = className;
+      node.textContent = text;
+      return node;
+    };
+
+    const { data } = await actions.jobs();
+    if (data && data.length > 0) {
+      for (const job of data) {
+        const item = el('li', 'flex flex-col rounded-[1.75rem] border border-line bg-white p-6');
+        item.append(
+          el('h3', 'text-lg font-semibold', job.title),
+          el('p', 'mt-1 text-sm font-medium text-brand', `${job.location} · ${job.contract}`),
+          el('p', 'mt-3 flex-1 text-sm leading-relaxed whitespace-pre-line text-muted', job.description),
+        );
+        const button = el('button', 'btn-primary mt-5 self-start px-4! py-2!', section.dataset.applyLabel);
+        (button as HTMLButtonElement).type = 'button';
+        button.addEventListener('click', () => {
+          choose(job.id, job.title);
+          document.querySelector('#apply')?.scrollIntoView({ behavior: 'smooth' });
+        });
+        item.append(button);
+        list.append(item);
+      }
+      section.classList.remove('hidden');
+    }
+  }
+</script>

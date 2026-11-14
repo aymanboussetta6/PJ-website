@@ -33,6 +33,9 @@ export default defineConfig({
       MAIL_TO_CONTACT: envField.string({ context: 'server', access: 'public', optional: true }),
       TURNSTILE_SECRET_KEY: envField.string({ context: 'server', access: 'secret', optional: true }),
       PUBLIC_TURNSTILE_SITE_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+      // Internal admin area (/admin/): disabled until both are set (see src/lib/admin-auth.ts)
+      ADMIN_PASSWORD: envField.string({ context: 'server', access: 'secret', optional: true }),
+      ADMIN_SESSION_SECRET: envField.string({ context: 'server', access: 'secret', optional: true }),
     },
   },
 });

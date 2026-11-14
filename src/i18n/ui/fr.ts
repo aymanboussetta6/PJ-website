@@ -149,6 +149,10 @@ const fr = {
     title: 'Rejoignez nos équipes',
     intro:
       "Techniciens, chefs de chantier, chargés d'affaires, ingénieurs : nous recrutons en France, en Allemagne et en Europe de l'Est.",
+    offersTitle: "Nos offres d'emploi",
+    offersApply: "Postuler à cette offre",
+    offersApplying: "Vous postulez à l'offre :",
+    offersClear: "Passer en candidature spontanée",
     steps: [
       { title: 'Postulez en ligne', text: 'Envoyez votre CV en 2 minutes, dans la langue de votre choix.' },
       { title: 'Échange avec nos équipes', text: 'Un entretien pour comprendre vos compétences et vos souhaits.' },

@@ -149,6 +149,10 @@ const de: Dictionary = {
     title: 'Werden Sie Teil unseres Teams',
     intro:
       'Techniker, Bauleiter, Projektleiter, Ingenieure: Wir stellen in Frankreich, Deutschland und Osteuropa ein.',
+    offersTitle: "Unsere Stellenangebote",
+    offersApply: "Auf diese Stelle bewerben",
+    offersApplying: "Sie bewerben sich auf:",
+    offersClear: "Zur Initiativbewerbung wechseln",
     steps: [
       { title: 'Online bewerben', text: 'Senden Sie Ihren Lebenslauf in 2 Minuten, in der Sprache Ihrer Wahl.' },
       { title: 'Gespräch mit unserem Team', text: 'Ein Gespräch über Ihre Kompetenzen und Wünsche.' },

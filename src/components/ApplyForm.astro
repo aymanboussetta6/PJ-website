@@ -23,6 +23,11 @@ const messages = {
 
 <form id="apply-form" class="grid gap-5 sm:grid-cols-2" enctype="multipart/form-data" novalidate data-messages={JSON.stringify(messages)}>
   <input type="hidden" name="locale" value={locale} />
+  <input type="hidden" name="jobId" value="" />
+  <p id="apply-job" class="hidden items-center justify-between gap-3 rounded-xl bg-sky-soft/60 px-4 py-3 text-sm sm:col-span-2">
+    <span>{t.careers.offersApplying} <strong data-job-title></strong></span>
+    <button type="button" data-job-clear class="shrink-0 text-brand underline">{t.careers.offersClear}</button>
+  </p>
   <div class="hidden" aria-hidden="true">
     <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
   </div>

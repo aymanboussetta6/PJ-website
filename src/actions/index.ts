@@ -3,7 +3,9 @@ import { z } from 'astro/zod';
 import { ACTIVITY_KEYS, COUNTRY_CODES, DOMAIN_KEYS, LOCALE_KEYS, type Locale } from '../i18n';
 import { verifyTurnstile } from '../lib/turnstile';
 import {
-  isStorageConfigured,
+  getJob,
+  isStorageAvailable,
+  listJobs,
   saveApplication,
   saveContactRequest,
   type ApplicationRecord,
@@ -45,13 +47,9 @@ async function guard(token: string | undefined, context: ActionAPIContext) {
   }
 }
 
-/** Runs `save` when Supabase is configured; in dev without Supabase, only logs. */
-async function persist<T>(label: string, record: unknown, save: () => Promise<T>): Promise<T | 'dev'> {
-  if (!isStorageConfigured()) {
-    if (import.meta.env.DEV) {
-      console.warn(`[${label}] Supabase non configuré — rien n'est enregistré (mode dev).`, record);
-      return 'dev';
-    }
+/** Runs `save`, turning storage problems into a clean action error. */
+async function persist<T>(label: string, save: () => Promise<T>): Promise<T> {
+  if (!isStorageAvailable()) {
     throw new ActionError({ code: 'INTERNAL_SERVER_ERROR', message: 'storage_not_configured' });
   }
   try {
@@ -74,6 +72,7 @@ export const server = {
       domain: z.enum(DOMAIN_KEYS),
       languages: text(200),
       message: optionalText(2000),
+      jobId: z.union([z.literal(''), z.uuid()]).optional(),
       cv: z
         .instanceof(File)
         .refine((f) => f.size > 0 && f.size <= 5 * MB, 'file_size')
@@ -82,7 +81,11 @@ export const server = {
     }),
     handler: async (input, context) => {
       await guard(input['cf-turnstile-response'], context);
+      // The job title is read from the database, never trusted from the browser.
+      const job = input.jobId && isStorageAvailable() ? await getJob(input.jobId).catch(() => null) : null;
       const record: ApplicationRecord = {
+        job_offer_id: job?.published ? job.id : null,
+        job_title: job?.published ? job.title : null,
         first_name: input.firstName,
         last_name: input.lastName,
         email: input.email,
@@ -94,12 +97,26 @@ export const server = {
         locale: input.locale,
         consent_at: new Date().toISOString(),
       };
-      const id = await persist('apply', record, async () => {
+      const id = await persist('apply', async () => {
         const id = await saveApplication(record, input.cv);
         await sendApplicationEmails(record, id, input.locale);
         return id;
       });
       return { ok: true, id };
+    },
+  }),
+
+  /** Published job offers, shown on the careers page. */
+  jobs: defineAction({
+    handler: async () => {
+      if (!isStorageAvailable()) return [];
+      try {
+        const jobs = await listJobs({ publishedOnly: true });
+        return jobs.map(({ id, title, location, contract, domain, description }) => ({ id, title, location, contract, domain, description }));
+      } catch (err) {
+        console.error('[jobs]', err);
+        return [];
+      }
     },
   }),
 
@@ -138,7 +155,7 @@ export const server = {
         locale: input.locale,
         consent_at: new Date().toISOString(),
       };
-      const id = await persist('contact', record, async () => {
+      const id = await persist('contact', async () => {
         const id = await saveContactRequest(record, attachment);
         await sendContactEmails(record, id, input.locale, Boolean(attachment));
         return id;
