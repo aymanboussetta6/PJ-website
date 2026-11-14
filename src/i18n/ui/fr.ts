@@ -26,7 +26,7 @@ const fr = {
       "De l'étude à la mise en service, puis en maintenance : un interlocuteur unique pour vos projets radio, fibre et infrastructures.",
     ctaPrimary: 'Nous consulter',
     ctaSecondary: 'Nos activités',
-    badges: ['4G · 5G', 'FTTH · FTTO', 'Pylônes & points hauts', 'Génie civil'],
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Pylônes & travail en hauteur', 'Génie civil'],
     explore: 'Touchez un point pour découvrir nos métiers',
   },
   activities: {
@@ -47,7 +47,7 @@ const fr = {
       infra: {
         title: "Déploiement infrastructure télécom",
         text: "Nous construisons des sites clés en main : pylônes, toits-terrasses, zones techniques et cheminements de câbles, avec une conduite de travaux complète.",
-        points: ["Pylônes et mâts", "Toits-terrasses et points hauts", "Shelters et zones techniques"],
+        points: ["Pylônes et mâts", "Toits-terrasses et travail en hauteur", "Shelters et zones techniques"],
       },
       energy: {
         title: "Électricité et énergie",
@@ -96,7 +96,7 @@ const fr = {
     intro: "Nous travaillons aux côtés des acteurs qui construisent et exploitent les réseaux.",
     items: [
       { title: 'Opérateurs mobiles et fixes', text: 'Densification 4G/5G, modernisation radio et raccordement fibre des sites.' },
-      { title: 'TowerCos et hébergeurs', text: 'Construction et maintenance de pylônes et de points hauts mutualisés.' },
+      { title: 'TowerCos et hébergeurs', text: 'Construction et maintenance de pylônes et de toits-terrasses mutualisés, en travail en hauteur.' },
       { title: 'Ferroviaire et transport', text: "Réseaux télécoms le long des voies, en gares et sur les sites techniques." },
       { title: 'Collectivités et aménageurs', text: "Réseaux d'initiative publique, montée en débit et génie civil associé." },
     ],
@@ -110,7 +110,7 @@ const fr = {
   commitments: {
     title: 'Nos engagements',
     items: [
-      { title: 'Sécurité avant tout', text: 'Prévention, équipements de protection et culture sécurité sur chaque chantier.' },
+      { title: 'Sécurité avant tout', text: 'Tous nos techniciens disposent des habilitations nécessaires (travail en hauteur, habilitation électrique) pour exécuter les travaux en toute sécurité.' },
       { title: 'Réactivité', text: 'Des équipes mobilisables rapidement en France et en Allemagne.' },
       { title: 'Qualité mesurée', text: 'Contrôles, reporting et traçabilité de chaque intervention.' },
     ],
