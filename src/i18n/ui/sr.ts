@@ -30,43 +30,65 @@ const sr: Dictionary = {
     explore: 'Dodirnite tačku da otkrijete naše delatnosti',
   },
   activities: {
-    title: 'Naše delatnosti',
-    intro: 'Šest komplementarnih oblasti koje pokrivaju ceo životni ciklus vaše telekom infrastrukture.',
+    title: "Naše delatnosti",
+    intro: "Devet komplementarnih oblasti koje pokrivaju ceo životni ciklus vaše telekom infrastrukture, od projekta do održavanja.",
+    vendors: "Naši timovi rade u okruženjima sa više proizvođača: instaliraju, integrišu i puštaju u rad opremu vodećih proizvođača na tržištu, među kojima su Huawei, Nokia i Cisco.",
     items: {
       studies: {
-        title: 'Projektni biro',
-        text: 'Snimanje terena, studije izvodljivosti, izvođački projekti, dozvole i projektovanje radio i optičkih mreža.',
-      },
-      infra: {
-        title: 'Izgradnja telekom infrastrukture',
-        text: 'Izgradnja lokacija: stubovi, krovovi, kontejneri, napajanje i priključci, uz kompletno vođenje radova.',
-      },
-      radio: {
-        title: 'Izgradnja radio mreže',
-        text: 'Instalacija, integracija i puštanje u rad opreme od 2G do 5G, zamena i modernizacija lokacija.',
-      },
-      maintenance: {
-        title: 'Korektivno i preventivno održavanje',
-        text: 'Planirani obilasci, intervencije pri kvarovima, dežurstvo i praćenje nivoa usluge.',
-      },
-      fiber: {
-        title: 'Optička vlakna',
-        text: 'Uvlačenje, povezivanje, spajanje i merenja na FTTH, FTTO i transportnim mrežama, nadzemno i podzemno.',
+        title: "Projektni biro",
+        text: "Pripremamo svaku lokaciju pre početka radova: snimanje terena, izvodljivost, dimenzionisanje i dokumentacija za dozvole.",
+        points: ["Snimanje terena i tehnički obilasci", "Izvođački projekti i proračuni", "Dozvole i projekat izvedenog stanja"],
       },
       civil: {
-        title: 'Građevinski radovi',
-        text: 'Rovovi, cevi, kablovska okna, temelji i sanacija kolovoza.',
+        title: "Građevinski radovi",
+        text: "Gradimo objekte koji nose mrežu, od temelja stubova do rovova za optiku i sanacije kolovoza.",
+        points: ["Temelji i ploče", "Rovovi, cevi i okna", "Sanacija kolovoza"],
+      },
+      infra: {
+        title: "Izgradnja telekom infrastrukture",
+        text: "Gradimo lokacije po principu ključ u ruke: stubovi, krovne lokacije, tehnički prostori i kablovske trase, uz kompletno vođenje radova.",
+        points: ["Stubovi i jarboli", "Krovne lokacije", "Kontejneri i tehnički prostori"],
+      },
+      energy: {
+        title: "Elektroenergetika i napajanje",
+        text: "Napajamo i štitimo vaše lokacije: priključak na mrežu, razvodni ormani, sistemi napajanja i baterije, uzemljenje i gromobranska zaštita.",
+        points: ["Jaka i slaba struja", "Sistemi napajanja i baterije", "Uzemljenje i prenaponska zaštita"],
+      },
+      radio: {
+        title: "Izgradnja radio mreže",
+        text: "Instaliramo i modernizujemo radio opremu od 2G do 5G: antene, radio module, ormane i kabliranje, uključujući zamenu opreme na aktivnim lokacijama.",
+        points: ["Antene i radio moduli", "Zamena opreme i novi opsezi", "Ormani i spojni kablovi"],
+      },
+      microwave: {
+        title: "Radio-relejne veze",
+        text: "Povezujemo vaše lokacije radio-relejnim vezama: provera optičke vidljivosti, montaža antena, usmeravanje i puštanje veza u rad.",
+        points: ["Provera optičke vidljivosti", "Montaža i usmeravanje", "Prenosne veze"],
+      },
+      fiber: {
+        title: "Optička vlakna",
+        text: "Polažemo i povezujemo optiku nadzemno, podzemno i u zgradama, uz spajanje vlakana i OTDR merenja.",
+        points: ["FTTH, FTTO i transport", "Uvlačenje i spajanje", "Merenja i optički prijem"],
+      },
+      commissioning: {
+        title: "Puštanje u rad",
+        text: "Integrišemo opremu u mrežu i proveravamo njen rad pre primopredaje: podešavanje, testovi, prijem i zapisnici.",
+        points: ["Integracija i podešavanje", "Testovi i merenja", "Prijem i otklanjanje primedbi"],
+      },
+      maintenance: {
+        title: "Korektivno i preventivno održavanje",
+        text: "Održavamo vaše lokacije u radnom stanju: planirani obilasci, otklanjanje kvarova, dežurstvo i praćenje nivoa usluge.",
+        points: ["Preventivni obilasci", "Intervencije i dežurstvo", "Praćenje vremena otklanjanja kvara"],
       },
     },
   },
   approach: {
-    title: 'Naš metod projektnog nadzora',
-    intro: 'Jedinstveno upravljanje, od prvog snimanja terena do održavanja.',
+    title: "Naš metod projektnog nadzora",
+    intro: "Jedan rukovodilac projekta vodi vaš posao od početka do kraja i koordinira sve izvođače.",
     steps: [
-      { title: 'Projektovanje', text: 'Analiza potreba, snimanje terena i tehničko projektovanje.' },
-      { title: 'Izgradnja', text: 'Koordinacija izvođača, bezbednost i poštovanje rokova.' },
-      { title: 'Puštanje u rad', text: 'Prijem, kontrole, dokumentacija izvedenog stanja i primopredaja.' },
-      { title: 'Održavanje', text: 'Preventivno i korektivno održavanje radi pune dostupnosti.' },
+      { title: "Projektovanje", text: "Obilazak lokacije, analiza potreba, tehničko projektovanje i dokumentacija za dozvole." },
+      { title: "Izgradnja", text: "Građevinski radovi, infrastruktura, napajanje, radio i optika, bezbedno i u roku." },
+      { title: "Puštanje u rad", text: "Integracija, testovi, prijem, dokumentacija izvedenog stanja i primopredaja klijentu." },
+      { title: "Održavanje", text: "Preventivno i korektivno održavanje radi dostupnosti vaših lokacija." },
     ],
   },
   sectors: {
@@ -116,6 +138,9 @@ const sr: Dictionary = {
       maintenance: 'Održavanje',
       fiber: 'Optička vlakna',
       civil: 'Građevinski radovi',
+      energy: "Elektroenergetika",
+      microwave: "Radio-relejne veze",
+      commissioning: "Puštanje u rad",
       management: 'Vođenje radova / rukovodilac projekta',
       other: 'Ostalo',
     },

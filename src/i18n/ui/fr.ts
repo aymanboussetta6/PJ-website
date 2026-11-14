@@ -29,44 +29,65 @@ const fr = {
     explore: 'Touchez un point pour découvrir nos métiers',
   },
   activities: {
-    title: 'Nos activités',
-    intro:
-      "Six métiers complémentaires pour couvrir l'ensemble du cycle de vie de vos infrastructures télécoms.",
+    title: "Nos activités",
+    intro: "Neuf métiers complémentaires pour couvrir tout le cycle de vie de vos infrastructures télécoms, de l'étude à la maintenance.",
+    vendors: "Nos équipes travaillent en environnement multi-constructeurs : elles installent, intègrent et mettent en service les équipements des principaux équipementiers du marché, notamment Huawei, Nokia et Cisco.",
     items: {
       studies: {
         title: "Bureau d'études",
-        text: "Relevés terrain, études de faisabilité, plans d'exécution, dossiers réglementaires et ingénierie radio et fibre.",
-      },
-      infra: {
-        title: 'Déploiement infrastructure télécom',
-        text: 'Construction de sites : pylônes, toits-terrasses, shelters, énergie et raccordements, en conduite de travaux complète.',
-      },
-      radio: {
-        title: 'Déploiement radio',
-        text: 'Installation, intégration et mise en service des équipements 2G à 5G, swaps et modernisation des sites.',
-      },
-      maintenance: {
-        title: 'Maintenance curative et préventive',
-        text: "Visites programmées, interventions sur incident, astreinte et suivi des engagements de qualité de service.",
-      },
-      fiber: {
-        title: 'Fibre optique',
-        text: 'Tirage, raccordement, soudure et mesures sur réseaux FTTH, FTTO et transport, en aérien comme en souterrain.',
+        text: "Nous préparons chaque site avant le début des travaux : relevés, faisabilité, dimensionnement et dossiers administratifs.",
+        points: ["Relevés terrain et visites techniques", "Plans d'exécution et notes de calcul", "Dossiers réglementaires et DOE"],
       },
       civil: {
-        title: 'Génie civil',
-        text: 'Tranchées, fourreaux, chambres de tirage, massifs de fondation et remise en état de la voirie.',
+        title: "Génie civil",
+        text: "Nous réalisons les ouvrages qui accueillent le réseau, des fondations de pylône aux tranchées fibre, jusqu'à la remise en état de la voirie.",
+        points: ["Massifs et dalles", "Tranchées, fourreaux et chambres", "Réfection de voirie"],
+      },
+      infra: {
+        title: "Déploiement infrastructure télécom",
+        text: "Nous construisons des sites clés en main : pylônes, toits-terrasses, zones techniques et cheminements de câbles, avec une conduite de travaux complète.",
+        points: ["Pylônes et mâts", "Toits-terrasses et points hauts", "Shelters et zones techniques"],
+      },
+      energy: {
+        title: "Électricité et énergie",
+        text: "Nous alimentons et sécurisons vos sites : raccordement au réseau, tableaux électriques, ateliers d'énergie et batteries, mise à la terre et protection foudre.",
+        points: ["Courants forts et faibles", "Ateliers d'énergie et batteries", "Mise à la terre et parafoudres"],
+      },
+      radio: {
+        title: "Déploiement radio",
+        text: "Nous installons et modernisons les équipements radio de la 2G à la 5G : antennes, modules radio, baies et câblage, y compris en swap sur des sites en service.",
+        points: ["Antennes et modules radio", "Swaps et ajouts de bandes", "Baies et jarretières"],
+      },
+      microwave: {
+        title: "Faisceaux hertziens",
+        text: "Nous relions vos sites par faisceau hertzien : étude de ligne de vue, pose des paraboles, pointage et mise en service des liaisons.",
+        points: ["Études de ligne de vue", "Installation et pointage", "Liaisons de collecte"],
+      },
+      fiber: {
+        title: "Fibre optique",
+        text: "Nous déployons et raccordons la fibre en aérien, en souterrain et en immeuble, avec soudure et mesures de réflectométrie.",
+        points: ["FTTH, FTTO et collecte", "Tirage et soudure", "Mesures et recette optique"],
+      },
+      commissioning: {
+        title: "Commissioning et mise en service",
+        text: "Nous intégrons les équipements au réseau et vérifions leurs performances avant la livraison : paramétrage, tests, recette et procès-verbaux.",
+        points: ["Intégration et paramétrage", "Tests et mesures", "Recette et levée de réserves"],
+      },
+      maintenance: {
+        title: "Maintenance curative et préventive",
+        text: "Nous maintenons vos sites en conditions opérationnelles : visites programmées, dépannage sur incident, astreinte et suivi des engagements de service.",
+        points: ["Visites préventives", "Interventions et astreinte", "Suivi des délais de rétablissement"],
       },
     },
   },
   approach: {
     title: "Notre méthode de maîtrise d'œuvre",
-    intro: 'Un pilotage unique, du premier relevé à la maintenance.',
+    intro: "Un chef de projet unique pilote votre opération de bout en bout et coordonne tous les corps de métier.",
     steps: [
-      { title: 'Étudier', text: 'Analyse du besoin, relevés et conception technique.' },
-      { title: 'Construire', text: 'Coordination des corps de métier, sécurité et respect des délais.' },
-      { title: 'Mettre en service', text: 'Recette, contrôles, dossiers des ouvrages exécutés et livraison.' },
-      { title: 'Maintenir', text: 'Maintenance préventive et curative pour garantir la disponibilité.' },
+      { title: "Étudier", text: "Visite de site, analyse du besoin, conception technique et dossiers administratifs." },
+      { title: "Construire", text: "Génie civil, infrastructure, énergie, radio et fibre, dans le respect de la sécurité et des délais." },
+      { title: "Mettre en service", text: "Intégration, tests, recette, dossier des ouvrages exécutés et livraison au client." },
+      { title: "Maintenir", text: "Maintenance préventive et curative pour garantir la disponibilité de vos sites." },
     ],
   },
   sectors: {
@@ -116,6 +137,9 @@ const fr = {
       maintenance: 'Maintenance',
       fiber: 'Fibre optique',
       civil: 'Génie civil',
+      energy: "Électricité / énergie",
+      microwave: "Faisceaux hertziens",
+      commissioning: "Commissioning / mise en service",
       management: "Conduite de travaux / chargé d'affaires",
       other: 'Autre',
     },

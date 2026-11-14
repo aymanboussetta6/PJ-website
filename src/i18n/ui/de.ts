@@ -29,43 +29,65 @@ const de: Dictionary = {
     explore: 'Tippen Sie auf einen Punkt, um unsere Leistungen zu entdecken',
   },
   activities: {
-    title: 'Unsere Leistungen',
-    intro: 'Sechs sich ergänzende Gewerke für den gesamten Lebenszyklus Ihrer Telekommunikationsinfrastruktur.',
+    title: "Unsere Leistungen",
+    intro: "Neun sich ergänzende Gewerke für den gesamten Lebenszyklus Ihrer Telekommunikationsinfrastruktur, von der Planung bis zur Wartung.",
+    vendors: "Unsere Teams arbeiten in herstellerübergreifenden Umgebungen: Sie installieren, integrieren und nehmen die Technik der führenden Ausrüster in Betrieb, darunter Huawei, Nokia und Cisco.",
     items: {
       studies: {
-        title: 'Ingenieurbüro',
-        text: 'Standortbegehungen, Machbarkeitsstudien, Ausführungspläne, Genehmigungsunterlagen sowie Funk- und Glasfaserplanung.',
-      },
-      infra: {
-        title: 'Ausbau der Telekom-Infrastruktur',
-        text: 'Standortbau: Masten, Dachstandorte, Shelter, Energie und Anschlüsse, mit vollständiger Bauleitung.',
-      },
-      radio: {
-        title: 'Funkausbau',
-        text: 'Installation, Integration und Inbetriebnahme von 2G- bis 5G-Technik, Swaps und Standortmodernisierung.',
-      },
-      maintenance: {
-        title: 'Präventive und korrektive Wartung',
-        text: 'Geplante Begehungen, Störungsbeseitigung, Bereitschaftsdienst und Überwachung der Servicelevel.',
-      },
-      fiber: {
-        title: 'Glasfaser',
-        text: 'Einzug, Anschluss, Spleißen und Messungen in FTTH-, FTTO- und Backbone-Netzen, oberirdisch und unterirdisch.',
+        title: "Ingenieurbüro",
+        text: "Wir bereiten jeden Standort vor Baubeginn vor: Begehungen, Machbarkeit, Dimensionierung und Genehmigungsunterlagen.",
+        points: ["Standortbegehungen und Aufmaße", "Ausführungspläne und Statik", "Genehmigungen und Bestandsdokumentation"],
       },
       civil: {
-        title: 'Tiefbau',
-        text: 'Gräben, Leerrohre, Kabelschächte, Fundamente und Wiederherstellung der Oberflächen.',
+        title: "Tiefbau",
+        text: "Wir errichten die Bauwerke, die das Netz tragen, vom Mastfundament über Glasfasergräben bis zur Wiederherstellung der Oberflächen.",
+        points: ["Fundamente und Bodenplatten", "Gräben, Leerrohre und Schächte", "Oberflächenwiederherstellung"],
+      },
+      infra: {
+        title: "Ausbau der Telekom-Infrastruktur",
+        text: "Wir bauen schlüsselfertige Standorte: Masten, Dachstandorte, Technikflächen und Kabelwege, mit vollständiger Bauleitung.",
+        points: ["Masten und Rohrmaste", "Dachstandorte", "Shelter und Technikflächen"],
+      },
+      energy: {
+        title: "Elektro- und Energietechnik",
+        text: "Wir versorgen und schützen Ihre Standorte: Netzanschluss, Verteilungen, Stromversorgungen und Batterien, Erdung und Blitzschutz.",
+        points: ["Stark- und Schwachstrom", "Stromversorgungen und Batterien", "Erdung und Überspannungsschutz"],
+      },
+      radio: {
+        title: "Funkausbau",
+        text: "Wir installieren und modernisieren Funktechnik von 2G bis 5G: Antennen, Funkmodule, Schränke und Verkabelung, auch als Swap im laufenden Betrieb.",
+        points: ["Antennen und Funkmodule", "Swaps und Banderweiterungen", "Schränke und Jumperkabel"],
+      },
+      microwave: {
+        title: "Richtfunk",
+        text: "Wir verbinden Ihre Standorte per Richtfunk: Sichtlinienprüfung, Montage der Antennen, Ausrichtung und Inbetriebnahme der Strecken.",
+        points: ["Sichtlinienprüfungen", "Montage und Ausrichtung", "Anbindungsstrecken"],
+      },
+      fiber: {
+        title: "Glasfaser",
+        text: "Wir verlegen und schließen Glasfaser oberirdisch, unterirdisch und im Gebäude an, mit Spleißen und OTDR-Messungen.",
+        points: ["FTTH, FTTO und Backbone", "Einzug und Spleißen", "Messungen und optische Abnahme"],
+      },
+      commissioning: {
+        title: "Inbetriebnahme",
+        text: "Wir integrieren die Technik ins Netz und prüfen ihre Leistung vor der Übergabe: Konfiguration, Tests, Abnahme und Protokolle.",
+        points: ["Integration und Konfiguration", "Tests und Messungen", "Abnahme und Mängelbeseitigung"],
+      },
+      maintenance: {
+        title: "Präventive und korrektive Wartung",
+        text: "Wir halten Ihre Standorte betriebsbereit: geplante Begehungen, Störungsbeseitigung, Bereitschaftsdienst und Überwachung der Servicelevel.",
+        points: ["Präventive Begehungen", "Entstörung und Bereitschaft", "Überwachung der Wiederherstellungszeiten"],
       },
     },
   },
   approach: {
-    title: 'Unser Vorgehen in der Projektsteuerung',
-    intro: 'Eine zentrale Steuerung von der ersten Begehung bis zur Wartung.',
+    title: "Unser Vorgehen in der Projektsteuerung",
+    intro: "Ein Projektleiter steuert Ihr Vorhaben von Anfang bis Ende und koordiniert alle Gewerke.",
     steps: [
-      { title: 'Planen', text: 'Bedarfsanalyse, Begehungen und technische Planung.' },
-      { title: 'Bauen', text: 'Koordination der Gewerke, Arbeitssicherheit und Termintreue.' },
-      { title: 'In Betrieb nehmen', text: 'Abnahme, Prüfungen, Bestandsdokumentation und Übergabe.' },
-      { title: 'Warten', text: 'Präventive und korrektive Wartung für maximale Verfügbarkeit.' },
+      { title: "Planen", text: "Standortbegehung, Bedarfsanalyse, technische Planung und Genehmigungsunterlagen." },
+      { title: "Bauen", text: "Tiefbau, Infrastruktur, Energie, Funk und Glasfaser, sicher und termingerecht." },
+      { title: "In Betrieb nehmen", text: "Integration, Tests, Abnahme, Bestandsdokumentation und Übergabe an den Kunden." },
+      { title: "Warten", text: "Präventive und korrektive Wartung für die Verfügbarkeit Ihrer Standorte." },
     ],
   },
   sectors: {
@@ -115,6 +137,9 @@ const de: Dictionary = {
       maintenance: 'Wartung',
       fiber: 'Glasfaser',
       civil: 'Tiefbau',
+      energy: "Elektro / Energie",
+      microwave: "Richtfunk",
+      commissioning: "Inbetriebnahme",
       management: 'Bauleitung / Projektleitung',
       other: 'Sonstiges',
     },

@@ -29,43 +29,65 @@ const en: Dictionary = {
     explore: 'Tap a point to explore our services',
   },
   activities: {
-    title: 'Our services',
-    intro: 'Six complementary trades covering the full life cycle of your telecom infrastructure.',
+    title: "Our services",
+    intro: "Nine complementary trades covering the full life cycle of your telecom infrastructure, from design to maintenance.",
+    vendors: "Our teams work in multi-vendor environments: they install, integrate and commission equipment from the market's leading vendors, including Huawei, Nokia and Cisco.",
     items: {
       studies: {
-        title: 'Engineering office',
-        text: 'Site surveys, feasibility studies, construction drawings, permit files, and radio and fibre engineering.',
-      },
-      infra: {
-        title: 'Telecom infrastructure rollout',
-        text: 'Site construction: towers, rooftops, shelters, power and connections, with full works management.',
-      },
-      radio: {
-        title: 'Radio rollout',
-        text: 'Installation, integration and commissioning of 2G to 5G equipment, swaps and site upgrades.',
-      },
-      maintenance: {
-        title: 'Corrective and preventive maintenance',
-        text: 'Scheduled visits, incident response, on-call service and service-level monitoring.',
-      },
-      fiber: {
-        title: 'Fibre optics',
-        text: 'Cable pulling, connection, splicing and testing on FTTH, FTTO and backbone networks, aerial and underground.',
+        title: "Engineering office",
+        text: "We prepare every site before work begins: surveys, feasibility, sizing and permit files.",
+        points: ["Site surveys and technical visits", "Construction drawings and calculations", "Permit files and as-built documents"],
       },
       civil: {
-        title: 'Civil works',
-        text: 'Trenching, ducts, draw pits, foundations and road reinstatement.',
+        title: "Civil works",
+        text: "We build the structures that carry the network, from tower foundations to fibre trenches and road reinstatement.",
+        points: ["Foundations and slabs", "Trenches, ducts and chambers", "Road reinstatement"],
+      },
+      infra: {
+        title: "Telecom infrastructure rollout",
+        text: "We deliver turnkey sites: towers, rooftops, equipment areas and cable routes, with full works management.",
+        points: ["Towers and masts", "Rooftops and high points", "Shelters and equipment areas"],
+      },
+      energy: {
+        title: "Electrical and power works",
+        text: "We power and protect your sites: grid connection, switchboards, power systems and batteries, earthing and lightning protection.",
+        points: ["High and low voltage", "Power systems and batteries", "Earthing and surge protection"],
+      },
+      radio: {
+        title: "Radio rollout",
+        text: "We install and upgrade radio equipment from 2G to 5G: antennas, radio units, cabinets and cabling, including swaps on live sites.",
+        points: ["Antennas and radio units", "Swaps and band additions", "Cabinets and jumpers"],
+      },
+      microwave: {
+        title: "Microwave links",
+        text: "We connect your sites by microwave: line-of-sight survey, dish installation, alignment and commissioning of the links.",
+        points: ["Line-of-sight surveys", "Installation and alignment", "Backhaul links"],
+      },
+      fiber: {
+        title: "Fibre optics",
+        text: "We roll out and connect fibre overhead, underground and in buildings, with splicing and OTDR testing.",
+        points: ["FTTH, FTTO and backhaul", "Pulling and splicing", "Testing and optical acceptance"],
+      },
+      commissioning: {
+        title: "Commissioning",
+        text: "We integrate equipment into the network and verify its performance before handover: configuration, testing, acceptance and reports.",
+        points: ["Integration and configuration", "Tests and measurements", "Acceptance and snag clearance"],
+      },
+      maintenance: {
+        title: "Corrective and preventive maintenance",
+        text: "We keep your sites operational: scheduled visits, incident repairs, on-call service and service-level monitoring.",
+        points: ["Preventive visits", "Call-outs and on-call service", "Restoration time tracking"],
       },
     },
   },
   approach: {
-    title: 'Our project management approach',
-    intro: 'One point of control, from the first survey to maintenance.',
+    title: "Our project management approach",
+    intro: "A single project manager runs your operation end to end and coordinates every trade.",
     steps: [
-      { title: 'Design', text: 'Needs analysis, surveys and technical design.' },
-      { title: 'Build', text: 'Coordination of trades, safety and on-time delivery.' },
-      { title: 'Commission', text: 'Acceptance testing, inspections, as-built files and handover.' },
-      { title: 'Maintain', text: 'Preventive and corrective maintenance to guarantee availability.' },
+      { title: "Design", text: "Site visit, needs analysis, technical design and permit files." },
+      { title: "Build", text: "Civil works, infrastructure, power, radio and fibre, safely and on schedule." },
+      { title: "Commission", text: "Integration, testing, acceptance, as-built files and handover to the client." },
+      { title: "Maintain", text: "Preventive and corrective maintenance to guarantee the availability of your sites." },
     ],
   },
   sectors: {
@@ -115,6 +137,9 @@ const en: Dictionary = {
       maintenance: 'Maintenance',
       fiber: 'Fibre optics',
       civil: 'Civil works',
+      energy: "Electrical / power",
+      microwave: "Microwave links",
+      commissioning: "Commissioning",
       management: 'Works supervision / project manager',
       other: 'Other',
     },

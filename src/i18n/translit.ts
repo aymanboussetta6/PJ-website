@@ -1,6 +1,7 @@
 /**
  * Serbian Latin → Cyrillic transliteration (one-to-one, as defined by Vuk's alphabet).
- * Placeholders like {brand}, e-mail addresses, URLs, file formats (PDF, DOCX)
+ * Placeholders like {brand}, e-mail addresses, URLs, file formats (PDF, DOCX), vendor names and
+ * telecom acronyms (Nokia, Cisco, FTTH, 5G…)
  * and words containing q/w/x/y are left untouched.
  * Note: a few loanwords spell "nj"/"dž" as two letters (e.g. "injekcija");
  * have the Cyrillic version proofread by a native speaker before launch.
@@ -19,7 +20,7 @@ const LETTERS: Record<string, string> = {
 for (const [lat, cyr] of Object.entries(LETTERS)) LETTERS[lat.toLowerCase()] = cyr.toLowerCase();
 
 const PROTECTED =
-  /(\{[^}]+\}|[\w.+-]+@[\w-]+\.[\w.]+|https?:\/\/\S+|\b(?:PDF|DOCX?)\b|\b\w*[QWXYqwxy]\w*\b)/g;
+  /(\{[^}]+\}|[\w.+-]+@[\w-]+\.[\w.]+|https?:\/\/\S+|\b(?:PDF|DOCX?|Huawei|Nokia|Cisco|FTT[HO]|OTDR|\dG)\b|\b\w*[QWXYqwxy]\w*\b)/g;
 
 function translitPlain(text: string): string {
   let out = '';

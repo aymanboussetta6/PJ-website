@@ -38,11 +38,14 @@ const fencePosts = Array.from({ length: 15 }, (_, i) => 196 + i * 11);
 // Hotspot position (in % of the 400×420 drawing) for each activity key.
 const SPOTS: Record<string, { x: number; y: number }> = {
   studies: { x: 30, y: 316 }, // surveying tripod
-  infra: { x: 270, y: 262 }, // tower body
-  radio: { x: 348, y: 62 }, // antennas
-  maintenance: { x: 352, y: 312 }, // power cabinet
-  fiber: { x: 108, y: 292 }, // shelter where the fibre lands
-  civil: { x: 192, y: 396 }, // trench
+  civil: { x: 192, y: 398 }, // trench
+  infra: { x: 270, y: 292 }, // tower body
+  energy: { x: 352, y: 312 }, // power cabinet
+  radio: { x: 348, y: 62 }, // sector antennas
+  microwave: { x: 200, y: 214 }, // microwave dish
+  fiber: { x: 82, y: 288 }, // shelter, where the fibre lands
+  commissioning: { x: 192, y: 84 }, // radio waves: the site goes on air
+  maintenance: { x: 136, y: 288 }, // shelter equipment
 };
 const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
 ---

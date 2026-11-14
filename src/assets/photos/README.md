@@ -13,6 +13,9 @@ Tant qu'une photo manque, un fond dégradé bleu s'affiche à sa place.
 | `maintenance.jpg`     | Maintenance curative et préventive            |
 | `fiber.jpg`           | Fibre optique                                 |
 | `civil.jpg`           | Génie civil                                   |
+| `energy.jpg`          | Électricité et énergie                        |
+| `microwave.jpg`       | Faisceaux hertziens                           |
+| `commissioning.jpg`   | Commissioning et mise en service              |
 | `careers.jpg`         | Section « Rejoignez nos équipes »             |
 
 Utilisez de préférence vos propres photos de chantier (avec l'accord des personnes visibles),

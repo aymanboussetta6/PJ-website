@@ -21,6 +21,9 @@ const ICONS: Record<(typeof ACTIVITY_KEYS)[number], string> = {
   maintenance: 'M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z',
   fiber: 'M3 12c3-6 6 6 9 0s6 6 9 0M3 6c3-6 6 6 9 0s6 6 9 0M3 18c3-6 6 6 9 0s6 6 9 0',
   civil: 'M3 20h18M5 20V10l7-6 7 6v10M9 20v-6h6v6',
+  energy: 'M13 2 4 14h7l-1 8 9-12h-7z',
+  microwave: 'M4 20a12 12 0 0 1 12-12M8 20a8 8 0 0 1 8-8M12 20a4 4 0 0 1 4-4M16 20h.01',
+  commissioning: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8 12l3 3 5-6',
 };
 const SECTOR_ICONS = [
   'M8 2h8v20H8zM11 18h2', // phone / operators
@@ -28,14 +31,9 @@ const SECTOR_ICONS = [
   'M5 16V6a4 4 0 0 1 4-4h6a4 4 0 0 1 4 4v10M5 16h14M7 20l2-4M17 20l-2-4M8 10h8', // train
   'M3 21h18M5 21V9l7-5 7 5v12M10 21v-5h4v5', // town hall
 ];
-// Bento layout (lg: 4 columns): one large feature card, then regular cards.
-const BENTO: Record<(typeof ACTIVITY_KEYS)[number], string> = {
+// Bento layout (lg: 4 columns): one large feature card, eight regular cards, then a full-width CTA.
+const BENTO: Partial<Record<(typeof ACTIVITY_KEYS)[number], string>> = {
   studies: 'sm:col-span-2 lg:row-span-2',
-  infra: '',
-  radio: '',
-  maintenance: '',
-  fiber: '',
-  civil: 'sm:col-span-2',
 };
 const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items[k].title)];
 ---
@@ -99,7 +97,7 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
         <p class="max-w-md text-lg text-muted">{t.activities.intro}</p>
       </div>
 
-      <div class="mt-12 grid auto-rows-fr gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {
           ACTIVITY_KEYS.map((key, i) => {
             const item = t.activities.items[key];
@@ -126,6 +124,14 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
                   </span>
                   <h3 class:list={['mt-5 font-semibold', big ? 'text-2xl' : 'text-lg']}>{item.title}</h3>
                   <p class="mt-2 text-sm leading-relaxed text-muted">{item.text}</p>
+                  <ul class="mt-4 space-y-1.5 text-sm">
+                    {item.points.map((point) => (
+                      <li class="flex items-start gap-2">
+                        <span class="mt-2 size-1.5 shrink-0 rounded-full bg-sky" aria-hidden="true" />
+                        {point}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </article>
             );
@@ -136,15 +142,23 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
           href={`/${locale}/contact/`}
           data-reveal
           style="--reveal-i: 2"
-          class="group sky-gradient relative flex flex-col justify-between overflow-hidden rounded-[1.75rem] p-6 sm:col-span-2 sm:p-8"
+          class="group sky-gradient relative flex flex-col justify-between gap-6 overflow-hidden rounded-[1.75rem] p-6 sm:col-span-2 sm:p-8 lg:col-span-4 lg:flex-row lg:items-center"
         >
-          <h3 class="max-w-xs text-2xl font-bold tracking-tight">{t.contactForm.title}</h3>
-          <span class="mt-6 inline-flex items-center gap-2 font-semibold text-ink">
+          <h3 class="text-2xl font-bold tracking-tight">{t.contactForm.title}</h3>
+          <span class="inline-flex items-center gap-2 font-semibold text-ink">
             {t.nav.quote}
             <span class="grid size-9 place-items-center rounded-full bg-white transition group-hover:translate-x-1">→</span>
           </span>
         </a>
       </div>
+      <p data-reveal class="mt-8 flex items-start gap-4 rounded-[1.75rem] bg-mist p-6 text-ink-soft">
+        <span class="grid size-10 shrink-0 place-items-center rounded-full bg-white text-brand shadow-sm">
+          <svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M4 6h16v10H4zM8 20h8M12 16v4M8 10h.01M12 10h.01M16 10h.01" />
+          </svg>
+        </span>
+        <span>{t.activities.vendors}</span>
+      </p>
     </div>
   </section>
 
