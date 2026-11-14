@@ -22,6 +22,7 @@
   --color-muted: #4a6177;
 
   --animate-marquee: marquee 40s linear infinite;
+  --animate-clients: marquee 45s linear infinite;
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-ring: pulse-ring 3s ease-out infinite;
   --animate-dash: dash 3s linear infinite;
@@ -134,6 +135,79 @@
       animation: none !important;
     }
   }
+}
+
+/* Smooth cross-page transitions (browsers without support simply navigate normally) */
+@view-transition {
+  navigation: auto;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
+/* Reading progress bar, driven by scroll position (no JS) */
+.scroll-progress {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 3px;
+  background: var(--color-sky);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(root);
+  }
+}
+@keyframes scroll-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Client band: scrolls continuously, pauses on hover or keyboard focus */
+.client-band {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+.client-band:hover .client-track,
+.client-band:focus-within .client-track {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No motion: show every client once, wrapped on several lines */
+  .client-band {
+    mask-image: none;
+  }
+  .client-track {
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .client-track > [data-copy='1'] {
+    display: none;
+  }
+}
+
+/* Soft light following the mouse on cards */
+.spotlight::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgb(56 189 248 / 0.18), transparent 70%);
+}
+.spotlight:hover::after {
+  opacity: 1;
 }
 
 @utility container-page {

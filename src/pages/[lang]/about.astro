@@ -1,0 +1,85 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import Photo from '../../components/Photo.astro';
+import { photo } from '../../lib/photos';
+import { LOCALE_KEYS, getDictionary, fill, type Locale } from '../../i18n';
+
+export function getStaticPaths() {
+  return LOCALE_KEYS.map((lang) => ({ params: { lang } }));
+}
+
+const locale = Astro.params.lang as Locale;
+const t = getDictionary(locale);
+const f = t.founder;
+const hasPortrait = Boolean(photo('founder'));
+const initials = f.name
+  .split(/\s+/)
+  .map((w) => w[0])
+  .join('');
+---
+
+<Base locale={locale} title={f.title} description={f.intro}>
+  <PageHeader eyebrow={f.eyebrow} title={fill(f.title)} intro={fill(f.intro)} />
+
+  <section class="py-14 sm:py-20">
+    <div class="container-page grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:items-start">
+      <!-- Portrait (drop founder.jpg in src/assets/photos/ to replace the placeholder) -->
+      <figure class="lg:sticky lg:top-24" data-reveal>
+        <div class="relative overflow-hidden rounded-[2rem] shadow-xl shadow-ink/10">
+          <Photo name="founder" alt={f.photoAlt} class="aspect-[4/5] w-full" sizes="(min-width: 1024px) 40vw, 100vw" />
+          {
+            !hasPortrait && (
+              <span class="absolute inset-0 grid place-items-center text-7xl font-extrabold tracking-tight text-ink/80" aria-hidden="true">
+                {initials}
+              </span>
+            )
+          }
+        </div>
+        <figcaption class="mt-4">
+          <p class="text-xl font-bold">{f.name}</p>
+          <p class="text-sm text-muted">{fill(f.eyebrow + ' · {brand}')}</p>
+        </figcaption>
+      </figure>
+
+      <!-- Timeline -->
+      <div>
+        <h2 class="text-2xl font-bold tracking-tight sm:text-3xl" data-reveal>{f.storyTitle}</h2>
+        <ol class="relative mt-8 space-y-8 border-l-2 border-sky-soft pl-8">
+          {
+            f.steps.map((step, i) => (
+              <li class="relative" data-reveal style={`--reveal-i: ${i}`}>
+                <span class="absolute top-0 -left-[calc(2rem+1px)] grid size-9 -translate-x-1/2 place-items-center rounded-full bg-sky text-sm font-bold text-ink ring-4 ring-white">
+                  {i + 1}
+                </span>
+                <h3 class="text-lg font-semibold">{fill(step.title)}</h3>
+                <p class="mt-1.5 leading-relaxed text-muted">{fill(step.text)}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-mist py-14 sm:py-20">
+    <div class="container-page">
+      <h2 class="max-w-2xl text-2xl font-bold tracking-tight text-balance sm:text-4xl" data-reveal>{f.valuesTitle}</h2>
+      <div class="mt-10 grid gap-4 md:grid-cols-3">
+        {
+          f.values.map((value, i) => (
+            <article class="rounded-[1.75rem] bg-white p-6 shadow-sm" data-reveal style={`--reveal-i: ${i}`}>
+              <span class="block h-1.5 w-10 rounded-full bg-sky" aria-hidden="true" />
+              <h3 class="mt-5 text-lg font-semibold">{value.title}</h3>
+              <p class="mt-2 text-sm leading-relaxed text-muted">{fill(value.text)}</p>
+            </article>
+          ))
+        }
+      </div>
+      <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal>
+        <a href={`/${locale}/contact/`} class="btn-primary">{f.cta} →</a>
+        <a href={`/${locale}/careers/`} class="btn-ghost">{f.ctaCareers}</a>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,68 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { CLIENTS } from '../data/clients';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  /** Accessible label of an outbound link, e.g. "Site officiel de {name}" */
+  linkLabel: string;
+}
+const { eyebrow, title, intro, linkLabel } = Astro.props;
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{svg,png,webp}', { eager: true });
+const logos: Record<string, ImageMetadata> = {};
+for (const [path, mod] of Object.entries(files)) {
+  logos[path.split('/').pop()!.replace(/\.\w+$/, '')] = mod.default;
+}
+const tile =
+  'flex h-20 w-44 shrink-0 items-center justify-center rounded-2xl border border-line bg-white px-5 text-center transition duration-300 sm:h-24 sm:w-52';
+---
+
+<section id="references" class="overflow-hidden bg-mist py-20 sm:py-28">
+  <div class="container-page">
+    <div class="max-w-2xl" data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-5xl">{title}</h2>
+      <p class="mt-4 text-lg text-muted">{intro}</p>
+    </div>
+  </div>
+
+  <!-- Scrolling band. The list is rendered twice for a seamless loop; the copy is hidden from assistive tech. -->
+  <div class="client-band mt-12" data-reveal>
+    <ul class="client-track animate-clients flex w-max gap-4 py-2 pl-4">
+      {
+        [0, 1].map((copy) =>
+          CLIENTS.map((client) => {
+            const logo = logos[client.key];
+            const content = logo ? (
+              <Image src={logo} alt={copy ? '' : client.name} class="max-h-11 w-auto max-w-full object-contain sm:max-h-14" loading="eager" />
+            ) : (
+              <span class="text-lg font-bold tracking-tight whitespace-nowrap text-ink">{client.name}</span>
+            );
+            return (
+              <li data-copy={copy} aria-hidden={copy ? 'true' : undefined}>
+                {client.url ? (
+                  <a
+                    href={client.url}
+                    target="_blank"
+                    rel="noopener"
+                    tabindex={copy ? -1 : undefined}
+                    aria-label={linkLabel.replace('{name}', client.name)}
+                    class:list={[tile, 'hover:-translate-y-1 hover:border-sky hover:shadow-lg hover:shadow-sky/20']}
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div class={tile}>{content}</div>
+                )}
+              </li>
+            );
+          }),
+        )
+      }
+    </ul>
+  </div>
+</section>

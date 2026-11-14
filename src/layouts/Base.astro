@@ -47,6 +47,7 @@ const canonical = new URL(path, Astro.site);
     <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-4 focus:py-2">
       {t.nav.skip}
     </a>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <Header locale={locale} />
     <main id="main">
       <slot />
@@ -71,6 +72,16 @@ const canonical = new URL(path, Astro.site);
         );
         items.forEach((el) => io.observe(el));
       }
+
+      // Cursor spotlight on cards (mouse only).
+      document.querySelectorAll<HTMLElement>('.spotlight').forEach((card) => {
+        card.addEventListener('pointermove', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          const r = card.getBoundingClientRect();
+          card.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          card.style.setProperty('--my', `${e.clientY - r.top}px`);
+        });
+      });
     </script>
   </body>
 </html>

@@ -13,6 +13,13 @@ export default defineConfig({
   output: 'static',
   adapter: vercel(),
   trailingSlash: 'always',
+  // The Cyrillic version was removed: keep its old addresses working.
+  redirects: {
+    '/sr-cyrl/': '/sr/',
+    '/sr-cyrl/careers/': '/sr/careers/',
+    '/sr-cyrl/contact/': '/sr/contact/',
+    '/sr-cyrl/privacy/': '/sr/privacy/',
+  },
   vite: { plugins: [tailwindcss()] },
   env: {
     schema: {
