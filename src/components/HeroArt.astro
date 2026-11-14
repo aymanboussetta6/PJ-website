@@ -37,7 +37,7 @@ const fencePosts = Array.from({ length: 15 }, (_, i) => 196 + i * 11);
 
 // Hotspot position (in % of the 400×420 drawing) for each activity key.
 const SPOTS: Record<string, { x: number; y: number }> = {
-  studies: { x: 30, y: 316 }, // surveying tripod
+  studies: { x: 29, y: 306 }, // design-office screen
   civil: { x: 192, y: 398 }, // trench
   infra: { x: 270, y: 292 }, // tower body
   energy: { x: 352, y: 312 }, // power cabinet
@@ -78,11 +78,18 @@ const START = Math.max(0, items.findIndex((i) => i.key === 'radio'));
       <path d="M112 384H272" stroke="#9fc9e3" stroke-width="7" />
       <path d="M112 372V384H272V372" stroke="#036aa6" stroke-width="2.5" stroke-dasharray="6 8" class="animate-dash" />
 
-      <!-- surveying tripod (engineering studies) -->
+      <!-- design-office workstation: monitor showing a site drawing (engineering studies) -->
       <g stroke={INK} stroke-width="2">
-        <path d="M30 352L21 374M30 352L39 374M30 352V374" />
-        <rect x="23" y="343" width="14" height="9" rx="2" fill="#fff" />
-        <circle cx="38.5" cy="347.5" r="2" fill="#38bdf8" stroke-width="1.5" />
+        <path d="M29 358v10M18 372h22M22 372l3-4h8l3 4" />
+        <rect x="6" y="326" width="46" height="32" rx="3.5" fill="#fff" />
+        <rect x="10" y="330" width="38" height="24" rx="1.5" fill="#e6f6fe" stroke="none" />
+      </g>
+      <!-- on-screen plan: grid, tower elevation, dimension line -->
+      <g stroke="#036aa6" stroke-width="1.2">
+        <path d="M10 338h38M10 346h38M20 330v24M34 330v24" stroke="#bae6fd" stroke-width="0.8" />
+        <path d="M24 352l4-17 4 17M25.5 346h5M26.5 341h3M28 335v-3" />
+        <path d="M38 335v17M36.5 335h3M36.5 352h3" stroke-width="1" />
+        <path d="M41 340h5M41 344h5M41 348h3" stroke-width="1" />
       </g>
 
       <!-- radio waves -->
