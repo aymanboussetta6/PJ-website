@@ -1,7 +1,7 @@
 # Logos des clients
 
 Déposez ici le logo de chaque client, nommé d'après sa clé dans `src/data/clients.ts` :
-`orange.svg`, `free.svg`, `bouygues-telecom.svg`, `telencia.svg`, `tdf.svg`, `cellnex.svg`,
+`orange.svg`, `free.svg`, `bouygues-telecom.svg`, `telefonica.svg`, `tdf.svg`, `cellnex.svg`,
 `totem.svg`, `sncf.svg`, `circet.svg`, `spie.svg`, `axione.svg`, `axians.svg`, `nge.svg`.
 
 - Formats acceptés : SVG (recommandé), PNG ou WebP sur fond transparent.
