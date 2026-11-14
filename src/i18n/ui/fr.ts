@@ -100,6 +100,12 @@ const fr = {
       { title: 'Collectivités et aménageurs', text: "Réseaux d'initiative publique, montée en débit et génie civil associé." },
     ],
   },
+  references: {
+    eyebrow: "Références",
+    title: "Ils nous font confiance",
+    intro: "Opérateurs, gestionnaires d'infrastructures et intégrateurs : nous intervenons pour les principaux acteurs des télécoms.",
+    linkLabel: "Site officiel de {name}",
+  },
   commitments: {
     title: 'Nos engagements',
     items: [

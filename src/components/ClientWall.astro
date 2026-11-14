@@ -1,0 +1,64 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import { CLIENTS } from '../data/clients';
+
+interface Props {
+  eyebrow: string;
+  title: string;
+  intro: string;
+  /** Accessible label of an outbound link, e.g. "Site officiel de {name}" */
+  linkLabel: string;
+}
+const { eyebrow, title, intro, linkLabel } = Astro.props;
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/logos/*.{svg,png,webp}', { eager: true });
+const logos: Record<string, ImageMetadata> = {};
+for (const [path, mod] of Object.entries(files)) {
+  logos[path.split('/').pop()!.replace(/\.\w+$/, '')] = mod.default;
+}
+const tile =
+  'flex h-24 items-center justify-center rounded-2xl border border-line bg-white px-4 text-center transition duration-300';
+---
+
+<section id="references" class="bg-mist py-20 sm:py-28">
+  <div class="container-page">
+    <div class="max-w-2xl" data-reveal>
+      <p class="eyebrow">{eyebrow}</p>
+      <h2 class="mt-3 text-3xl font-bold tracking-tight text-balance sm:text-5xl">{title}</h2>
+      <p class="mt-4 text-lg text-muted">{intro}</p>
+    </div>
+    <ul class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+      {
+        CLIENTS.map((client, i) => {
+          const logo = logos[client.key];
+          const content = logo ? (
+            <Image src={logo} alt={client.name} class="max-h-12 w-auto max-w-full object-contain" loading="lazy" />
+          ) : (
+            <span class="text-lg font-bold tracking-tight text-ink">{client.name}</span>
+          );
+          return (
+            <li data-reveal style={`--reveal-i: ${i % 5}`}>
+              {client.url ? (
+                <a
+                  href={client.url}
+                  target="_blank"
+                  rel="noopener"
+                  aria-label={linkLabel.replace('{name}', client.name)}
+                  class:list={[tile, 'group relative hover:-translate-y-1 hover:border-sky hover:shadow-lg hover:shadow-sky/20']}
+                >
+                  {content}
+                  <svg class="absolute top-2.5 right-2.5 size-3.5 text-muted opacity-0 transition group-hover:opacity-100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17 17 7M9 7h8v8" />
+                  </svg>
+                </a>
+              ) : (
+                <div class={tile}>{content}</div>
+              )}
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</section>

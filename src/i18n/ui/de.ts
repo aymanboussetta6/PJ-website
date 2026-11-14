@@ -100,6 +100,12 @@ const de: Dictionary = {
       { title: 'Kommunen und Erschließungsträger', text: 'Geförderte Glasfasernetze, Breitbandausbau und zugehöriger Tiefbau.' },
     ],
   },
+  references: {
+    eyebrow: "Referenzen",
+    title: "Sie vertrauen uns",
+    intro: "Netzbetreiber, Infrastrukturbetreiber und Integratoren: Wir arbeiten für die führenden Akteure der Telekommunikation.",
+    linkLabel: "Offizielle Website von {name}",
+  },
   commitments: {
     title: 'Unsere Verpflichtungen',
     items: [

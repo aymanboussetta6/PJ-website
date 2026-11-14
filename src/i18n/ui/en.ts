@@ -100,6 +100,12 @@ const en: Dictionary = {
       { title: 'Local authorities and developers', text: 'Public fibre networks, broadband upgrades and related civil works.' },
     ],
   },
+  references: {
+    eyebrow: "References",
+    title: "They trust us",
+    intro: "Operators, infrastructure owners and integrators: we work for the leading players in telecoms.",
+    linkLabel: "Official website of {name}",
+  },
   commitments: {
     title: 'Our commitments',
     items: [

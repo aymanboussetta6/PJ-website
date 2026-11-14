@@ -101,6 +101,12 @@ const sr: Dictionary = {
       { title: 'Lokalne samouprave i investitori', text: 'Javne optičke mreže, širokopojasni pristup i prateći građevinski radovi.' },
     ],
   },
+  references: {
+    eyebrow: "Reference",
+    title: "Ukazali su nam poverenje",
+    intro: "Operateri, upravitelji infrastrukture i integratori: radimo za vodeće kompanije u telekomunikacijama.",
+    linkLabel: "Zvanični sajt kompanije {name}",
+  },
   commitments: {
     title: 'Naše obaveze',
     items: [

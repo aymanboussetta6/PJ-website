@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Photo from '../../components/Photo.astro';
 import HeroArt from '../../components/HeroArt.astro';
+import ClientWall from '../../components/ClientWall.astro';
 import { photo } from '../../lib/photos';
 import { ACTIVITY_KEYS, LOCALE_KEYS, getDictionary, type Locale } from '../../i18n';
 
@@ -233,8 +234,11 @@ const ticker = [...t.hero.badges, ...ACTIVITY_KEYS.map((k) => t.activities.items
     </div>
   </section>
 
+  <!-- Client references -->
+  <ClientWall eyebrow={t.references.eyebrow} title={t.references.title} intro={t.references.intro} linkLabel={t.references.linkLabel} />
+
   <!-- Careers teaser -->
-  <section class="pb-20 sm:pb-28">
+  <section class="py-20 sm:py-28">
     <div class="container-page">
       <div data-reveal class="grid overflow-hidden rounded-[2rem] bg-ink text-white lg:grid-cols-2">
         <div class="relative min-h-56">
