@@ -26,7 +26,7 @@ const en: Dictionary = {
       'From survey to commissioning, then maintenance: a single partner for your radio, fibre and infrastructure projects.',
     ctaPrimary: 'Contact us',
     ctaSecondary: 'Our services',
-    badges: ['4G · 5G', 'FTTH · FTTO', 'Towers & rooftops', 'Civil works'],
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Towers & work at height', 'Civil works'],
     explore: 'Tap a point to explore our services',
   },
   activities: {
@@ -47,7 +47,7 @@ const en: Dictionary = {
       infra: {
         title: "Telecom infrastructure rollout",
         text: "We deliver turnkey sites: towers, rooftops, equipment areas and cable routes, with full works management.",
-        points: ["Towers and masts", "Rooftops and high points", "Shelters and equipment areas"],
+        points: ["Towers and masts", "Rooftops and work at height", "Shelters and equipment areas"],
       },
       energy: {
         title: "Electrical and power works",
@@ -110,7 +110,7 @@ const en: Dictionary = {
   commitments: {
     title: 'Our commitments',
     items: [
-      { title: 'Safety first', text: 'Prevention, protective equipment and a safety culture on every site.' },
+      { title: 'Safety first', text: 'All our technicians hold the required certifications (work at height, electrical authorisation) to carry out the work in complete safety.' },
       { title: 'Responsiveness', text: 'Teams that can be mobilised quickly in France and Germany.' },
       { title: 'Measured quality', text: 'Inspections, reporting and traceability for every job.' },
     ],

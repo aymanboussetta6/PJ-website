@@ -27,7 +27,7 @@ const sr: Dictionary = {
       'Od projekta do puštanja u rad, a zatim i održavanja: jedan partner za vaše radio, optičke i infrastrukturne projekte.',
     ctaPrimary: 'Kontaktirajte nas',
     ctaSecondary: 'Naše delatnosti',
-    badges: ['4G · 5G', 'FTTH · FTTO', 'Stubovi i krovne lokacije', 'Građevinski radovi'],
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Stubovi i rad na visini', 'Građevinski radovi'],
     explore: 'Dodirnite tačku da otkrijete naše delatnosti',
   },
   activities: {
@@ -48,7 +48,7 @@ const sr: Dictionary = {
       infra: {
         title: "Izgradnja telekom infrastrukture",
         text: "Gradimo lokacije po principu ključ u ruke: stubovi, krovne lokacije, tehnički prostori i kablovske trase, uz kompletno vođenje radova.",
-        points: ["Stubovi i jarboli", "Krovne lokacije", "Kontejneri i tehnički prostori"],
+        points: ["Stubovi i jarboli", "Krovne lokacije i rad na visini", "Kontejneri i tehnički prostori"],
       },
       energy: {
         title: "Elektroenergetika i napajanje",
@@ -111,7 +111,7 @@ const sr: Dictionary = {
   commitments: {
     title: 'Naše obaveze',
     items: [
-      { title: 'Bezbednost na prvom mestu', text: 'Prevencija, zaštitna oprema i kultura bezbednosti na svakom gradilištu.' },
+      { title: 'Bezbednost na prvom mestu', text: 'Svi naši tehničari imaju potrebne sertifikate (rad na visini, rad sa električnim instalacijama) za bezbedno izvođenje radova.' },
       { title: 'Brza reakcija', text: 'Timovi spremni za brzo angažovanje u Francuskoj i Nemačkoj.' },
       { title: 'Merljiv kvalitet', text: 'Kontrole, izveštavanje i sledljivost svake intervencije.' },
     ],

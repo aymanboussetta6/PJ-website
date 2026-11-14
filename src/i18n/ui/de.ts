@@ -26,7 +26,7 @@ const de: Dictionary = {
       'Von der Planung über die Inbetriebnahme bis zur Wartung: ein Ansprechpartner für Ihre Funk-, Glasfaser- und Infrastrukturprojekte.',
     ctaPrimary: 'Anfrage senden',
     ctaSecondary: 'Unsere Leistungen',
-    badges: ['4G · 5G', 'FTTH · FTTO', 'Masten & Dachstandorte', 'Tiefbau'],
+    badges: ['4G · 5G', 'FTTH · FTTO', 'Masten & Höhenarbeit', 'Tiefbau'],
     explore: 'Tippen Sie auf einen Punkt, um unsere Leistungen zu entdecken',
   },
   activities: {
@@ -47,7 +47,7 @@ const de: Dictionary = {
       infra: {
         title: "Ausbau der Telekom-Infrastruktur",
         text: "Wir bauen schlüsselfertige Standorte: Masten, Dachstandorte, Technikflächen und Kabelwege, mit vollständiger Bauleitung.",
-        points: ["Masten und Rohrmaste", "Dachstandorte", "Shelter und Technikflächen"],
+        points: ["Masten und Rohrmaste", "Dachstandorte und Höhenarbeit", "Shelter und Technikflächen"],
       },
       energy: {
         title: "Elektro- und Energietechnik",
@@ -110,7 +110,7 @@ const de: Dictionary = {
   commitments: {
     title: 'Unsere Verpflichtungen',
     items: [
-      { title: 'Sicherheit zuerst', text: 'Prävention, Schutzausrüstung und Sicherheitskultur auf jeder Baustelle.' },
+      { title: 'Sicherheit zuerst', text: 'Alle unsere Techniker verfügen über die erforderlichen Befähigungen (Höhenarbeit, elektrotechnische Befähigung), um die Arbeiten sicher auszuführen.' },
       { title: 'Reaktionsfähigkeit', text: 'Schnell einsetzbare Teams in Frankreich und Deutschland.' },
       { title: 'Messbare Qualität', text: 'Kontrollen, Reporting und Nachverfolgbarkeit jedes Einsatzes.' },
     ],
